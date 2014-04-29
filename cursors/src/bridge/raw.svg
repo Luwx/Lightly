@@ -5766,7 +5766,7 @@
          id="tspan15525-9"
          y="286.75"
          x="19.640625"
-         sodipodi:role="line">col-resize</tspan></text>
+         sodipodi:role="line">row-resize</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-1-1-4-9-7"
@@ -5821,7 +5821,7 @@
          y="286.75"
          x="69.640617"
          id="tspan15124-4-9-7-4-2-1-5"
-         sodipodi:role="line">row-resize</tspan></text>
+         sodipodi:role="line">col-resize</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9-0-9-17"
@@ -6384,7 +6384,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       id="col-resize"
+       id="row-resize"
        x="20"
        y="270"
        width="41"
@@ -6401,7 +6401,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="270"
        x="70"
-       id="row-resize"
+       id="col-resize"
        style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc60924">format: png
