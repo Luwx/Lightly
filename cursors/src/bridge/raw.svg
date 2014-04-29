@@ -5392,7 +5392,7 @@
          y="36.75"
          x="119.64062"
          id="tspan15124-4"
-         sodipodi:role="line">right-arrow</tspan></text>
+         sodipodi:role="line">right_ptr</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9"
@@ -5447,7 +5447,7 @@
          y="36.75"
          x="69.640617"
          id="tspan15124-4-9"
-         sodipodi:role="line">center-ptr</tspan></text>
+         sodipodi:role="line">center_ptr</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-8"
@@ -5689,7 +5689,7 @@
          id="tspan15525"
          y="236.75"
          x="19.640625"
-         sodipodi:role="line">size-ver</tspan></text>
+         sodipodi:role="line">size_ver</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-1-1-4-9"
@@ -5700,7 +5700,7 @@
          y="236.75"
          x="119.64062"
          id="tspan15124-4-0-5-6-6"
-         sodipodi:role="line">size-bdiag</tspan></text>
+         sodipodi:role="line">size_bdiag</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9-1-1-8-1"
@@ -5711,7 +5711,7 @@
          y="236.75"
          x="169.64062"
          id="tspan15124-4-5-33-5-4-2"
-         sodipodi:role="line">size-fdiag</tspan></text>
+         sodipodi:role="line">size_fdiag</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9-0-3-6-7-3"
@@ -5755,7 +5755,7 @@
          y="236.75"
          x="69.640617"
          id="tspan15124-4-9-7-4-2-1"
-         sodipodi:role="line">size-hor</tspan></text>
+         sodipodi:role="line">size_hor</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-8-5-4-0-7"
@@ -5777,7 +5777,7 @@
          y="286.75"
          x="119.64062"
          id="tspan15124-4-0-5-6-6-3"
-         sodipodi:role="line">top-side</tspan></text>
+         sodipodi:role="line">top_side</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9-1-1-8-1-4"
@@ -5788,7 +5788,7 @@
          y="286.75"
          x="169.64062"
          id="tspan15124-4-5-33-5-4-2-1"
-         sodipodi:role="line">bottom-side</tspan></text>
+         sodipodi:role="line">bottom_side</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9-0-3-6-7-3-9"
@@ -5799,7 +5799,7 @@
          y="286.75"
          x="269.64062"
          id="tspan15124-4-5-3-7-8-2-5-2"
-         sodipodi:role="line">right-side</tspan></text>
+         sodipodi:role="line">right_side</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-9-3-3-7-9-3-6"
@@ -5810,7 +5810,7 @@
          y="286.75"
          x="219.64062"
          id="tspan15124-4-5-6-9-9-1-7-8"
-         sodipodi:role="line">left-side</tspan></text>
+         sodipodi:role="line">left_side</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text15122-5-4-7-5-5-3-6"
@@ -5865,7 +5865,7 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        style="opacity:0.5;fill:#ff0000"
-       id="right-arrow"
+       id="right_ptr"
        x="120"
        y="20"
        width="41"
@@ -5882,7 +5882,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="20"
        x="70"
-       id="center-ptr">
+       id="center_ptr">
       <desc
          id="desc16344">format: png
 dpi: 90
@@ -6168,7 +6168,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="170"
        x="270"
-       id="right-arrow-01">
+       id="right-arrow">
       <desc
          id="desc40062">format: png
 dpi: 90
@@ -6280,7 +6280,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       id="size-fdiag"
+       id="size_fdiag"
        x="170"
        y="220"
        width="41"
@@ -6297,7 +6297,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="220"
        x="120"
-       id="size-bdiag"
+       id="size_bdiag"
        style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc51492">format: png
@@ -6306,7 +6306,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       id="size-hor"
+       id="size_hor"
        x="70"
        y="220"
        width="41"
@@ -6323,7 +6323,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="220"
        x="20"
-       id="size-ver"
+       id="size_ver"
        style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc53826">format: png
@@ -6332,7 +6332,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       id="right-side"
+       id="right_side"
        x="270"
        y="270"
        width="41"
@@ -6349,7 +6349,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="270"
        x="220"
-       id="left-side"
+       id="left_side"
        style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc56176">format: png
@@ -6358,7 +6358,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       id="bottom-side"
+       id="bottom_side"
        x="170"
        y="270"
        width="41"
@@ -6375,7 +6375,7 @@ layout-position-anchor: tl</desc>
        width="41"
        y="270"
        x="120"
-       id="top-side"
+       id="top_side"
        style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc58542">format: png

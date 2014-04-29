@@ -1,0 +1,11 @@
+TODO
+====
+
+The following cursors are missing and might be added in the future:
+
+* top_left_corner
+* top_right_corner
+* bottom_left_corner
+* bottom_right_corner
+
+They should all look like top_side and friends, only with a L-shaped angle instead of a line

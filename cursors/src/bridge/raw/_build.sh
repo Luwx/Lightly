@@ -9,21 +9,24 @@
 #	fi
 #fi
 
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+mkdir -p "output"
+
+kdialog --passivepopup "Building $PWD/*.cursor" 1
 
 
-mkdir -p "$DIR/output"
-kdialog --passivepopup "Building""$DIR/*.cursor" 1
-
-
-for CUR in `ls "$DIR"/*.cursor`; do
+for CUR in *.cursor; do
 	BASENAME=$CUR
 	BASENAME=${BASENAME##*/}
 	BASENAME=${BASENAME%.*}
-
-	xcursorgen "$CUR" "$DIR/output/$BASENAME";
-done;
+	
+	err="$( xcursorgen "$CUR" "output/$BASENAME" 2>&1 )"
+	
+	if [[ "$?" -ne "0" ]]; then
+		kdialog --icon dialog-warning --passivepopup "$CUR fail: $err" 1
+	fi
+done
 
 
 kdialog --passivepopup "Done." 1

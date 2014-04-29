@@ -1,5 +1,7 @@
 [Dolphin]
 AdditionalInfoV2=Details_Size,Details_Date,CustomizedDetails
+GroupedSorting=true
 PreviewsShown=true
-Timestamp=2014,4,7,12,22,2
+SortRole=destination
+Timestamp=2014,4,29,15,15,53
 Version=3
