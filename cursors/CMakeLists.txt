@@ -1,8 +1,2 @@
-set(cursors_folders
-    Bridge
-   )
-
-foreach(theme ${cursors_folders})
-    install(DIRECTORY ${theme} DESTINATION ${ICON_INSTALL_DIR})
-endforeach(theme)
-
+install(DIRECTORY cursors DESTINATION ${ICON_INSTALL_DIR}/breeze)
+install(FILES index.theme DESTINATION ${ICON_INSTALL_DIR}/breeze)
