@@ -1,3 +1,5 @@
 [Icon Theme]
 Name=Breeze
+Name[x-test]=xxBreezexx
 Comment=KDE Plasma Cursor Theme
+Comment[x-test]=xxKDE Plasma Cursor Themexx
