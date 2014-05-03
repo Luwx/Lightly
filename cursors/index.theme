@@ -1,5 +1,9 @@
 [Icon Theme]
 Name=Breeze
+Name[ca]=Brisa
+Name[uk]=Breeze
 Name[x-test]=xxBreezexx
 Comment=KDE Plasma Cursor Theme
+Comment[ca]=Tema de cursor pel Plasma del KDE
+Comment[uk]=Тема курсорів Плазми KDE
 Comment[x-test]=xxKDE Plasma Cursor Themexx
