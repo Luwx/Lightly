@@ -23,18 +23,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="532.42682"
-     inkscape:cy="54.802061"
+     inkscape:zoom="2"
+     inkscape:cx="300.2329"
+     inkscape:cy="220.36322"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="svg11024"
      showgrid="true"
      showborder="true"
      inkscape:snap-bbox="true"
-     inkscape:window-width="2094"
-     inkscape:window-height="1073"
-     inkscape:window-x="261"
-     inkscape:window-y="171"
+     inkscape:window-width="1920"
+     inkscape:window-height="1024"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="0">
     <inkscape:grid
        id="grid11941"
@@ -1814,7 +1814,7 @@
          sodipodi:nodetypes="ccssccscsccssccscsc" />
     </g>
     <g
-       transform="translate(-169.5,14.5)"
+       transform="translate(-173.8752,8.9623799)"
        id="g13267">
       <path
          inkscape:connector-curvature="0"
@@ -1937,7 +1937,7 @@
          sodipodi:nodetypes="cscsccssssccscscc" />
     </g>
     <g
-       transform="translate(-169.5,14.5)"
+       transform="translate(-173.8752,10.06238)"
        id="g13262">
       <path
          style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7438);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
@@ -2061,7 +2061,7 @@
          style="fill:#4d4d4d;fill-opacity:1;stroke:none" />
     </g>
     <g
-       transform="translate(-49,10)"
+       transform="translate(-58.062225,10)"
        id="g13230">
       <path
          style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7242);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
@@ -2102,7 +2102,7 @@
          sodipodi:nodetypes="cccccccc" />
     </g>
     <g
-       transform="translate(-79,22)"
+       transform="translate(-79,13.000082)"
        id="g13375">
       <path
          style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter8158);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
@@ -2889,39 +2889,38 @@
          id="rect5428-0"
          inkscape:connector-curvature="0" />
     </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path7442"
+       d="m 185.5,807.375 c 0.28799,0 0.5,0.21201 0.5,0.5 0,0.28799 -0.21201,0.5 -0.5,0.5 -0.28799,0 -0.5,-0.21201 -0.5,-0.5 0,-0.28799 0.21201,-0.5 0.5,-0.5 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6888);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path7440"
+       d="m 190.5,807.375 c 0.28799,0 0.5,0.21201 0.5,0.5 0,0.28799 -0.21201,0.5 -0.5,0.5 -0.28799,0 -0.5,-0.21201 -0.5,-0.5 0,-0.28799 0.21201,-0.5 0.5,-0.5 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6888);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path7444-0"
+       d="m 193.65625,805.28125 c -0.70624,0.0437 -1.26297,0.4091 -1.6875,0.90625 -0.75568,-0.75568 -1.56294,-0.66265 -1.8125,-0.65625 -0.93705,0.0569 -1.55625,0.6895 -1.9375,1.46875 -0.42937,-0.26033 -0.89508,-0.47704 -1.4375,-0.4375 -0.0104,-1.6e-4 -0.0208,-1.6e-4 -0.0312,0 -1.45408,0.13074 -2.44879,1.43826 -2.21875,2.875 l 0,0.0312 0.25,1.65625 c -0.0212,0.01 -0.042,0.0202 -0.0625,0.0312 -0.47965,0.36125 -1.20504,0.84696 -1.75,1.65625 -0.54496,0.80929 -0.81772,2.00394 -0.40625,3.3125 0.44925,1.42873 1.29271,2.91712 2.25,4.09375 0.47864,0.58831 0.99427,1.07367 1.53125,1.46875 0.53698,0.39508 1.0975,0.72336 1.8125,0.71875 L 197,822.37495 c 0.50339,9.4e-4 0.96849,-0.4351 1,-0.9375 0,0 1.9082,-3.2516 1.34375,-11.3125 l 0,-0.0312 c -0.18896,-2.1661 -0.91281,-3.19713 -2.59375,-3.0938 -0.0109,6.7e-4 -0.0204,-8.1e-4 -0.0312,0 -0.251,0.0173 -0.43118,0.19681 -0.65625,0.28125 -0.27074,-1.15387 -1.14973,-2.08118 -2.40625,-2 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7690);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="m 193.65625,804.28125 c -0.70624,0.0437 -1.26297,0.4091 -1.6875,0.90625 -0.75568,-0.75568 -1.56294,-0.66265 -1.8125,-0.65625 -0.93705,0.0569 -1.55625,0.6895 -1.9375,1.46875 -0.42937,-0.26033 -0.89508,-0.47704 -1.4375,-0.4375 -0.0104,-1.6e-4 -0.0208,-1.6e-4 -0.0312,0 -1.45408,0.13074 -2.44879,1.43826 -2.21875,2.875 l 0,0.0312 0.25,1.65625 c -0.0212,0.01 -0.042,0.0201 -0.0625,0.0312 -0.47965,0.36125 -1.20504,0.84696 -1.75,1.65625 -0.54496,0.80929 -0.81772,2.00394 -0.40625,3.3125 0.44925,1.42873 1.29271,2.91712 2.25,4.09375 0.47864,0.58831 0.99427,1.07367 1.53125,1.46875 0.53698,0.39508 1.0975,0.72336 1.8125,0.71875 L 197,821.37495 c 0.50339,9.4e-4 0.96849,-0.4351 1,-0.9375 0,0 1.9082,-3.2516 1.34375,-11.3125 l 0,-0.0312 C 199.15479,806.9277 198.43094,805.89667 196.75,806 c -0.0109,6.7e-4 -0.0204,-8.1e-4 -0.0312,0 -0.251,0.0173 -0.43118,0.19681 -0.65625,0.28125 -0.27074,-1.15387 -1.14973,-2.08118 -2.40625,-2 z"
+       id="path4236-1-58-5-6-0-3-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccsssscccccscccc" />
+    <path
+       style="fill:#4d4d4d;fill-opacity:1;stroke:none"
+       d="m 190.21561,805.5448 c -0.78589,0.0477 -1.45682,0.80805 -1.40625,1.59375 l 0.0969,1.3927 c 0.0246,0.35402 -0.30542,0.42804 -0.34375,0.15625 l -0.12148,-0.86145 c -0.10745,-0.74224 -0.84576,-1.33578 -1.59375,-1.28125 -0.823,0.074 -1.4847,0.93578 -1.34375,1.75 l 0.52773,3.29895 c 0.005,0.12697 -0.0312,0.78125 -0.0312,0.78125 l -0.6875,-1.40625 c -1.00427,0.75637 -2.46499,1.72361 -1.79215,3.8634 0.79632,2.53249 3.17772,5.58351 4.6359,5.5741 L 197,820.37505 c 1.71121,-3.79216 1.3918,-7.33411 1.375,-9.84375 l -0.0111,-1.65825 c -0.006,-0.9502 -0.61489,-1.94531 -1.5625,-1.875 -0.641,0.0367 -1.22886,0.53105 -1.375,1.15625 l -0.1764,0.9395 c -0.0526,0.28015 -0.14589,0.16491 -0.125,-0.0625 l 0.19822,-2.15787 c 0.0548,-0.84823 -0.74552,-1.64855 -1.59375,-1.59375 -0.73322,0.0454 -1.37697,0.70346 -1.40625,1.4375 l -0.16697,1.50162 c -0.039,0.35079 -0.25997,0.35943 -0.28125,-0.0312 l -0.0656,-1.2052 c -0.0317,-0.79657 -0.79814,-1.48787 -1.59375,-1.4375 z"
+       id="path4236-1-58-5-6-0-35"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccssccccccsccssccsscccssccc" />
     <g
-       transform="translate(-81,13)"
-       id="g13291">
-      <path
-         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6888);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
-         d="m 266.5,794.375 c 0.28799,0 0.5,0.21201 0.5,0.5 0,0.28799 -0.21201,0.5 -0.5,0.5 -0.28799,0 -0.5,-0.21201 -0.5,-0.5 0,-0.28799 0.21201,-0.5 0.5,-0.5 z"
-         id="path7442"
-         inkscape:connector-curvature="0" />
-      <path
-         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6888);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
-         d="m 271.5,794.375 c 0.28799,0 0.5,0.21201 0.5,0.5 0,0.28799 -0.21201,0.5 -0.5,0.5 -0.28799,0 -0.5,-0.21201 -0.5,-0.5 0,-0.28799 0.21201,-0.5 0.5,-0.5 z"
-         id="path7440"
-         inkscape:connector-curvature="0" />
-      <path
-         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7690);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
-         d="m 274.65625,792.28125 c -0.70624,0.0437 -1.26297,0.4091 -1.6875,0.90625 -0.75568,-0.75568 -1.56294,-0.66265 -1.8125,-0.65625 -0.93705,0.0569 -1.55625,0.6895 -1.9375,1.46875 -0.42937,-0.26033 -0.89508,-0.47704 -1.4375,-0.4375 -0.0104,-1.6e-4 -0.0208,-1.6e-4 -0.0312,0 -1.45408,0.13074 -2.44879,1.43826 -2.21875,2.875 l 0,0.0312 0.25,1.65625 c -0.0212,0.01 -0.042,0.0202 -0.0625,0.0312 -0.47965,0.36125 -1.20504,0.84696 -1.75,1.65625 -0.54496,0.80929 -0.81772,2.00394 -0.40625,3.3125 0.44925,1.42873 1.29271,2.91712 2.25,4.09375 0.47864,0.58831 0.99427,1.07367 1.53125,1.46875 0.53698,0.39508 1.0975,0.72336 1.8125,0.71875 L 278,809.37495 c 0.50339,9.4e-4 0.96849,-0.4351 1,-0.9375 0,0 1.9082,-3.2516 1.34375,-11.3125 l 0,-0.0312 c -0.18896,-2.1661 -0.91281,-3.19713 -2.59375,-3.0938 -0.0109,6.7e-4 -0.0204,-8.1e-4 -0.0312,0 -0.251,0.0173 -0.43118,0.19681 -0.65625,0.28125 -0.27074,-1.15387 -1.14973,-2.08118 -2.40625,-2 z"
-         id="path7444-0"
-         inkscape:connector-curvature="0" />
-      <path
-         sodipodi:nodetypes="ccccccccccsssscccccscccc"
-         inkscape:connector-curvature="0"
-         id="path4236-1-58-5-6-0-3-7"
-         d="m 274.65625,791.28125 c -0.70624,0.0437 -1.26297,0.4091 -1.6875,0.90625 -0.75568,-0.75568 -1.56294,-0.66265 -1.8125,-0.65625 -0.93705,0.0569 -1.55625,0.6895 -1.9375,1.46875 -0.42937,-0.26033 -0.89508,-0.47704 -1.4375,-0.4375 -0.0104,-1.6e-4 -0.0208,-1.6e-4 -0.0312,0 -1.45408,0.13074 -2.44879,1.43826 -2.21875,2.875 l 0,0.0312 0.25,1.65625 c -0.0212,0.01 -0.042,0.0201 -0.0625,0.0312 -0.47965,0.36125 -1.20504,0.84696 -1.75,1.65625 -0.54496,0.80929 -0.81772,2.00394 -0.40625,3.3125 0.44925,1.42873 1.29271,2.91712 2.25,4.09375 0.47864,0.58831 0.99427,1.07367 1.53125,1.46875 0.53698,0.39508 1.0975,0.72336 1.8125,0.71875 L 278,808.37495 c 0.50339,9.4e-4 0.96849,-0.4351 1,-0.9375 0,0 1.9082,-3.2516 1.34375,-11.3125 l 0,-0.0312 C 280.15479,793.9277 279.43094,792.89667 277.75,793 c -0.0109,6.7e-4 -0.0204,-8.1e-4 -0.0312,0 -0.251,0.0173 -0.43118,0.19681 -0.65625,0.28125 -0.27074,-1.15387 -1.14973,-2.08118 -2.40625,-2 z"
-         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
-      <path
-         sodipodi:nodetypes="ccssccccccsccssccsscccssccc"
-         inkscape:connector-curvature="0"
-         id="path4236-1-58-5-6-0-35"
-         d="m 271.21561,792.5448 c -0.78589,0.0477 -1.45682,0.80805 -1.40625,1.59375 l 0.0969,1.3927 c 0.0246,0.35402 -0.30542,0.42804 -0.34375,0.15625 l -0.12148,-0.86145 c -0.10745,-0.74224 -0.84576,-1.33578 -1.59375,-1.28125 -0.823,0.074 -1.4847,0.93578 -1.34375,1.75 l 0.52773,3.29895 c 0.005,0.12697 -0.0312,0.78125 -0.0312,0.78125 l -0.6875,-1.40625 c -1.00427,0.75637 -2.46499,1.72361 -1.79215,3.8634 0.79632,2.53249 3.17772,5.58351 4.6359,5.5741 L 278,807.37505 c 1.71121,-3.79216 1.3918,-7.33411 1.375,-9.84375 l -0.0111,-1.65825 c -0.006,-0.9502 -0.61489,-1.94531 -1.5625,-1.875 -0.641,0.0367 -1.22886,0.53105 -1.375,1.15625 l -0.1764,0.9395 c -0.0526,0.28015 -0.14589,0.16491 -0.125,-0.0625 l 0.19822,-2.15787 c 0.0548,-0.84823 -0.74552,-1.64855 -1.59375,-1.59375 -0.73322,0.0454 -1.37697,0.70346 -1.40625,1.4375 l -0.16697,1.50162 c -0.039,0.35079 -0.25997,0.35943 -0.28125,-0.0312 l -0.0656,-1.2052 c -0.0317,-0.79657 -0.79814,-1.48787 -1.59375,-1.4375 z"
-         style="fill:#4d4d4d;fill-opacity:1;stroke:none" />
+       id="g6435">
       <path
          style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7718);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
-         d="m 287.5,798.375 c -3.58985,0 -6.5,2.91015 -6.5,6.5 0,3.58985 2.91015,6.5 6.5,6.5 3.58985,0 6.5,-2.91015 6.5,-6.5 0,-3.58985 -2.91015,-6.5 -6.5,-6.5 z"
+         d="m 199.5,811.375 c -3.58985,0 -6.5,2.91015 -6.5,6.5 0,3.58985 2.91015,6.5 6.5,6.5 3.58985,0 6.5,-2.91015 6.5,-6.5 0,-3.58985 -2.91015,-6.5 -6.5,-6.5 z"
          id="path7456-7"
          inkscape:connector-curvature="0" />
       <path
@@ -2933,10 +2932,10 @@
          sodipodi:rx="10.5"
          sodipodi:ry="10.5"
          d="m 405,487.86218 c 0,5.79899 -4.70101,10.5 -10.5,10.5 -5.79899,0 -10.5,-4.70101 -10.5,-10.5 0,-5.79899 4.70101,-10.5 10.5,-10.5 5.79899,0 10.5,4.70101 10.5,10.5 z"
-         transform="matrix(0.61904741,0,0,0.61904741,43.28579,501.85236)" />
+         transform="matrix(0.61904741,0,0,0.61904741,-44.71421,514.85236)" />
       <path
          style="fill:#ed1515;fill-opacity:1;stroke:none"
-         d="m 284.26495,799.39255 c -2.26102,1.63062 -2.94986,4.76569 -1.526,7.23189 1.51879,2.63062 4.88253,3.53192 7.51314,2.01314 2.6306,-1.51878 3.53192,-4.88252 2.01314,-7.51314 -1.51879,-2.63062 -4.88252,-3.53193 -7.51314,-2.01314 -0.16441,0.0949 -0.33642,0.17252 -0.48714,0.28125 z m 1.48714,1.4508 c 1.37589,-0.79437 3.05047,-0.54798 4.14577,0.49319 l -5.79154,3.34375 c -0.35403,-1.46915 0.26987,-3.04256 1.64577,-3.83694 z m -0.64577,5.56899 5.79154,-3.34375 c 0.35403,1.46916 -0.26987,3.04257 -1.64577,3.83694 -1.37588,0.79438 -3.05047,0.54798 -4.14577,-0.49319 z"
+         d="m 196.26495,812.39255 c -2.26102,1.63062 -2.94986,4.76569 -1.526,7.23189 1.51879,2.63062 4.88253,3.53192 7.51314,2.01314 2.6306,-1.51878 3.53192,-4.88252 2.01314,-7.51314 -1.51879,-2.63062 -4.88252,-3.53193 -7.51314,-2.01314 -0.16441,0.0949 -0.33642,0.17252 -0.48714,0.28125 z m 1.48714,1.4508 c 1.37589,-0.79437 3.05047,-0.54798 4.14577,0.49319 l -5.79154,3.34375 c -0.35403,-1.46915 0.26987,-3.04256 1.64577,-3.83694 z m -0.64577,5.56899 5.79154,-3.34375 c 0.35403,1.46916 -0.26987,3.04257 -1.64577,3.83694 -1.37588,0.79438 -3.05047,0.54798 -4.14577,-0.49319 z"
          id="path5205-9"
          inkscape:connector-curvature="0" />
     </g>
@@ -3065,7 +3064,7 @@
        d="m 378,80 0,2 3.65625,0 L 379.75,80 378,80 z m 0,3 0,2 6.53125,0 -1.9375,-2 L 378,83 z m 0,3 0,2 4.5,0 2,-2 -6.5,0 z"
        style="fill:#3daee9;fill-opacity:1;stroke:none" />
     <g
-       transform="translate(41,-186)"
+       transform="translate(35.902002,-189.97732)"
        id="g13419-0"
        style="display:inline">
       <path
@@ -3097,12 +3096,12 @@
     </g>
     <path
        id="path7460-6-5"
-       d="m 50.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 50.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        id="g3611"
-       transform="translate(-459.5,294.5)">
+       transform="translate(-459.9752,293.96236)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3128,13 +3127,13 @@
     </g>
     <path
        id="path7460-6-5-1"
-       d="m 90.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 90.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2"
-       transform="matrix(0.96592583,0.25881905,-0.25881905,0.96592583,-195.74966,189.67175)">
+       transform="matrix(0.96592583,0.25881905,-0.25881905,0.96592583,-196.22486,189.13411)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3160,13 +3159,13 @@
     </g>
     <path
        id="path7460-6-5-1-4"
-       d="m 130.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 130.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5"
-       transform="matrix(0.8660254,0.5,-0.5,0.8660254,87.508123,146.32628)">
+       transform="matrix(0.8660254,0.5,-0.5,0.8660254,87.032923,145.78864)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3192,13 +3191,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0"
-       d="m 170.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 170.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8"
-       transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,373.69573,167.41752)">
+       transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,373.22053,166.87988)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3224,13 +3223,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1"
-       d="m 210.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 210.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3"
-       transform="matrix(0.5,0.8660254,-0.8660254,0.5,646.03588,251.50814)">
+       transform="matrix(0.5,0.8660254,-0.8660254,0.5,645.56068,250.9705)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3256,13 +3255,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0"
-       d="m 250.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 250.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7"
-       transform="matrix(0.25881905,0.96592582,-0.96592582,0.25881905,888.69498,392.86749)">
+       transform="matrix(0.25881905,0.96592582,-0.96592582,0.25881905,888.21978,392.32985)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3288,13 +3287,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2"
-       d="m 290.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 290.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5"
-       transform="matrix(0,1,-1,0,1087.8621,581.86218)">
+       transform="matrix(0,1,-1,0,1087.3869,581.32454)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3320,13 +3319,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6"
-       d="m 330.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 330.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7"
-       transform="matrix(-0.25881904,0.96592582,-0.96592582,-0.25881904,1232.6904,805.61252)">
+       transform="matrix(-0.25881904,0.96592582,-0.96592582,-0.25881904,1232.2152,805.07488)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3352,13 +3351,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0"
-       d="m 370.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 370.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4"
-       transform="matrix(-0.49999999,0.8660254,-0.8660254,-0.49999999,1316.0359,1048.8703)">
+       transform="matrix(-0.49999999,0.8660254,-0.8660254,-0.49999999,1315.5607,1048.3327)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3384,13 +3383,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8"
-       d="m 410.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 410.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5"
-       transform="matrix(-0.70710677,0.70710678,-0.70710678,-0.70710677,1334.9446,1295.0579)">
+       transform="matrix(-0.70710677,0.70710678,-0.70710678,-0.70710677,1334.4694,1294.5203)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3416,13 +3415,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3"
-       d="m 450.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 450.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7"
-       transform="matrix(-0.8660254,0.5,-0.5,-0.8660254,1290.854,1527.3981)">
+       transform="matrix(-0.8660254,0.5,-0.5,-0.8660254,1290.3788,1526.8605)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3448,13 +3447,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7"
-       d="m 490.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 490.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7"
-       transform="matrix(-0.96592582,0.25881905,-0.25881905,-0.96592582,1189.4946,1730.0572)">
+       transform="matrix(-0.96592582,0.25881905,-0.25881905,-0.96592582,1189.0194,1729.5196)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3480,13 +3479,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1"
-       d="m 530.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 530.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3"
-       transform="matrix(-1,0,0,-1,1040.5,1889.2244)">
+       transform="matrix(-1,0,0,-1,1040.0248,1888.6868)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3512,13 +3511,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6"
-       d="m 570.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 570.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9"
-       transform="matrix(-0.96592582,-0.25881904,0.25881904,-0.96592582,856.74962,1994.0526)">
+       transform="matrix(-0.96592582,-0.25881904,0.25881904,-0.96592582,856.27442,1993.515)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3544,13 +3543,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9"
-       d="m 610.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 610.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2"
-       transform="matrix(-0.8660254,-0.49999999,0.49999999,-0.8660254,653.49184,2037.3981)">
+       transform="matrix(-0.8660254,-0.49999999,0.49999999,-0.8660254,653.01664,2036.8605)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3576,13 +3575,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6"
-       d="m 650.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 650.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7"
-       transform="matrix(-0.70710678,-0.70710677,0.70710677,-0.70710678,447.30424,2016.3068)">
+       transform="matrix(-0.70710678,-0.70710677,0.70710677,-0.70710678,446.82904,2015.7692)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3608,13 +3607,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2"
-       d="m 690.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 690.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6"
-       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,254.96409,1932.2162)">
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,254.48889,1931.6786)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3640,13 +3639,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2-0"
-       d="m 730.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 730.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0-9);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6-2"
-       transform="matrix(-0.25881905,-0.96592582,0.96592582,-0.25881905,92.30499,1790.8568)">
+       transform="matrix(-0.25881905,-0.96592582,0.96592582,-0.25881905,91.82979,1790.3192)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3672,13 +3671,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2-0-8"
-       d="m 770.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 770.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0-9-3);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6-2-9"
-       transform="matrix(0,-1,1,0,-26.862176,1601.8622)">
+       transform="matrix(0,-1,1,0,-27.337376,1601.3246)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3704,13 +3703,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2-0-8-3"
-       d="m 810.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 810.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0-9-3-2);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6-2-9-9"
-       transform="matrix(0.25881904,-0.96592582,0.96592582,0.25881904,-91.690428,1378.1118)">
+       transform="matrix(0.25881904,-0.96592582,0.96592582,0.25881904,-92.165628,1377.5742)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3736,13 +3735,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2-0-8-3-4"
-       d="m 850.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 850.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0-9-3-2-4);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6-2-9-9-6"
-       transform="matrix(0.49999999,-0.8660254,0.8660254,0.49999999,-95.035897,1134.854)">
+       transform="matrix(0.49999999,-0.8660254,0.8660254,0.49999999,-95.511097,1134.3164)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3768,13 +3767,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2-0-8-3-4-3"
-       d="m 890.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 890.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0-9-3-2-4-4);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6-2-9-9-6-6"
-       transform="matrix(0.70710677,-0.70710678,0.70710678,0.70710677,-33.944657,888.66642)">
+       transform="matrix(0.70710677,-0.70710678,0.70710678,0.70710677,-34.419857,888.12878)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -3800,13 +3799,13 @@
     </g>
     <path
        id="path7460-6-5-1-4-0-1-0-2-6-0-8-3-7-1-6-9-6-2-0-8-3-4-3-3"
-       d="m 930.5,1081.875 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
+       d="m 930.0248,1081.3374 c -6.07513,0 -11,4.9249 -11,11 0,6.0751 4.92487,11 11,11 6.07513,0 11,-4.9249 11,-11 0,-6.0751 -4.92487,-11 -11,-11 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7466-7-6-5-8-4-8-0-7-7-5-7-0-5-2-3-7-0-9-3-2-4-4-8);enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
     <g
        style="display:inline"
        id="g3611-2-5-8-3-7-5-7-4-5-7-7-3-9-2-7-6-2-9-9-6-6-4"
-       transform="matrix(0.8660254,-0.5,0.5,0.8660254,90.145957,656.32627)">
+       transform="matrix(0.8660254,-0.5,0.5,0.8660254,89.670757,655.78863)">
       <path
          sodipodi:type="arc"
          style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -5846,42 +5845,16 @@
          sodipodi:role="line">context-menu</tspan></text>
   </g>
   <g
-     style="display:inline"
+     style="display:inline;opacity:1"
      inkscape:groupmode="layer"
      inkscape:label="Web Slicer"
      id="webslicer-layer">
     <rect
-       height="41"
-       width="41"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
        y="20"
-       x="20"
-       id="default"
-       style="opacity:0.5;fill:#ff0000">
-      <desc
-         id="desc13907">format: png
-dpi: 90
-layout-disposition: bg-el-norepeat
-layout-position-anchor: tl</desc>
-    </rect>
-    <rect
-       style="opacity:0.5;fill:#ff0000"
-       id="right_ptr"
-       x="120"
-       y="20"
-       width="41"
-       height="41">
-      <desc
-         id="desc14716">format: png
-dpi: 90
-layout-disposition: bg-el-norepeat
-layout-position-anchor: tl</desc>
-    </rect>
-    <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
-       y="20"
-       x="70"
+       x="74"
        id="center_ptr">
       <desc
          id="desc16344">format: png
@@ -5890,12 +5863,51 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       height="32"
+       width="32"
+       y="391"
+       x="30"
+       id="progress-01"
+       style="opacity:0.50000000000000000;fill:#ff0000">
+      <desc
+         id="desc60995">format: png
+dpi: 90
+layout-disposition: bg-el-norepeat
+layout-position-anchor: tl</desc>
+    </rect>
+    <rect
+       height="32"
+       width="32"
+       y="20"
+       x="20"
+       id="default"
+       style="opacity:0.50000000000000000;fill:#ff0000">
+      <desc
+         id="desc13907">format: png
+dpi: 90
+layout-disposition: bg-el-norepeat
+layout-position-anchor: tl</desc>
+    </rect>
+    <rect
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       id="right_ptr"
+       x="120"
+       y="20"
+       width="32"
+       height="32">
+      <desc
+         id="desc14716">format: png
+dpi: 90
+layout-disposition: bg-el-norepeat
+layout-position-anchor: tl</desc>
+    </rect>
+    <rect
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="help"
        x="170"
        y="20"
-       width="41"
-       height="41">
+       width="32"
+       height="32">
       <desc
          id="desc17371">format: png
 dpi: 90
@@ -5903,9 +5915,9 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
        y="20"
        x="220"
        id="copy">
@@ -5916,12 +5928,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="no-drop"
        x="270"
        y="20"
-       width="41"
-       height="41">
+       width="32"
+       height="32">
       <desc
          id="desc19435">format: png
 dpi: 90
@@ -5929,10 +5941,10 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
-       y="20"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="21"
        x="320"
        id="not-allowed">
       <desc
@@ -5942,12 +5954,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="all-scroll"
        x="370"
-       y="20"
-       width="41"
-       height="41">
+       y="21"
+       width="32"
+       height="32">
       <desc
          id="desc21509">format: png
 dpi: 90
@@ -5955,11 +5967,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
        y="70"
-       x="20"
+       x="24"
        id="pointer">
       <desc
          id="desc22606">format: png
@@ -5968,12 +5980,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="openhand"
-       x="70"
-       y="70"
-       width="41"
-       height="41">
+       x="76"
+       y="73"
+       width="32"
+       height="32">
       <desc
          id="desc23667">format: png
 dpi: 90
@@ -5981,11 +5993,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
-       y="70"
-       x="120"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="73"
+       x="126"
        id="dnd-move">
       <desc
          id="desc24732">format: png
@@ -5994,12 +6006,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="dnd-no-drop"
-       x="170"
-       y="70"
-       width="50"
-       height="41">
+       x="176"
+       y="73"
+       width="32"
+       height="32">
       <desc
          id="desc25801">format: png
 dpi: 90
@@ -6007,9 +6019,9 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
        y="70"
        x="220"
        id="alias">
@@ -6020,12 +6032,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="progress"
        x="270"
        y="70"
-       width="41"
-       height="41">
+       width="32"
+       height="32">
       <desc
          id="desc27951">format: png
 dpi: 90
@@ -6033,9 +6045,9 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
        y="70"
        x="320"
        id="wait">
@@ -6046,12 +6058,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="context-menu"
        x="370"
        y="70"
-       width="41"
-       height="41">
+       width="32"
+       height="32">
       <desc
          id="desc30117">format: png
 dpi: 90
@@ -6059,12 +6071,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="120"
-       x="320"
+       height="32"
+       width="32"
+       y="125"
+       x="324"
        id="wayland-cursor"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc31206">format: png
 dpi: 90
@@ -6073,11 +6085,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="x-cursor"
-       x="270"
-       y="120"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="274"
+       y="125"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc32299">format: png
 dpi: 90
@@ -6085,12 +6097,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="120"
-       x="220"
+       height="32"
+       width="32"
+       y="125"
+       x="225"
        id="zoom-out"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc33396">format: png
 dpi: 90
@@ -6099,11 +6111,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="zoom-in"
-       x="170"
-       y="120"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="175"
+       y="125"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc34497">format: png
 dpi: 90
@@ -6111,12 +6123,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="120"
-       x="120"
+       height="32"
+       width="32"
+       y="127"
+       x="122"
        id="color-picker"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc35602">format: png
 dpi: 90
@@ -6125,11 +6137,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="pencil"
-       x="70"
-       y="120"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="72"
+       y="127"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc36711">format: png
 dpi: 90
@@ -6137,12 +6149,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="120"
-       x="20"
+       height="32"
+       width="32"
+       y="127"
+       x="22"
        id="draft"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc37824">format: png
 dpi: 90
@@ -6150,12 +6162,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="pirate"
-       x="320"
-       y="170"
-       width="41"
-       height="41">
+       x="325"
+       y="175"
+       width="32"
+       height="32">
       <desc
          id="desc38941">format: png
 dpi: 90
@@ -6163,11 +6175,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
-       y="170"
-       x="270"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="175"
+       x="279"
        id="right-arrow">
       <desc
          id="desc40062">format: png
@@ -6176,12 +6188,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="left-arrow"
        x="220"
-       y="170"
-       width="41"
-       height="41">
+       y="175"
+       width="32"
+       height="32">
       <desc
          id="desc41187">format: png
 dpi: 90
@@ -6189,11 +6201,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
        y="170"
-       x="170"
+       x="174"
        id="down-arrow">
       <desc
          id="desc42316">format: png
@@ -6202,12 +6214,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="up-arrow"
-       x="120"
+       x="125"
        y="170"
-       width="41"
-       height="41">
+       width="32"
+       height="32">
       <desc
          id="desc43449">format: png
 dpi: 90
@@ -6215,11 +6227,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="41"
-       width="41"
-       y="170"
-       x="70"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="175"
+       x="74"
        id="vertical-text">
       <desc
          id="desc44586">format: png
@@ -6228,12 +6240,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="text"
-       x="20"
-       y="170"
-       width="41"
-       height="41">
+       x="24"
+       y="175"
+       width="32"
+       height="32">
       <desc
          id="desc45727">format: png
 dpi: 90
@@ -6241,12 +6253,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="220"
-       x="320"
+       height="32"
+       width="32"
+       y="225"
+       x="325"
        id="crosshair"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc46872">format: png
 dpi: 90
@@ -6255,11 +6267,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="cell"
-       x="270"
-       y="220"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="275"
+       y="225"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc48021">format: png
 dpi: 90
@@ -6267,12 +6279,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="220"
-       x="220"
+       height="32"
+       width="32"
+       y="225"
+       x="225"
        id="fleur"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc49174">format: png
 dpi: 90
@@ -6281,11 +6293,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="size_fdiag"
-       x="170"
-       y="220"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="174"
+       y="225"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc50331">format: png
 dpi: 90
@@ -6293,12 +6305,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="220"
-       x="120"
+       height="32"
+       width="32"
+       y="225"
+       x="124"
        id="size_bdiag"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc51492">format: png
 dpi: 90
@@ -6307,11 +6319,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="size_hor"
-       x="70"
-       y="220"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="74"
+       y="225"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc52657">format: png
 dpi: 90
@@ -6319,12 +6331,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="220"
-       x="20"
+       height="32"
+       width="32"
+       y="225"
+       x="24"
        id="size_ver"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc53826">format: png
 dpi: 90
@@ -6333,11 +6345,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="right_side"
-       x="270"
-       y="270"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="279"
+       y="275"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc54999">format: png
 dpi: 90
@@ -6345,12 +6357,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="270"
+       height="32"
+       width="32"
+       y="275"
        x="220"
        id="left_side"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc56176">format: png
 dpi: 90
@@ -6359,11 +6371,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="bottom_side"
-       x="170"
-       y="270"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="174"
+       y="279"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc57357">format: png
 dpi: 90
@@ -6371,12 +6383,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
+       height="32"
+       width="32"
        y="270"
-       x="120"
+       x="124"
        id="top_side"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc58542">format: png
 dpi: 90
@@ -6385,11 +6397,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="row-resize"
-       x="20"
-       y="270"
-       width="41"
-       height="41"
-       style="opacity:0.5;fill:#ff0000">
+       x="24"
+       y="275"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc59731">format: png
 dpi: 90
@@ -6397,12 +6409,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="41"
-       width="41"
-       y="270"
-       x="70"
+       height="32"
+       width="32"
+       y="275"
+       x="74"
        id="col-resize"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc60924">format: png
 dpi: 90
@@ -6410,12 +6422,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="wait-01"
-       x="30"
-       y="351"
-       width="40"
-       height="40">
+       x="34"
+       y="355"
+       width="32"
+       height="32">
       <desc
          id="desc6830">format: png
 dpi: 90
@@ -6423,11 +6435,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="40"
-       width="40"
-       y="351"
-       x="70"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="355"
+       x="74"
        id="wait-02">
       <desc
          id="desc8951">format: png
@@ -6436,12 +6448,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="wait-03"
-       x="110"
-       y="351"
-       width="40"
-       height="40">
+       x="114"
+       y="355"
+       width="32"
+       height="32">
       <desc
          id="desc11076">format: png
 dpi: 90
@@ -6449,11 +6461,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="40"
-       width="40"
-       y="351"
-       x="150"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="355"
+       x="154"
        id="wait-04">
       <desc
          id="desc13205">format: png
@@ -6462,12 +6474,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="wait-05"
-       x="190"
-       y="351"
-       width="40"
-       height="40">
+       x="194"
+       y="355"
+       width="32"
+       height="32">
       <desc
          id="desc15338">format: png
 dpi: 90
@@ -6475,11 +6487,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="40"
-       width="40"
-       y="351"
-       x="230"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="355"
+       x="234"
        id="wait-06">
       <desc
          id="desc17475">format: png
@@ -6488,12 +6500,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="wait-07"
-       x="270"
-       y="351"
-       width="40"
-       height="40">
+       x="274"
+       y="355"
+       width="32"
+       height="32">
       <desc
          id="desc19616">format: png
 dpi: 90
@@ -6501,11 +6513,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="40"
-       width="40"
-       y="351"
-       x="310"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="355"
+       x="314"
        id="wait-08">
       <desc
          id="desc21761">format: png
@@ -6514,12 +6526,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
+       style="opacity:0.50000000000000000;fill:#ff0000"
        id="wait-09"
-       x="350"
-       y="351"
-       width="40"
-       height="40">
+       x="354"
+       y="355"
+       width="32"
+       height="32">
       <desc
          id="desc23910">format: png
 dpi: 90
@@ -6527,11 +6539,11 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.5;fill:#ff0000"
-       height="40"
-       width="40"
-       y="351"
-       x="390"
+       style="opacity:0.50000000000000000;fill:#ff0000"
+       height="32"
+       width="32"
+       y="355"
+       x="394"
        id="wait-10">
       <desc
          id="desc26063">format: png
@@ -6540,12 +6552,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="430"
+       height="32"
+       width="32"
+       y="355"
+       x="434"
        id="wait-11"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc30379">format: png
 dpi: 90
@@ -6554,11 +6566,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="wait-12"
-       x="470"
-       y="351"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       x="474"
+       y="355"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc32540">format: png
 dpi: 90
@@ -6566,12 +6578,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="510"
+       height="32"
+       width="32"
+       y="355"
+       x="514"
        id="wait-13"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc34705">format: png
 dpi: 90
@@ -6580,11 +6592,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="wait-14"
-       x="550"
-       y="351"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       x="554"
+       y="355"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc36874">format: png
 dpi: 90
@@ -6592,12 +6604,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="590"
+       height="32"
+       width="32"
+       y="355"
+       x="594"
        id="wait-15"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc39047">format: png
 dpi: 90
@@ -6606,11 +6618,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="wait-16"
-       x="630"
-       y="351"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       x="634"
+       y="355"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc41224">format: png
 dpi: 90
@@ -6618,12 +6630,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="670"
+       height="32"
+       width="32"
+       y="355"
+       x="674"
        id="wait-17"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc43405">format: png
 dpi: 90
@@ -6632,11 +6644,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="wait-18"
-       x="710"
-       y="351"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       x="714"
+       y="355"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc45590">format: png
 dpi: 90
@@ -6644,12 +6656,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="750"
+       height="32"
+       width="32"
+       y="355"
+       x="754"
        id="wait-19"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc47779">format: png
 dpi: 90
@@ -6658,11 +6670,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="wait-20"
-       x="790"
-       y="351"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       x="794"
+       y="355"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc49972">format: png
 dpi: 90
@@ -6670,12 +6682,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="830"
+       height="32"
+       width="32"
+       y="355"
+       x="834"
        id="wait-21"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc52169">format: png
 dpi: 90
@@ -6684,11 +6696,11 @@ layout-position-anchor: tl</desc>
     </rect>
     <rect
        id="wait-22"
-       x="870"
-       y="351"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       x="874"
+       y="355"
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc54370">format: png
 dpi: 90
@@ -6696,27 +6708,14 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
-       y="351"
-       x="910"
+       height="32"
+       width="32"
+       y="355"
+       x="914"
        id="wait-23"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc56575">format: png
-dpi: 90
-layout-disposition: bg-el-norepeat
-layout-position-anchor: tl</desc>
-    </rect>
-    <rect
-       height="40"
-       width="40"
-       y="391"
-       x="30"
-       id="progress-01"
-       style="opacity:0.5;fill:#ff0000">
-      <desc
-         id="desc60995">format: png
 dpi: 90
 layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
@@ -6725,9 +6724,9 @@ layout-position-anchor: tl</desc>
        id="progress-02"
        x="70"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc63208">format: png
 dpi: 90
@@ -6735,12 +6734,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="110"
        id="progress-03"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc65425">format: png
 dpi: 90
@@ -6751,9 +6750,9 @@ layout-position-anchor: tl</desc>
        id="progress-04"
        x="150"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc67646">format: png
 dpi: 90
@@ -6761,12 +6760,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="190"
        id="progress-05"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc69871">format: png
 dpi: 90
@@ -6777,9 +6776,9 @@ layout-position-anchor: tl</desc>
        id="progress-06"
        x="230"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc72100">format: png
 dpi: 90
@@ -6787,12 +6786,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="270"
        id="progress-07"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc74333">format: png
 dpi: 90
@@ -6803,9 +6802,9 @@ layout-position-anchor: tl</desc>
        id="progress-08"
        x="310"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc76570">format: png
 dpi: 90
@@ -6813,12 +6812,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="350"
        id="progress-09"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc78811">format: png
 dpi: 90
@@ -6829,9 +6828,9 @@ layout-position-anchor: tl</desc>
        id="progress-10"
        x="390"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc81056">format: png
 dpi: 90
@@ -6839,12 +6838,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="430"
        id="progress-11"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc83305">format: png
 dpi: 90
@@ -6855,9 +6854,9 @@ layout-position-anchor: tl</desc>
        id="progress-12"
        x="470"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc85558">format: png
 dpi: 90
@@ -6865,12 +6864,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="510"
        id="progress-13"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc87815">format: png
 dpi: 90
@@ -6881,9 +6880,9 @@ layout-position-anchor: tl</desc>
        id="progress-14"
        x="550"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc90076">format: png
 dpi: 90
@@ -6891,12 +6890,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="590"
        id="progress-15"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc92341">format: png
 dpi: 90
@@ -6907,9 +6906,9 @@ layout-position-anchor: tl</desc>
        id="progress-16"
        x="630"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc94610">format: png
 dpi: 90
@@ -6917,12 +6916,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="670"
        id="progress-17"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc96883">format: png
 dpi: 90
@@ -6933,9 +6932,9 @@ layout-position-anchor: tl</desc>
        id="progress-18"
        x="710"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc99160">format: png
 dpi: 90
@@ -6943,12 +6942,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="750"
        id="progress-19"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc101441">format: png
 dpi: 90
@@ -6959,9 +6958,9 @@ layout-position-anchor: tl</desc>
        id="progress-20"
        x="790"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc103726">format: png
 dpi: 90
@@ -6969,12 +6968,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="830"
        id="progress-21"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc106015">format: png
 dpi: 90
@@ -6985,9 +6984,9 @@ layout-position-anchor: tl</desc>
        id="progress-22"
        x="870"
        y="391"
-       width="40"
-       height="40"
-       style="opacity:0.5;fill:#ff0000">
+       width="32"
+       height="32"
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc108308">format: png
 dpi: 90
@@ -6995,12 +6994,12 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       height="40"
-       width="40"
+       height="32"
+       width="32"
        y="391"
        x="910"
        id="progress-23"
-       style="opacity:0.5;fill:#ff0000">
+       style="opacity:0.50000000000000000;fill:#ff0000">
       <desc
          id="desc110605">format: png
 dpi: 90
