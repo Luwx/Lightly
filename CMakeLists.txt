@@ -13,6 +13,9 @@ include(KDECompilerSettings)
 include(GenerateExportHeader)
 
 add_subdirectory(cursors)
+add_subdirectory(windec)
+add_subdirectory(widgetstyles)
 
+INSTALL(FILES colors/Breeze.colors DESTINATION ${DATA_INSTALL_DIR}/color-schemes/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
