@@ -24,15 +24,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="300.2329"
-     inkscape:cy="220.36322"
+     inkscape:cx="329.22405"
+     inkscape:cy="271.09466"
      inkscape:document-units="px"
      inkscape:current-layer="svg11024"
      showgrid="true"
      showborder="true"
      inkscape:snap-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1024"
+     inkscape:window-width="1676"
+     inkscape:window-height="992"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0">
@@ -5845,12 +5845,12 @@
          sodipodi:role="line">context-menu</tspan></text>
   </g>
   <g
-     style="display:inline;opacity:1"
+     style="display:none"
      inkscape:groupmode="layer"
      inkscape:label="Web Slicer"
      id="webslicer-layer">
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="20"
@@ -5868,7 +5868,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="30"
        id="progress-01"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc60995">format: png
 dpi: 90
@@ -5881,7 +5881,7 @@ layout-position-anchor: tl</desc>
        y="20"
        x="20"
        id="default"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc13907">format: png
 dpi: 90
@@ -5889,7 +5889,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="right_ptr"
        x="120"
        y="20"
@@ -5902,7 +5902,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="help"
        x="170"
        y="20"
@@ -5915,7 +5915,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="20"
@@ -5928,7 +5928,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="no-drop"
        x="270"
        y="20"
@@ -5941,7 +5941,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="21"
@@ -5954,7 +5954,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="all-scroll"
        x="370"
        y="21"
@@ -5967,7 +5967,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="70"
@@ -5980,7 +5980,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="openhand"
        x="76"
        y="73"
@@ -5993,7 +5993,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="73"
@@ -6006,7 +6006,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="dnd-no-drop"
        x="176"
        y="73"
@@ -6019,7 +6019,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="70"
@@ -6032,7 +6032,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="progress"
        x="270"
        y="70"
@@ -6045,7 +6045,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="70"
@@ -6058,7 +6058,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="context-menu"
        x="370"
        y="70"
@@ -6076,7 +6076,7 @@ layout-position-anchor: tl</desc>
        y="125"
        x="324"
        id="wayland-cursor"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc31206">format: png
 dpi: 90
@@ -6089,7 +6089,7 @@ layout-position-anchor: tl</desc>
        y="125"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc32299">format: png
 dpi: 90
@@ -6102,7 +6102,7 @@ layout-position-anchor: tl</desc>
        y="125"
        x="225"
        id="zoom-out"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc33396">format: png
 dpi: 90
@@ -6115,7 +6115,7 @@ layout-position-anchor: tl</desc>
        y="125"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc34497">format: png
 dpi: 90
@@ -6128,7 +6128,7 @@ layout-position-anchor: tl</desc>
        y="127"
        x="122"
        id="color-picker"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc35602">format: png
 dpi: 90
@@ -6141,7 +6141,7 @@ layout-position-anchor: tl</desc>
        y="127"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc36711">format: png
 dpi: 90
@@ -6154,7 +6154,7 @@ layout-position-anchor: tl</desc>
        y="127"
        x="22"
        id="draft"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc37824">format: png
 dpi: 90
@@ -6162,7 +6162,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="pirate"
        x="325"
        y="175"
@@ -6175,7 +6175,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="175"
@@ -6188,7 +6188,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="left-arrow"
        x="220"
        y="175"
@@ -6201,7 +6201,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="170"
@@ -6214,7 +6214,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="up-arrow"
        x="125"
        y="170"
@@ -6227,7 +6227,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="175"
@@ -6240,7 +6240,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="text"
        x="24"
        y="175"
@@ -6258,7 +6258,7 @@ layout-position-anchor: tl</desc>
        y="225"
        x="325"
        id="crosshair"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc46872">format: png
 dpi: 90
@@ -6271,7 +6271,7 @@ layout-position-anchor: tl</desc>
        y="225"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc48021">format: png
 dpi: 90
@@ -6284,7 +6284,7 @@ layout-position-anchor: tl</desc>
        y="225"
        x="225"
        id="fleur"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc49174">format: png
 dpi: 90
@@ -6297,7 +6297,7 @@ layout-position-anchor: tl</desc>
        y="225"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc50331">format: png
 dpi: 90
@@ -6310,7 +6310,7 @@ layout-position-anchor: tl</desc>
        y="225"
        x="124"
        id="size_bdiag"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc51492">format: png
 dpi: 90
@@ -6323,7 +6323,7 @@ layout-position-anchor: tl</desc>
        y="225"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc52657">format: png
 dpi: 90
@@ -6336,7 +6336,7 @@ layout-position-anchor: tl</desc>
        y="225"
        x="24"
        id="size_ver"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc53826">format: png
 dpi: 90
@@ -6349,7 +6349,7 @@ layout-position-anchor: tl</desc>
        y="275"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc54999">format: png
 dpi: 90
@@ -6362,7 +6362,7 @@ layout-position-anchor: tl</desc>
        y="275"
        x="220"
        id="left_side"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc56176">format: png
 dpi: 90
@@ -6375,7 +6375,7 @@ layout-position-anchor: tl</desc>
        y="279"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc57357">format: png
 dpi: 90
@@ -6388,7 +6388,7 @@ layout-position-anchor: tl</desc>
        y="270"
        x="124"
        id="top_side"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc58542">format: png
 dpi: 90
@@ -6401,7 +6401,7 @@ layout-position-anchor: tl</desc>
        y="275"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc59731">format: png
 dpi: 90
@@ -6414,7 +6414,7 @@ layout-position-anchor: tl</desc>
        y="275"
        x="74"
        id="col-resize"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc60924">format: png
 dpi: 90
@@ -6422,7 +6422,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="wait-01"
        x="34"
        y="355"
@@ -6435,7 +6435,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="355"
@@ -6448,7 +6448,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="wait-03"
        x="114"
        y="355"
@@ -6461,7 +6461,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="355"
@@ -6474,7 +6474,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="wait-05"
        x="194"
        y="355"
@@ -6487,7 +6487,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="355"
@@ -6500,7 +6500,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="wait-07"
        x="274"
        y="355"
@@ -6513,7 +6513,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="355"
@@ -6526,7 +6526,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        id="wait-09"
        x="354"
        y="355"
@@ -6539,7 +6539,7 @@ layout-disposition: bg-el-norepeat
 layout-position-anchor: tl</desc>
     </rect>
     <rect
-       style="opacity:0.50000000000000000;fill:#ff0000"
+       style="opacity:0.5;fill:#ff0000"
        height="32"
        width="32"
        y="355"
@@ -6557,7 +6557,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="434"
        id="wait-11"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc30379">format: png
 dpi: 90
@@ -6570,7 +6570,7 @@ layout-position-anchor: tl</desc>
        y="355"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc32540">format: png
 dpi: 90
@@ -6583,7 +6583,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="514"
        id="wait-13"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc34705">format: png
 dpi: 90
@@ -6596,7 +6596,7 @@ layout-position-anchor: tl</desc>
        y="355"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc36874">format: png
 dpi: 90
@@ -6609,7 +6609,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="594"
        id="wait-15"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc39047">format: png
 dpi: 90
@@ -6622,7 +6622,7 @@ layout-position-anchor: tl</desc>
        y="355"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc41224">format: png
 dpi: 90
@@ -6635,7 +6635,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="674"
        id="wait-17"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc43405">format: png
 dpi: 90
@@ -6648,7 +6648,7 @@ layout-position-anchor: tl</desc>
        y="355"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc45590">format: png
 dpi: 90
@@ -6661,7 +6661,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="754"
        id="wait-19"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc47779">format: png
 dpi: 90
@@ -6674,7 +6674,7 @@ layout-position-anchor: tl</desc>
        y="355"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc49972">format: png
 dpi: 90
@@ -6687,7 +6687,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="834"
        id="wait-21"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc52169">format: png
 dpi: 90
@@ -6700,7 +6700,7 @@ layout-position-anchor: tl</desc>
        y="355"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc54370">format: png
 dpi: 90
@@ -6713,7 +6713,7 @@ layout-position-anchor: tl</desc>
        y="355"
        x="914"
        id="wait-23"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc56575">format: png
 dpi: 90
@@ -6726,7 +6726,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc63208">format: png
 dpi: 90
@@ -6739,7 +6739,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="110"
        id="progress-03"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc65425">format: png
 dpi: 90
@@ -6752,7 +6752,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc67646">format: png
 dpi: 90
@@ -6765,7 +6765,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="190"
        id="progress-05"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc69871">format: png
 dpi: 90
@@ -6778,7 +6778,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc72100">format: png
 dpi: 90
@@ -6791,7 +6791,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="270"
        id="progress-07"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc74333">format: png
 dpi: 90
@@ -6804,7 +6804,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc76570">format: png
 dpi: 90
@@ -6817,7 +6817,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="350"
        id="progress-09"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc78811">format: png
 dpi: 90
@@ -6830,7 +6830,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc81056">format: png
 dpi: 90
@@ -6843,7 +6843,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="430"
        id="progress-11"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc83305">format: png
 dpi: 90
@@ -6856,7 +6856,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc85558">format: png
 dpi: 90
@@ -6869,7 +6869,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="510"
        id="progress-13"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc87815">format: png
 dpi: 90
@@ -6882,7 +6882,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc90076">format: png
 dpi: 90
@@ -6895,7 +6895,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="590"
        id="progress-15"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc92341">format: png
 dpi: 90
@@ -6908,7 +6908,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc94610">format: png
 dpi: 90
@@ -6921,7 +6921,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="670"
        id="progress-17"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc96883">format: png
 dpi: 90
@@ -6934,7 +6934,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc99160">format: png
 dpi: 90
@@ -6947,7 +6947,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="750"
        id="progress-19"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc101441">format: png
 dpi: 90
@@ -6960,7 +6960,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc103726">format: png
 dpi: 90
@@ -6973,7 +6973,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="830"
        id="progress-21"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc106015">format: png
 dpi: 90
@@ -6986,7 +6986,7 @@ layout-position-anchor: tl</desc>
        y="391"
        width="32"
        height="32"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc108308">format: png
 dpi: 90
@@ -6999,7 +6999,7 @@ layout-position-anchor: tl</desc>
        y="391"
        x="910"
        id="progress-23"
-       style="opacity:0.50000000000000000;fill:#ff0000">
+       style="opacity:0.5;fill:#ff0000">
       <desc
          id="desc110605">format: png
 dpi: 90
