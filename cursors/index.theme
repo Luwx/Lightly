@@ -2,6 +2,7 @@
 Name=Breeze
 Name[ca]=Brisa
 Name[de]=Breeze
+Name[en_GB]=Breeze
 Name[es]=Brisa
 Name[fi]=Breeze
 Name[gl]=Breeze
@@ -25,6 +26,7 @@ Name[zh_CN]=微风
 Comment=KDE Plasma Cursor Theme
 Comment[ca]=Tema de cursor pel Plasma del KDE
 Comment[de]=Plasma-Zeigerdesign für KDE
+Comment[en_GB]=KDE Plasma Cursor Theme
 Comment[es]=Tema de cursores de KDE Plasma
 Comment[fi]=KDE Plasman osoitinteema
 Comment[gl]=Tema do cursor de Plasma de KDE
