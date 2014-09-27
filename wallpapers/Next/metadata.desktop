@@ -2,7 +2,6 @@
 Name=Next
 Name[ca]=Next
 Name[cs]=Následující
-Name[da]=Next
 Name[de]=Next
 Name[en_GB]=Next
 Name[es]=Next
@@ -29,7 +28,6 @@ Name[sv]=Next
 Name[uk]=Next
 Name[x-test]=xxNextxx
 Name[zh_CN]=Next
-Name[zh_TW]=下一個
 
 X-KDE-PluginInfo-Name=Next
 X-KDE-PluginInfo-Author=Nuno Pinheiro
