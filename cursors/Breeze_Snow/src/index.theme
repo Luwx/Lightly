@@ -1,6 +1,12 @@
 [Icon Theme]
 Name=Breeze Snow
+Name[nl]=Breeze-sneeuw
+Name[pt_BR]=Breeze Snow
+Name[sk]=Breeze sneh
+Name[uk]=Breeze Snow
+Name[x-test]=xxBreeze Snowxx
 Comment=KDE Plasma Cursor Theme
+Comment[ar]=سمة مؤشّر بلازما كدي
 Comment[ca]=Tema de cursor del Plasma pel KDE
 Comment[cs]=Motiv kurzorů Plasma KDE
 Comment[da]=Markørtema til KDE Plasma
