@@ -41,10 +41,12 @@ echo -e "Checking Requirements... DONE"
 
 echo -ne "Making Folders... $BASENAME\\r"
 DIR2X="build/x2"
+DIR1_5X="build/x1_5"
 DIR1X="build/x1"
 OUTPUT="$(grep --only-matching --perl-regex "(?<=Name\=).*$" $INDEX)"
 OUTPUT=${OUTPUT// /_}
 mkdir -p "$DIR2X"
+mkdir -p "$DIR1_5X"
 mkdir -p "$DIR1X"
 mkdir -p "$OUTPUT/cursors"
 echo 'Making Folders... DONE';
@@ -60,6 +62,10 @@ for CUR in src/config/*.cursor; do
 
 	if [ "$DIR1X/$BASENAME.png" -ot $RAWSVG ] ; then
 		inkscape -i $BASENAME -d 90  -f $RAWSVG -e "$DIR1X/$BASENAME.png" > /dev/null
+	fi
+
+	if [ "$DIR1_5X/$BASENAME.png" -ot $RAWSVG ] ; then
+		inkscape -i $BASENAME -d 135 -f $RAWSVG -e "$DIR1_5X/$BASENAME.png" > /dev/null
 	fi
 
 	if [ "$DIR2X/$BASENAME.png" -ot $RAWSVG ] ; then
@@ -78,12 +84,20 @@ do
 		inkscape -i progress-$i -d 90  -f $RAWSVG -e "$DIR1X/progress-$i.png" > /dev/null
 	fi
 
+    if [ "$DIR1_5X/progress-$i.png" -ot $RAWSVG ] ; then
+        inkscape -i progress-$i -d 135 -f $RAWSVG -e "$DIR1_5X/progress-$i.png" > /dev/null
+	fi
+
 	if [ "$DIR2X/progress-$i.png" -ot $RAWSVG ] ; then
 		inkscape -i progress-$i -d 180 -f $RAWSVG -e "$DIR2X/progress-$i.png" > /dev/null
 	fi
 
 	if [ "$DIR1X/wait-$i.png" -ot $RAWSVG ] ; then
 		inkscape -i wait-$i -d 90  -f $RAWSVG -e "$DIR1X/wait-$i.png" > /dev/null
+	fi
+
+	if [ "$DIR1_5X/wait-$i.png" -ot $RAWSVG ] ; then
+		inkscape -i wait-$i -d 135  -f $RAWSVG -e "$DIR1_5X/wait-$i.png" > /dev/null
 	fi
 
 	if [ "$DIR2X/wait-$i.png" -ot $RAWSVG ] ; then

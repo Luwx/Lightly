@@ -48,7 +48,7 @@ left_ptr_watch progress
 left_side left-arrow
 link alias
 move dnd-move
-n-resize size-size_ver
+n-resize size_ver
 no-drop not-allowed
 plus cell
 pointing_hand pointer
@@ -62,6 +62,7 @@ sb_v_double_arrow size_ver
 size_all fleur
 split_h col-resize
 split_v row-resize
+top_left_arrow default
 top_left_corner size_fdiag
 top_right_corner size_bdiag
 top_side up-arrow
