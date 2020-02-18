@@ -37,6 +37,8 @@ draft pencil
 e-resize size_hor
 ew-resize size_hor
 forbidden no-drop
+grab openhand
+grabbing closedhand
 h_double_arrow size_hor
 half-busy progress
 hand1 pointer
