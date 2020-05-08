@@ -1,5 +1,12 @@
 [Desktop Entry]
 Name=Flow
+Name[ca]=Flow
+Name[et]=Flow
+Name[nl]=Flow
+Name[pt]=Fluxo
+Name[sv]=Flow
+Name[uk]=Потік
+Name[x-test]=xxFlowxx
 
 X-KDE-PluginInfo-Name=Next
 X-KDE-PluginInfo-Author=Sandra Smukaste
