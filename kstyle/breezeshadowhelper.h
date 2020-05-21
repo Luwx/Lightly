@@ -111,7 +111,10 @@ namespace Breeze
         protected Q_SLOTS:
 
         //* unregister widget
-        void objectDeleted( QObject* );
+        void widgetDeleted( QObject* );
+
+        //* unregister window
+        void windowDeleted( QObject* );
 
         protected:
 
@@ -154,7 +157,7 @@ namespace Breeze
         QSet<QWidget*> _widgets;
 
         //* managed shadows
-        QMap<QWidget*, KWindowShadow*> _shadows;
+        QMap<QWindow*, KWindowShadow*> _shadows;
 
         //* tileset
         TileSet _shadowTiles;

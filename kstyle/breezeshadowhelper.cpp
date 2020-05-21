@@ -132,7 +132,7 @@ namespace Breeze
         widget->installEventFilter( this );
 
         // connect destroy signal
-        connect( widget, &QObject::destroyed, this, &ShadowHelper::objectDeleted );
+        connect( widget, &QObject::destroyed, this, &ShadowHelper::widgetDeleted );
 
         return true;
 
@@ -278,12 +278,17 @@ namespace Breeze
 
 
     //_______________________________________________________
-    void ShadowHelper::objectDeleted( QObject* object )
+    void ShadowHelper::widgetDeleted( QObject* object )
     {
         QWidget* widget( static_cast<QWidget*>( object ) );
         _widgets.remove( widget );
-        _shadows.remove( widget );
+    }
 
+    //_______________________________________________________
+    void ShadowHelper::windowDeleted( QObject* object )
+    {
+        QWindow* window( static_cast<QWindow*>( object ) );
+        _shadows.remove( window );
     }
 
     //_______________________________________________________
@@ -381,11 +386,20 @@ namespace Breeze
         const QVector<KWindowShadowTile::Ptr>& tiles = createShadowTiles();
         if( tiles.count() != numTiles ) return;
 
+        // get the underlying window for the widget
+        QWindow* window = widget->windowHandle();
+
         // find a shadow associated with the widget
-        KWindowShadow*& shadow = _shadows[ widget ];
+        KWindowShadow*& shadow = _shadows[ window ];
 
         if( !shadow )
-        { shadow = new KWindowShadow( widget ); }
+        {
+            // if there is no shadow yet, create one
+            shadow = new KWindowShadow( window );
+
+            // connect destroy signal
+            connect( window, &QWindow::destroyed, this, &ShadowHelper::windowDeleted );
+        }
 
         if( shadow->isCreated() )
         { shadow->destroy(); }
@@ -399,7 +413,7 @@ namespace Breeze
         shadow->setLeftTile( tiles[ 6 ] );
         shadow->setTopLeftTile( tiles[ 7 ] );
         shadow->setPadding( shadowMargins( widget ) );
-        shadow->setWindow( widget->windowHandle() );
+        shadow->setWindow( window );
         shadow->create();
     }
 
@@ -453,7 +467,7 @@ namespace Breeze
     //_______________________________________________________
     void ShadowHelper::uninstallShadows( QWidget* widget )
     {
-        delete _shadows.take( widget );
+        delete _shadows.take( widget->windowHandle() );
     }
 
 }
