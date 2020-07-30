@@ -1,4 +1,4 @@
-add_definitions(-DTRANSLATION_DOMAIN="breeze_kwin_deco")
+add_definitions(-DTRANSLATION_DOMAIN="lightly_kwin_deco")
 
 find_package(KF5 REQUIRED COMPONENTS CoreAddons GuiAddons ConfigWidgets WindowSystem I18n IconThemes)
 find_package(Qt5 CONFIG REQUIRED COMPONENTS DBus)
@@ -14,68 +14,68 @@ set_package_properties(XCB PROPERTIES
 
 if(UNIX AND NOT APPLE)
 
-  set(BREEZE_HAVE_X11 ${XCB_XCB_FOUND})
+  set(LIGHTLY_HAVE_X11 ${XCB_XCB_FOUND})
   if (XCB_XCB_FOUND)
     find_package(Qt5 REQUIRED CONFIG COMPONENTS X11Extras)
   endif()
 
 else()
 
-  set(BREEZE_HAVE_X11 FALSE)
+  set(LIGHTLY_HAVE_X11 FALSE)
 
 endif()
 
 ################# configuration #################
-configure_file(config-breeze.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-breeze.h )
+configure_file(config-lightly.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-lightly.h )
 
 ################# includes #################
-include_directories(${CMAKE_SOURCE_DIR}/libbreezecommon)
-include_directories(${CMAKE_BINARY_DIR}/libbreezecommon)
+include_directories(${CMAKE_SOURCE_DIR}/liblightlycommon)
+include_directories(${CMAKE_BINARY_DIR}/liblightlycommon)
 
 ################# newt target #################
 ### plugin classes
-set(breezedecoration_SRCS
-    breezebutton.cpp
-    breezedecoration.cpp
-    breezeexceptionlist.cpp
-    breezesettingsprovider.cpp
-    breezesizegrip.cpp)
+set(lightlydecoration_SRCS
+    lightlybutton.cpp
+    lightlydecoration.cpp
+    lightlyexceptionlist.cpp
+    lightlysettingsprovider.cpp
+    lightlysizegrip.cpp)
 
-kconfig_add_kcfg_files(breezedecoration_SRCS breezesettings.kcfgc)
+kconfig_add_kcfg_files(lightlydecoration_SRCS lightlysettings.kcfgc)
 
 ### config classes
 ### they are kept separately because they might move in a separate library in the future
-set(breezedecoration_config_SRCS
-    config/breezeconfigwidget.cpp
-    config/breezedetectwidget.cpp
-    config/breezeexceptiondialog.cpp
-    config/breezeexceptionlistwidget.cpp
-    config/breezeexceptionmodel.cpp
-    config/breezeitemmodel.cpp
+set(lightlydecoration_config_SRCS
+    config/lightlyconfigwidget.cpp
+    config/lightlydetectwidget.cpp
+    config/lightlyexceptiondialog.cpp
+    config/lightlyexceptionlistwidget.cpp
+    config/lightlyexceptionmodel.cpp
+    config/lightlyitemmodel.cpp
 )
 
-set(breezedecoration_config_PART_FORMS
-   config/ui/breezeconfigurationui.ui
-   config/ui/breezedetectwidget.ui
-   config/ui/breezeexceptiondialog.ui
-   config/ui/breezeexceptionlistwidget.ui
+set(lightlydecoration_config_PART_FORMS
+   config/ui/lightlyconfigurationui.ui
+   config/ui/lightlydetectwidget.ui
+   config/ui/lightlyexceptiondialog.ui
+   config/ui/lightlyexceptionlistwidget.ui
 )
 
-ki18n_wrap_ui(breezedecoration_config_PART_FORMS_HEADERS ${breezedecoration_config_PART_FORMS})
+ki18n_wrap_ui(lightlydecoration_config_PART_FORMS_HEADERS ${lightlydecoration_config_PART_FORMS})
 
 ### build library
-add_library(breezedecoration MODULE
-    ${breezedecoration_SRCS}
-    ${breezedecoration_config_SRCS}
-    ${breezedecoration_config_PART_FORMS_HEADERS})
+add_library(lightlydecoration MODULE
+    ${lightlydecoration_SRCS}
+    ${lightlydecoration_config_SRCS}
+    ${lightlydecoration_config_PART_FORMS_HEADERS})
 
-target_link_libraries(breezedecoration
+target_link_libraries(lightlydecoration
     PUBLIC
         Qt5::Core
         Qt5::Gui
         Qt5::DBus
     PRIVATE
-        breezecommon5
+        lightlycommon5
         KDecoration2::KDecoration
         KF5::ConfigCore
         KF5::CoreAddons
@@ -85,13 +85,13 @@ target_link_libraries(breezedecoration
         KF5::IconThemes
         KF5::WindowSystem)
 
-if(BREEZE_HAVE_X11)
-  target_link_libraries(breezedecoration
+if(LIGHTLY_HAVE_X11)
+  target_link_libraries(lightlydecoration
     PUBLIC
       Qt5::X11Extras
       XCB::XCB)
 endif()
 
 
-install(TARGETS breezedecoration DESTINATION ${PLUGIN_INSTALL_DIR}/org.kde.kdecoration2)
-install(FILES config/breezedecorationconfig.desktop DESTINATION  ${SERVICES_INSTALL_DIR})
+install(TARGETS lightlydecoration DESTINATION ${PLUGIN_INSTALL_DIR}/org.kde.kdecoration2)
+install(FILES config/lightlydecorationconfig.desktop DESTINATION  ${SERVICES_INSTALL_DIR})

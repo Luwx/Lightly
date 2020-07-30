@@ -1,1 +1,1 @@
-add_subdirectory(kde4breeze)
+add_subdirectory(kde4lightly)

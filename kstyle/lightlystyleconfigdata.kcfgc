@@ -1,0 +1,6 @@
+File=lightly.kcfg
+ClassName=StyleConfigData
+NameSpace=Lightly
+Singleton=true
+Mutators=true
+GlobalEnums=true

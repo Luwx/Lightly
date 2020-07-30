@@ -1,6 +1,0 @@
-File=breeze.kcfg
-ClassName=StyleConfigData
-NameSpace=Breeze
-Singleton=true
-Mutators=true
-GlobalEnums=true
