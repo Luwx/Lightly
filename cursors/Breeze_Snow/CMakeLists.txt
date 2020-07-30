@@ -1,1 +1,0 @@
-install(DIRECTORY Breeze_Snow DESTINATION ${ICON_INSTALL_DIR})

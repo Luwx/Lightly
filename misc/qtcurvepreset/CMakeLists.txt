@@ -1,2 +1,0 @@
-
-INSTALL(FILES Breeze.qtcurve DESTINATION ${DATA_INSTALL_DIR}/QtCurve/)
