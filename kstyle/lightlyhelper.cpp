@@ -475,7 +475,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderFrame(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const QPalette& palette, const QColor& outline ) const
+        const QColor& color, const QPalette& palette, const QColor& outline, const bool enabled ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -486,7 +486,8 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
         
         
-        renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius);
+        if( enabled ) renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius);
+        else renderRectShadow(painter, frameRect, 0, 3, 6, 0, 1, radius, true, 10);
 
         // set pen
         if( outline.isValid() )
@@ -615,6 +616,13 @@ namespace Lightly
     {
         painter->setPen( Qt::NoPen );
         
+        if ( outline ) { 
+            painter->setBrush( QColor( 0, 0, 0, outlineStrength ) );
+            painter -> drawRoundedRect( QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ), radius, radius );
+        }
+        
+        if ( size < 1 ) return;
+        
         // temporaty values
         int tx = rect.left() - size + xOffset;
         int ty = rect.top() - size + yOffset;
@@ -639,11 +647,6 @@ namespace Lightly
             tr--;
             alpha += strengh1 + alpha/strengh2;
         }
-        
-        if (outline) { 
-            painter->setBrush( QColor( 0, 0, 0, outlineStrength ) );
-            painter -> drawRoundedRect( QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ), radius, radius );
-        }
     }
     
     //______________________________________________________________________________
@@ -653,6 +656,13 @@ namespace Lightly
         const int xOffset, const int yOffset, const bool outline, const int outlineStrength ) const
     {
         painter->setPen( Qt::NoPen );
+        
+        if (outline) { 
+            painter->setBrush( QColor( 0, 0, 0, outlineStrength ) );
+            painter -> drawEllipse( QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ) );
+        }
+        
+        if ( size < 1 ) return;
         
         // temporaty values
         int tx = rect.left() - size + xOffset;
@@ -675,11 +685,6 @@ namespace Lightly
             tw -= 2;
             th -= 2;
             alpha += strengh1 + alpha/strengh2;
-        }
-        
-        if (outline) { 
-            painter->setBrush( QColor( 0, 0, 0, outlineStrength ) );
-            painter -> drawEllipse( QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ) );
         }
     }
 
@@ -922,19 +927,20 @@ namespace Lightly
         const QColor& color, const bool mouseOver ) const
     {
 
-        painter->setRenderHint( QPainter::Antialiasing );
+        painter->setRenderHint( QPainter::Antialiasing, true );
+        painter->setPen( Qt::NoPen );
+        
 
         QRectF frameRect( rect.adjusted( Metrics::Frame_FrameWidth, Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth ) );
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
 
         // draw shadow
-        renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius );
-        if (mouseOver) qDebug() << "hey";
-        else
+        //renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius );
+        /*if (mouseOver)*/ renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius );
 
         // set brush
         if( color.isValid() ) painter->setBrush( color );
-        else painter->setBrush( Qt::NoBrush );
+        else painter->setBrush( Qt::NoBrush ); 
 
         // render
         painter->drawRoundedRect( frameRect, radius, radius );

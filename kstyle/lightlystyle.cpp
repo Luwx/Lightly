@@ -3018,7 +3018,7 @@ namespace Lightly
 
             const auto background( isTitleWidget ? palette.color( widget->backgroundRole() ):QColor() );
             const auto outline( _helper->frameOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
-            _helper->renderFrame( painter, rect, background, palette, outline );
+            _helper->renderFrame( painter, rect, background, palette, outline, enabled );
 
         }
 
@@ -4751,7 +4751,7 @@ namespace Lightly
         if( showIcon && iconWidth > 0 )
         {
             iconRect = QRect( contentsRect.left(), contentsRect.top() + (contentsRect.height()-iconWidth)/2, iconWidth, iconWidth );
-            contentsRect.setLeft( iconRect.right() + Metrics::MenuItem_ItemSpacing + 1 );
+            contentsRect.setLeft( iconRect.right() + Metrics::MenuItem_ItemSpacing*2 );
             const QSize iconSize( pixelMetric( PM_SmallIconSize, option, widget ), pixelMetric( PM_SmallIconSize, option, widget ) );
             iconRect = centerRect( iconRect, iconSize );
         }

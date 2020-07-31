@@ -158,7 +158,7 @@ namespace Lightly
         void renderFocusLine( QPainter*, const QRect&, const QColor& ) const;
 
         //* generic frame
-        void renderFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const QColor& outline = QColor() ) const;
+        void renderFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const QColor& outline = QColor(), const bool enabled = true ) const;
 
         //* side panel frame
         void renderSidePanelFrame( QPainter*, const QRect&, const QColor& outline, Side ) const;
