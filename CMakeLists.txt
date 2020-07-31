@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(breeze)
+project(lightly)
 set(PROJECT_VERSION "5.19.4")
 set(PROJECT_VERSION_MAJOR 5)
 
@@ -20,27 +20,27 @@ include(KDEClangFormat)
 
 include(GtkUpdateIconCache)
 
-option(WITH_DECORATIONS "Build Breeze window decorations for KWin" ON)
+option(WITH_DECORATIONS "Build Lightly window decorations for KWin" ON)
 if(WITH_DECORATIONS)
     find_package(KDecoration2 REQUIRED)
     add_subdirectory(kdecoration)
 endif()
 
-add_subdirectory(libbreezecommon)
+add_subdirectory(liblightlycommon)
 add_subdirectory(kstyle)
 add_subdirectory(misc)
 
 
 include(ECMSetupVersion)
-ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX BREEZE
-                  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/BreezeConfigVersion.cmake"
+ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX LIGHTLY
+                  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfigVersion.cmake"
                   )
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
-set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/Breeze")
+set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/Lightly")
 
-ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/BreezeConfig.cmake.in"
-                                  "${CMAKE_CURRENT_BINARY_DIR}/BreezeConfig.cmake"
+ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/LightlyConfig.cmake.in"
+                                  "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
                                   PATH_VARS KDE_INSTALL_FULL_DATADIR
                                   INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
                                   )
@@ -49,8 +49,8 @@ ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/BreezeConfig.cmak
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 
-install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/BreezeConfig.cmake"
-               "${CMAKE_CURRENT_BINARY_DIR}/BreezeConfigVersion.cmake"
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfig.cmake"
+               "${CMAKE_CURRENT_BINARY_DIR}/LightlyConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel
         )
