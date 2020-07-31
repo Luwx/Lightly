@@ -44,16 +44,16 @@ namespace Lightly
     {
 
         // frames
-        Frame_FrameWidth = 2,
-        Frame_FrameRadius = 3,
+        Frame_FrameWidth = 5,
+        Frame_FrameRadius = 6,
 
         // layout
         Layout_TopLevelMarginWidth = 10,
         Layout_ChildMarginWidth = 6,
-        Layout_DefaultSpacing = 6,
+        Layout_DefaultSpacing = 10,
 
         // line editors
-        LineEdit_FrameWidth = 6,
+        LineEdit_FrameWidth = 6 + Frame_FrameWidth,
 
         // menu items
         Menu_FrameWidth = 0,
@@ -64,7 +64,7 @@ namespace Lightly
         MenuButton_IndicatorWidth = 20,
 
         // combobox
-        ComboBox_FrameWidth = 6,
+        ComboBox_FrameWidth = 6 + Frame_FrameWidth,
 
         // spinbox
         SpinBox_FrameWidth = LineEdit_FrameWidth,
@@ -84,7 +84,7 @@ namespace Lightly
         ToolButton_InlineIndicatorWidth = 12,
 
         // checkboxes and radio buttons
-        CheckBox_Size = 20,
+        CheckBox_Size = 18 + ( Frame_FrameWidth - 1 )*2,
         CheckBox_FocusMarginWidth = 2,
         CheckBox_ItemSpacing = 4,
 

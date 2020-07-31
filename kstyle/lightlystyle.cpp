@@ -44,6 +44,7 @@
 #include <QGraphicsView>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QMdiSubWindow>
 #include <QMenu>
@@ -53,6 +54,7 @@
 #include <QScrollBar>
 #include <QItemDelegate>
 #include <QSplitterHandle>
+#include <QTableView>
 #include <QTextEdit>
 #include <QToolBar>
 #include <QToolBox>
@@ -221,6 +223,7 @@ namespace Lightly
             || qobject_cast<QCheckBox*>( widget )
             || qobject_cast<QComboBox*>( widget )
             || qobject_cast<QDial*>( widget )
+            || qobject_cast<QGroupBox*>( widget ) /* why is it not working? */
             || qobject_cast<QLineEdit*>( widget )
             || qobject_cast<QPushButton*>( widget )
             || qobject_cast<QRadioButton*>( widget )
@@ -240,6 +243,9 @@ namespace Lightly
             widget->setAttribute( Qt::WA_TranslucentBackground );
             widget->clearMask();
         }
+        
+        //if ( qobject_cast<QToolBar*>( widget ) ) widget->window()->setAttribute( Qt::WA_TranslucentBackground );
+
 
         // scrollarea polishing is somewhat complex. It is moved to a dedicated method
         polishScrollArea( qobject_cast<QAbstractScrollArea*>( widget ) );
@@ -820,6 +826,7 @@ namespace Lightly
             case PE_PanelButtonTool: fcn = &Style::drawPanelButtonToolPrimitive; break;
             case PE_PanelScrollAreaCorner: fcn = &Style::drawPanelScrollAreaCornerPrimitive; break;
             case PE_PanelMenu: fcn = &Style::drawPanelMenuPrimitive; break;
+            case PE_PanelMenuBar: fcn = &Style::drawToolAreaControl; break;
             case PE_PanelTipLabel: fcn = &Style::drawPanelTipLabelPrimitive; break;
             case PE_PanelItemViewItem: fcn = &Style::drawPanelItemViewItemPrimitive; break;
             case PE_IndicatorCheckBox: fcn = &Style::drawIndicatorCheckBoxPrimitive; break;
@@ -882,10 +889,10 @@ namespace Lightly
             case CE_RadioButtonLabel: fcn = &Style::drawCheckBoxLabelControl; break;
             case CE_ToolButtonLabel: fcn = &Style::drawToolButtonLabelControl; break;
             case CE_ComboBoxLabel: fcn = &Style::drawComboBoxLabelControl; break;
-            case CE_MenuBarEmptyArea: fcn = &Style::emptyControl; break;
+            case CE_MenuBarEmptyArea: fcn = &Style::drawToolAreaControl; break;
             case CE_MenuBarItem: fcn = &Style::drawMenuBarItemControl; break;
             case CE_MenuItem: fcn = &Style::drawMenuItemControl; break;
-            case CE_ToolBar: fcn = &Style::emptyControl; break;
+            case CE_ToolBar: fcn = &Style::drawToolAreaControl; break;
             case CE_ProgressBar: fcn = &Style::drawProgressBarControl; break;
             case CE_ProgressBarContents: fcn = &Style::drawProgressBarContentsControl; break;
             case CE_ProgressBarGroove: fcn = &Style::drawProgressBarGrooveControl; break;
@@ -1185,7 +1192,7 @@ namespace Lightly
 
             } else if( StyleConfigData::dockWidgetDrawFrame() || (dockWidget->features()&QDockWidget::AllDockWidgetFeatures) ) {
 
-                _helper->renderFrame( &painter, rect, background, outline );
+                _helper->renderFrame( &painter, rect, background, palette, outline );
 
             }
 
@@ -2726,6 +2733,10 @@ namespace Lightly
                 // add checkbox indicator width
                 if( menuItemOption->menuHasCheckableItems )
                 { leftColumnWidth += Metrics::CheckBox_Size + Metrics::MenuItem_ItemSpacing; }
+                
+                 //add spacing when there is no icon or checkbox
+                if(menuItemOption->menuHasCheckableItems == false && showIconsInMenuItems() == false)
+                { leftColumnWidth += 4*Metrics::MenuItem_ItemSpacing; }
 
                 // add spacing for accelerator
                 /*
@@ -2739,7 +2750,7 @@ namespace Lightly
                 if( hasAccelerator ) size.rwidth() += Metrics::MenuItem_AcceleratorSpace;
 
                 // right column
-                const int rightColumnWidth = Metrics::MenuButton_IndicatorWidth + Metrics::MenuItem_ItemSpacing;
+                const int rightColumnWidth = Metrics::MenuButton_IndicatorWidth + Metrics::MenuItem_ItemSpacing*2;
                 size.rwidth() += leftColumnWidth + rightColumnWidth;
 
                 // make sure height is large enough for icon and arrow
@@ -2996,18 +3007,18 @@ namespace Lightly
 
         } else {
 
-            if( _frameShadowFactory->isRegistered( widget ) )
+            /*if( _frameShadowFactory->isRegistered( widget ) ) // WHAT does this do??
             {
 
                 // update frame shadow factory
                 _frameShadowFactory->updateShadowsGeometry( widget, rect );
                 _frameShadowFactory->updateState( widget, hasFocus, mouseOver, opacity, mode );
 
-            }
+            }*/
 
             const auto background( isTitleWidget ? palette.color( widget->backgroundRole() ):QColor() );
             const auto outline( _helper->frameOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
-            _helper->renderFrame( painter, rect, background, outline );
+            _helper->renderFrame( painter, rect, background, palette, outline );
 
         }
 
@@ -3046,13 +3057,13 @@ namespace Lightly
             _animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
 
             // retrieve animation mode and opacity
-            const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
-            const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
+            //const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
+            //const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
 
             // render
             const auto &background = palette.color( QPalette::Base );
-            const auto outline( _helper->frameOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
-            _helper->renderFrame( painter, rect, background, outline );
+            //const auto outline( _helper->frameOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
+            _helper->renderLineEdit( painter, rect, background, hasFocus, mouseOver, enabled );
 
         }
 
@@ -3125,7 +3136,7 @@ namespace Lightly
     }
 
     //______________________________________________________________
-    bool Style::drawFrameGroupBoxPrimitive( const QStyleOption* option, QPainter* painter, const QWidget* ) const
+    bool Style::drawFrameGroupBoxPrimitive( const QStyleOption* option, QPainter* painter, const QWidget* widget) const
     {
 
         // cast option and check
@@ -3138,7 +3149,12 @@ namespace Lightly
         // normal frame
         const auto& palette( option->palette );
         const auto background( _helper->frameBackgroundColor( palette ) );
-        const auto outline( _helper->frameOutlineColor( palette ) );
+        //const auto outline( _helper->frameOutlineColor( palette ) );
+        
+        const State& state( option->state );
+        const bool mouseOver ( state & State_MouseOver );
+        
+        //qDebug() << mouseOver;
 
         /*
          * need to reset painter's clip region in order to paint behind textbox label
@@ -3146,7 +3162,7 @@ namespace Lightly
          */
 
         painter->setClipRegion( option->rect );
-        _helper->renderFrame( painter, option->rect, background, outline );
+        _helper->renderGroupBox( painter, option->rect, background, mouseOver );
 
         return true;
 
@@ -3212,7 +3228,8 @@ namespace Lightly
         // define colors
         const auto& palette( option->palette );
         const auto background( _helper->frameBackgroundColor( palette ) );
-        const auto outline( _helper->frameOutlineColor( palette ) );
+        //const auto outline( _helper->frameOutlineColor( palette ) );
+        const auto outline( QColor( 0, 0, 0, 30 ) );
         _helper->renderTabWidgetFrame( painter, rect, background, outline, corners );
 
         return true;
@@ -3448,12 +3465,12 @@ namespace Lightly
                 palette.setColor( QPalette::Button, KColorUtils::mix( button, base, 0.7 ) );
             }
 
-            const auto shadow( _helper->shadowColor( palette ) );
-            const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
+            //const auto shadow( _helper->shadowColor( palette ) );
+            //const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
             const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, sunken, opacity, mode ) );
 
             // render
-            _helper->renderButtonFrame( painter, rect, background, outline, shadow, hasFocus, sunken );
+            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled );
 
         }
 
@@ -3492,8 +3509,8 @@ namespace Lightly
             const bool hasPopupMenu( toolButton && toolButton->popupMode() == QToolButton::MenuButtonPopup );
 
             // render as push button
-            const auto shadow( _helper->shadowColor( palette ) );
-            const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
+            //const auto shadow( _helper->shadowColor( palette ) );
+            //const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
             const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, sunken, opacity, mode ) );
 
             // adjust frame in case of menu
@@ -3505,7 +3522,7 @@ namespace Lightly
             }
 
             // render
-            _helper->renderButtonFrame( painter, rect, background, outline, shadow, hasFocus, sunken );
+            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled );
 
         } else {
 
@@ -3693,7 +3710,7 @@ namespace Lightly
             painter->setBrushOrigin( viewItemOption->rect.topLeft() );
             painter->setBrush( viewItemOption->backgroundBrush );
             painter->setPen( Qt::NoPen );
-            painter->drawRect( viewItemOption->rect );
+            painter->drawRoundedRect( viewItemOption->rect, Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius  );
             return true;
 
         }
@@ -3709,6 +3726,29 @@ namespace Lightly
         {
             if( !selected ) color.setAlphaF( 0.2 );
             else color = color.lighter( 110 );
+        }
+        
+        if ( !(widget && widget->property( PropertyNames::sidePanelView ).toBool() ) ) 
+         {
+
+            if ( !(qobject_cast<const QTableView *>(widget) 
+                || qobject_cast<const QListWidget *>(widget)
+                || qobject_cast<const QListView *>(widget)
+            ) ) 
+            {
+                /*Sides sides = SideTop|SideBottom;
+                if( !viewItemOption->rect.isNull() )
+                {
+                    if( viewItemOption->viewItemPosition == QStyleOptionViewItem::Beginning 
+                        || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideLeft;
+                    if( viewItemOption->viewItemPosition == QStyleOptionViewItem::End 
+                        || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideRight;
+                }*/
+
+                _helper->renderSelection( painter, rect, color, true );
+                return true;
+            }
+            
         }
 
         // render
@@ -3747,12 +3787,13 @@ namespace Lightly
         const auto shadow( _helper->shadowColor( palette ) );
         const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
         const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
-        QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
+        //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
+        const auto background( _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
         QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && active, opacity, mode  );
 
         // render
-        _helper->renderCheckBoxBackground( painter, rect, background, sunken );
-        _helper->renderCheckBox( painter, rect, color, shadow, sunken, checkBoxState, animation );
+        //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
+        _helper->renderCheckBox( painter, rect, color, background, shadow, sunken, mouseOver, checkBoxState, animation );
         return true;
 
     }
@@ -3785,12 +3826,13 @@ namespace Lightly
         const auto shadow( _helper->shadowColor( palette ) );
         const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
         const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
-        QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
+        //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
+        const auto background( _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
         QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && checked, opacity, mode  );
 
         // render
-        _helper->renderRadioButtonBackground( painter, rect, background, sunken );
-        _helper->renderRadioButton( painter, rect, color, shadow, sunken, radioButtonState, animation );
+        //_helper->renderRadioButtonBackground( painter, rect, background, sunken );
+        _helper->renderRadioButton( painter, rect, color, background, shadow, sunken, radioButtonState, animation );
 
         return true;
 
@@ -3830,7 +3872,7 @@ namespace Lightly
         const qreal opacity( _animations->widgetStateEngine().buttonOpacity( widget ) );
 
         // render as push button
-        const auto shadow( _helper->shadowColor( palette ) );
+        //const auto shadow( _helper->shadowColor( palette ) );
         const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
         const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, false, opacity, mode ) );
 
@@ -3840,7 +3882,7 @@ namespace Lightly
         frameRect = visualRect( option, frameRect );
 
         // render
-        _helper->renderButtonFrame( painter, frameRect, background, outline, shadow, hasFocus, sunken );
+        _helper->renderButtonFrame( painter, frameRect, background, palette, hasFocus, sunken, mouseOver, enabled ); //TODO: use sides?
 
         // also render separator
         auto separatorRect( rect.adjusted( 0, 2, -2, -2 ) );
@@ -4122,7 +4164,8 @@ namespace Lightly
 
         // contents
         auto contentsRect( rect );
-        if( sunken && !flat ) contentsRect.translate( 1, 1 );
+        if( sunken && !flat ) contentsRect.translate( 0, 1 );
+        else if ( mouseOver && !flat ) contentsRect.translate(0, -1);
 
         // color role
         QPalette::ColorRole textRole;
@@ -4667,6 +4710,9 @@ namespace Lightly
         {
             checkBoxRect = QRect( contentsRect.left(), contentsRect.top() + (contentsRect.height()-Metrics::CheckBox_Size)/2, Metrics::CheckBox_Size, Metrics::CheckBox_Size );
             contentsRect.setLeft( checkBoxRect.right() + Metrics::MenuItem_ItemSpacing + 1 );
+        } else {
+            // always have some left margin
+            contentsRect.setLeft(4* Metrics::MenuItem_ItemSpacing);
         }
 
         // render checkbox indicator
@@ -4681,8 +4727,8 @@ namespace Lightly
             const bool active( menuItemOption->checked );
             const auto shadow( _helper->shadowColor( palette ) );
             const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
-            _helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );
-            _helper->renderCheckBox( painter, checkBoxRect, color, shadow, sunken, state );
+            //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
+            _helper->renderCheckBox( painter, checkBoxRect, color, palette.color( QPalette::Button ), shadow, sunken, true, state );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -4691,8 +4737,8 @@ namespace Lightly
             const bool active( menuItemOption->checked );
             const auto shadow( _helper->shadowColor( palette ) );
             const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
-            _helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );
-            _helper->renderRadioButton( painter, checkBoxRect, color, shadow, sunken, active ? RadioOn:RadioOff );
+            //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
+            _helper->renderRadioButton( painter, checkBoxRect, color, palette.color( QPalette::Button ), shadow, sunken, active ? RadioOn:RadioOff );
 
         }
 
@@ -4774,12 +4820,17 @@ namespace Lightly
             // locate accelerator and render
             const int tabPosition( text.indexOf( QLatin1Char( '\t' ) ) );
             if( tabPosition >= 0 )
-            {
-
+            {   
+                // add a bit of transparency
+                QColor c (palette.color(role));
+                c.setAlpha(100);
+                QPalette p;
+                p.setColor(role, c);
+                
                 const int textFlags( Qt::AlignVCenter | Qt::AlignRight );
                 QString accelerator( text.mid( tabPosition + 1 ) );
                 text = text.left( tabPosition );
-                drawItemText( painter, textRect, textFlags, palette, enabled, accelerator, role );
+                drawItemText( painter, textRect, textFlags, p, enabled, accelerator, role );
 
             }
 
@@ -4802,6 +4853,29 @@ namespace Lightly
 
         }
 
+        return true;
+    }
+    
+    //___________________________________________________________________________________
+    bool Style::drawToolAreaControl( const QStyleOption* option, QPainter* painter, const QWidget* widget) const
+    {
+        /*const auto& rect( option->rect );
+         
+        painter->setRenderHint( QPainter::Antialiasing, false );
+        painter->setPen( Qt::NoPen );
+        painter->setBrush( QColor(255, 255, 255) );
+        
+        if( !qobject_cast<const QToolBar*>( widget ) ) { painter->drawRect( rect ); return true; }
+        
+        // shadow effect
+        painter->drawRect( rect.adjusted(0, 0, 0, -2) );
+        painter->setPen( QPen(QColor(0, 0, 0, 40), 1) );
+        painter->drawLine( rect.bottomLeft() - QPoint(0, 2), rect.bottomRight() - QPoint(0, 2) )
+        painter->setPen( QPen(QColor(0, 0, 0, 12), 1) );
+        painter->drawLine( rect.bottomLeft() - QPoint(0, 1), rect.bottomRight() - QPoint(0, 1) );
+        painter->setPen( QPen(QColor(0, 0, 0, 3), 1) );
+        painter->drawLine( rect.bottomLeft(), rect.bottomRight() );*/
+        
         return true;
     }
 
@@ -5284,10 +5358,23 @@ namespace Lightly
         else if( mouseOver ) color = hover;
         else color = normal;
 
-        painter->setRenderHint( QPainter::Antialiasing, false );
-        painter->setBrush( color );
-        painter->setPen( Qt::NoPen );
-        painter->drawRect( rect );
+        // make the top left corner of the first header rounded so that it doest poke out of the view
+        if ( isFirst && horizontal ) {
+            const int radius = Metrics::Frame_FrameRadius;
+            painter->setRenderHint( QPainter::Antialiasing, true );
+            painter->setBrush( color );
+            painter->setPen( Qt::NoPen );
+            painter->drawRoundedRect( QRect( rect.topLeft().x(), rect.topLeft().y(), radius+2, radius+2 ), radius+1, radius+1 );
+            painter->drawRect( rect.topLeft().x(), rect.topLeft().y() + radius, rect.width(), rect.height() - radius );
+            painter->drawRect( rect.topLeft().x() + radius, rect.topLeft().y(), rect.width() - radius, rect.height());
+            painter->setRenderHint( QPainter::Antialiasing, false );
+        }
+        else {
+            painter->setRenderHint( QPainter::Antialiasing, false );
+            painter->setBrush( color );
+            painter->setPen( Qt::NoPen );
+            painter->drawRect( rect );
+        }
 
         // outline
         painter->setBrush( Qt::NoBrush );
@@ -5515,23 +5602,16 @@ namespace Lightly
         {
             case QTabBar::RoundedNorth:
             case QTabBar::TriangularNorth:
-            if( selected )
-            {
-
-                corners = CornerTopLeft|CornerTopRight;
-                rect.adjust( 0, 0, 0, 1 );
-
-            } else {
-
-                rect.adjust( 0, 0, 0, -1 );
-                if( isFirst ) corners |= CornerTopLeft;
-                if( isLast ) corners |= CornerTopRight;
-                if( isRightOfSelected ) rect.adjust( -Metrics::Frame_FrameRadius, 0, 0, 0 );
-                if( isLeftOfSelected ) rect.adjust( 0, 0, Metrics::Frame_FrameRadius, 0 );
-                else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
-
-            }
-            break;
+                
+                //rect.adjust( 0, 0, 0, -1 ); needed?
+                //if( isFirst ) corners |= CornerTopLeft;
+                //if( isLast ) corners |= CornerTopRight;
+                if( isFirst ) corners = CornersLeft;
+                if( isLast ) corners = CornersRight;
+                //if( isRightOfSelected ) rect.adjust( -Metrics::Frame_FrameRadius, 0, 0, 0 );
+                //if( isLeftOfSelected ) rect.adjust( 0, 0, Metrics::Frame_FrameRadius, 0 );
+                //else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
+                break;
 
             case QTabBar::RoundedSouth:
             case QTabBar::TriangularSouth:
@@ -6061,12 +6141,12 @@ namespace Lightly
                 } else {
 
                     // define colors
-                    const auto shadow( _helper->shadowColor( palette ) );
-                    const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
+                    //const auto shadow( _helper->shadowColor( palette ) );
+                    //const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
                     const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, false, opacity, mode ) );
 
                     // render
-                    _helper->renderButtonFrame( painter, rect, background, outline, shadow, hasFocus, sunken );
+                    _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled );
 
                 }
 

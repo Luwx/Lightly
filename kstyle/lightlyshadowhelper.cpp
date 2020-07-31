@@ -47,23 +47,23 @@ namespace
         // Small
         CompositeShadowParams(
             QPoint(0, 3),
-            ShadowParams(QPoint(0, 0), 12, 0.26),
-            ShadowParams(QPoint(0, -2), 6, 0.16)),
+            ShadowParams(QPoint(0, 0), 12, 1),
+            ShadowParams(QPoint(0, -2), 6, 0.2)),
         // Medium
         CompositeShadowParams(
             QPoint(0, 4),
-            ShadowParams(QPoint(0, 0), 16, 0.24),
-            ShadowParams(QPoint(0, -2), 8, 0.14)),
+            ShadowParams(QPoint(0, 0), 16, 0.8),
+            ShadowParams(QPoint(0, -2), 8, 0.18)),
         // Large
         CompositeShadowParams(
             QPoint(0, 5),
-            ShadowParams(QPoint(0, 0), 20, 0.22),
-            ShadowParams(QPoint(0, -3), 10, 0.12)),
+            ShadowParams(QPoint(0, 0), 20, 0.6),
+            ShadowParams(QPoint(0, -3), 10, 0.16)),
         // Very Large
         CompositeShadowParams(
             QPoint(0, 6),
-            ShadowParams(QPoint(0, 0), 24, 0.2),
-            ShadowParams(QPoint(0, -3), 12, 0.1))
+            ShadowParams(QPoint(0, 0), 24, 0.4),
+            ShadowParams(QPoint(0, -3), 12, 0.14))
     };
 }
 
@@ -258,6 +258,15 @@ namespace Lightly
         painter.setPen(Qt::NoPen);
         painter.setBrush(Qt::black);
         painter.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+        painter.drawRoundedRect(
+            outerRect - margins,
+            frameRadius,
+            frameRadius);
+        
+        // Draw outline.
+        painter.setPen(withOpacity(Qt::black, 0.4 * strength));
+        painter.setBrush(Qt::NoBrush);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.drawRoundedRect(
             outerRect - margins,
             frameRadius,

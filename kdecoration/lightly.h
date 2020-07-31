@@ -38,7 +38,7 @@ namespace Lightly
     {
 
         //* corner radius (pixels)
-        Frame_FrameRadius = 3,
+        Frame_FrameRadius = 5,
 
         //* titlebar metrics, in units of small spacing
         TitleBar_TopMargin = 2,

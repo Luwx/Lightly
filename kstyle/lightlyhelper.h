@@ -158,16 +158,22 @@ namespace Lightly
         void renderFocusLine( QPainter*, const QRect&, const QColor& ) const;
 
         //* generic frame
-        void renderFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline = QColor() ) const;
+        void renderFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const QColor& outline = QColor() ) const;
 
         //* side panel frame
         void renderSidePanelFrame( QPainter*, const QRect&, const QColor& outline, Side ) const;
 
         //* menu frame
         void renderMenuFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, bool roundCorners = true ) const;
-
+        
+        //* shadow for rounded (or not) rectangles
+        void renderRectShadow(QPainter*, const QRectF&, const int size, const float strength1, const float strength2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
+        
+        //* shadow for ellipses
+        void renderEllipseShadow(QPainter*, const QRectF&, const int size, const float strength1, const float strength2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;
+        
         //* button frame
-        void renderButtonFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, const QColor& shadow, bool focus, bool sunken ) const;
+        void renderButtonFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const bool focus, const bool sunken, const bool mouseOver, const bool enabled ) const;
 
         //* toolbutton frame
         void renderToolButtonFrame( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
@@ -179,22 +185,28 @@ namespace Lightly
         void renderTabWidgetFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners ) const;
 
         //* selection frame
-        void renderSelection( QPainter*, const QRect&, const QColor& ) const;
+        void renderSelection( QPainter*, const QRect&, const QColor&, const bool rounded = false ) const;
 
         //* separator
         void renderSeparator( QPainter*, const QRect&, const QColor&, bool vertical = false ) const;
 
         //* checkbox
         void renderCheckBoxBackground( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
+        
+        //* line edit
+        void renderLineEdit( QPainter*, const QRect&, const QColor& color, const bool hasFocus, const bool mouseOver, const bool enabled ) const;
+        
+        //* group box
+        void renderGroupBox( QPainter*, const QRect&, const QColor& color, const bool mouseOver ) const;
 
         //* checkbox
-        void renderCheckBox( QPainter*, const QRect&, const QColor& color, const QColor& shadow, bool sunken, CheckBoxState state, qreal animation = AnimationData::OpacityInvalid ) const;
+        void renderCheckBox( QPainter*, const QRect&, const QColor& color, const QColor& background, const QColor& shadow, bool sunken, const bool mouseOver, CheckBoxState state, qreal animation = AnimationData::OpacityInvalid ) const;
 
         //* radio button
         void renderRadioButtonBackground( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
 
         //* radio button
-        void renderRadioButton( QPainter*, const QRect&, const QColor& color, const QColor& shadow, bool sunken, RadioButtonState state, qreal animation = AnimationData::OpacityInvalid ) const;
+        void renderRadioButton( QPainter*, const QRect&, const QColor& color, const QColor& background, const QColor& shadow, bool sunken, RadioButtonState state, qreal animation = AnimationData::OpacityInvalid ) const;
 
         //* slider groove
         void renderSliderGroove( QPainter*, const QRect&, const QColor& ) const;

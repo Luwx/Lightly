@@ -290,6 +290,7 @@ namespace Lightly
         bool drawComboBoxLabelControl( const QStyleOption*, QPainter*, const QWidget* ) const;
         bool drawMenuBarItemControl( const QStyleOption*, QPainter*, const QWidget* ) const;
         bool drawMenuItemControl( const QStyleOption*, QPainter*, const QWidget* ) const;
+        bool drawToolAreaControl( const QStyleOption*, QPainter*, const QWidget* ) const;
         bool drawProgressBarControl( const QStyleOption*, QPainter*, const QWidget* ) const;
         bool drawProgressBarContentsControl( const QStyleOption*, QPainter*, const QWidget* ) const;
         bool drawProgressBarGrooveControl( const QStyleOption*, QPainter*, const QWidget* ) const;
