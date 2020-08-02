@@ -14,9 +14,9 @@
 - [ ] Refactor and simplify the code 
 - [ ] Add animations to buttons and lineedits
 - [ ] Fix animations of checkboxes and radiobuttons
+- [ ] Add ticks to checkboxes
 - [ ] Work on tab style
 - [ ] Make the changes compatible with QtQuick applications
-- [ ] Add settings to configure or disable shadows and other tweaks.
 - [ ] Work on the window decoration style
 - [ ] Support transparency and blur ([goal](https://github.com/Luwx/test/blob/master/goal-decoration_and_toolbar.png)) ?
 - [ ] Add settings to configure or disable the button shadow and other tweaks.
