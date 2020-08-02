@@ -6,7 +6,7 @@
 
 ## Screenshots
 
-![screenshot](https://github.com/Luwx/test/blob/master/Screenshot.png)
+![screenshot](https://github.com/Luwx/Lightly/blob/master/Screenshot.png)
 
 
 ## TO DO
@@ -18,7 +18,7 @@
 - [ ] Work on tab style
 - [ ] Make the changes compatible with QtQuick applications
 - [ ] Work on the window decoration style
-- [ ] Support transparency and blur ([goal](https://github.com/Luwx/test/blob/master/goal-decoration_and_toolbar.png)) ?
+- [ ] Support transparency and blur ([goal](https://github.com/Luwx/Lightly/blob/master/goal-decoration_and_toolbar.png)) ?
 - [ ] Add settings to configure or disable the button shadow and other tweaks.
 
 
