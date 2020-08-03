@@ -50,7 +50,7 @@ namespace Lightly
         // layout
         Layout_TopLevelMarginWidth = 10,
         Layout_ChildMarginWidth = 6,
-        Layout_DefaultSpacing = 10,
+        Layout_DefaultSpacing = 8,
 
         // line editors
         LineEdit_FrameWidth = 6 + Frame_FrameWidth,
