@@ -264,7 +264,7 @@ namespace Lightly
             frameRadius);
         
         // Draw outline.
-        painter.setPen(withOpacity(Qt::black, 0.4 * strength));
+        painter.setPen(withOpacity(Qt::black, 0.3 * strength));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.drawRoundedRect(
