@@ -3778,8 +3778,8 @@ namespace Lightly
         else if( state & State_On ) checkBoxState = CheckOn;
 
         // animation state
-        _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        _animations->widgetStateEngine().updateState( widget, AnimationPressed, checkBoxState != CheckOff );
+        //_animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
+        //_animations->widgetStateEngine().updateState( widget, AnimationPressed, checkBoxState != CheckOff );
         if( _animations->widgetStateEngine().isAnimated( widget, AnimationPressed ) ) checkBoxState = CheckAnimated;
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
@@ -3817,8 +3817,8 @@ namespace Lightly
         RadioButtonState radioButtonState( state & State_On ? RadioOn:RadioOff );
 
         // animation state
-        _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        _animations->widgetStateEngine().updateState( widget, AnimationPressed, radioButtonState != RadioOff );
+        //_animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
+        //_animations->widgetStateEngine().updateState( widget, AnimationPressed, radioButtonState != RadioOff );
         if( _animations->widgetStateEngine().isAnimated( widget, AnimationPressed ) ) radioButtonState = RadioAnimated;
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
