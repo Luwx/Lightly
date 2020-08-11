@@ -344,6 +344,9 @@ namespace Lightly
                     // paint the background in event filter
                     addEventFilter( widget );
                     
+                    // blur
+                    _blurHelper->registerWidget( widget );
+                    
                 }
             }
         }
@@ -749,7 +752,7 @@ namespace Lightly
 
             case SH_RubberBand_Mask:
             {
-                return true;
+
                 if( auto mask = qstyleoption_cast<QStyleHintReturnMask*>( returnData ) )
                 {
                     mask->region = option->rect;

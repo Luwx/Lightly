@@ -65,6 +65,9 @@ namespace Lightly
             object->removeEventFilter( this );
             object->installEventFilter( this );
         }
+        
+        //! handle blur region
+        QRegion blurRegion (QWidget* widget) const;
 
         //! update blur regions for given widget
         void update( QWidget* ) const;

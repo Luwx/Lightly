@@ -34,7 +34,60 @@
 #include <KWindowEffects>
 
 #include <QEvent>
+#include <QMenu>
 #include <QVector>
+
+namespace
+{
+	
+    QRegion roundedRegion(const QRect &rect, int radius, bool top, bool bottom)
+    {
+        QRegion region(rect, QRegion::Rectangle);
+
+        if (top) {
+            // Round top-left corner.
+            const QRegion topLeftCorner(rect.x(), rect.y(), radius, radius, QRegion::Rectangle);
+            const QRegion topLeftRounded(rect.x(), rect.y(), 2 * radius, 2 * radius, QRegion::Ellipse);
+            const QRegion topLeftEar = topLeftCorner - topLeftRounded;
+            region -= topLeftEar;
+        
+            // Round top-right corner.
+            const QRegion topRightCorner(
+                rect.x() + rect.width() - radius, rect.y(),
+                radius, radius, QRegion::Rectangle);
+            const QRegion topRightRounded(
+                rect.x() + rect.width() - 2 * radius, rect.y(),
+                2 * radius, 2 * radius, QRegion::Ellipse);
+            const QRegion topRightEar = topRightCorner - topRightRounded;
+            region -= topRightEar;
+        }
+
+        if (bottom) {
+            // Round bottom-right corner.
+            const QRegion bottomRightCorner(
+                rect.x() + rect.width() - radius, rect.y() + rect.height() - radius,
+                radius, radius, QRegion::Rectangle);
+            const QRegion bottomRightRounded(
+                rect.x() + rect.width() - 2 * radius, rect.y() + rect.height() - 2 * radius,
+                2 * radius, 2 * radius, QRegion::Ellipse);
+            const QRegion bottomRightEar = bottomRightCorner - bottomRightRounded;
+            region -= bottomRightEar;
+        
+            // Round bottom-left corner.
+            const QRegion bottomLeftCorner(
+                rect.x(), rect.y() + rect.height() - radius,
+                radius, radius, QRegion::Rectangle);
+            const QRegion bottomLeftRounded(
+                rect.x(), rect.y() + rect.height() - 2 * radius,
+                2 * radius, 2 * radius, QRegion::Ellipse);
+            const QRegion bottomLeftEar = bottomLeftCorner - bottomLeftRounded;
+            region -= bottomLeftEar;
+        }
+
+        return region;
+    }
+	
+}
 
 namespace Lightly
 {
@@ -85,6 +138,29 @@ namespace Lightly
         // never eat events
         return false;
     }
+    
+    //___________________________________________________________
+    QRegion BlurHelper::blurRegion (QWidget* widget) const
+    {
+        if (!widget->isVisible()) return QRegion();
+
+        QRect rect = widget->rect();
+        QRegion wMask = widget->mask();
+
+        /* blurring may not be suitable when the available
+            painting area is restricted by a widget mask */
+        if (!wMask.isEmpty() && wMask != QRegion(rect))
+            return QRegion();
+
+        if ((qobject_cast<QMenu*>(widget)
+            && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeMenu)) // not a detached menu
+            || widget->inherits("QComboBoxPrivateContainer"))
+        {
+            return roundedRegion(rect, Metrics::Frame_FrameRadius, true, true);
+        } 
+        else 
+            return roundedRegion(rect, Metrics::Frame_FrameRadius, false, true);
+    }   
 
     //___________________________________________________________
     void BlurHelper::update(QWidget* widget) const
@@ -96,7 +172,7 @@ namespace Lightly
         if (!(widget->testAttribute(Qt::WA_WState_Created) || widget->internalWinId()))
             return;
 
-        KWindowEffects::enableBlurBehind(widget->winId(), true);
+        KWindowEffects::enableBlurBehind(widget->winId(), true, blurRegion(widget));
 
         // force update
         if (widget->isVisible()) {
