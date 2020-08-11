@@ -60,7 +60,7 @@ namespace Lightly
         //* find value
         Value find( Key key )
         {
-            if( !( enabled() && key ) ) return Value();
+            if( !( enabled() && key ) ) return Value(); // nullptr
             if( key == _lastKey ) return _lastValue;
             else {
                 Value out;

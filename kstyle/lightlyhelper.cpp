@@ -35,6 +35,8 @@
 
 #include <algorithm>
 
+#include <QDebug>
+
 namespace Lightly
 {
 
@@ -989,6 +991,8 @@ namespace Lightly
         // float and sunken effect
         if( sunken ) frameRect.translate(1, 1);
         else if( state != CheckOff && !mouseOver ) frameRect.translate(-1, -1);
+        
+        qDebug() << animation;
 
     
         if( state == CheckOff)
@@ -1026,6 +1030,8 @@ namespace Lightly
 
         } else if( state == CheckAnimated ) {
 
+            if ( darkTheme ) renderRectShadow(painter, frameRect, 4, 8, 5, 1, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, 4, 4, 6, 1, 1, radius, true, 8);
             const QRectF markerRect( frameRect.adjusted( 3, 3, -3, -3 ) );
             QPainterPath path;
             path.moveTo( markerRect.topRight() );

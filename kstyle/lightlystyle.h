@@ -89,8 +89,14 @@ namespace Lightly
         using  ParentStyleClass::polish;
         using  ParentStyleClass::unpolish;
 
+        //* application polishing
+        void polish( QApplication* ) override;
+        
         //* widget polishing
         void polish( QWidget* ) override;
+        
+        //* application unpolishing
+        void unpolish( QApplication* ) override;
 
         //* widget unpolishing
         void unpolish( QWidget* ) override;
@@ -464,6 +470,13 @@ namespace Lightly
 
         //* return true if passed widget is a menu title (KMenu::addTitle)
         bool hasAlteredBackground( const QWidget* ) const;
+        
+        //* A solution for Qt5's problem with translucent windows
+        void setSurfaceFormat(QWidget *w) const;
+        void setSurfaceFormat(const QWidget *w) const
+        {
+            setSurfaceFormat(const_cast<QWidget*>(w));
+        }
 
         //*@name scrollbar button types (for addLine and subLine )
         //@{
@@ -528,6 +541,23 @@ namespace Lightly
         QStyle::ControlElement CE_CapacityBar;
 
         //@}
+        
+        //* Translucency handling
+        //* set of transparent widgets (as defined in ::polish)
+        QSet< QWidget*> _translucentWidgets;
+        
+        //* list of apps that shouldn't have window translucency 
+        QStringList _opaqueApps = QStringList() << "kscreenlocker" << "wine"; //should this be here?
+        
+        //* LibreOffice and Plasma need workarounds.
+        bool _isLibreoffice = false;
+        bool _isPlasma = false;
+        bool _isDolphin = false;
+        //* So far, only VirtualBox has introduced itself as "Qt-subapplication" and doesn't accept compositing. 
+        bool _subApp = false;
+        //* Some apps shouldn't have translucent windows. 
+        bool _isOpaque = false;
+        
 
     };
 

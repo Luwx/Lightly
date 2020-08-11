@@ -43,11 +43,13 @@
 #include <QFormLayout>
 #include <QGraphicsView>
 #include <QGroupBox>
+#include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QMdiSubWindow>
 #include <QMenu>
+#include <QMap>
 #include <QPainter>
 #include <QPushButton>
 #include <QRadioButton>
@@ -61,10 +63,14 @@
 #include <QToolButton>
 #include <QTreeView>
 #include <QWidgetAction>
+#include <QSurfaceFormat>
+#include <QWindow>
 
 #if LIGHTLY_HAVE_QTQUICK
 #include <QQuickWindow>
 #endif
+
+//#include <QDebug>
 
 namespace LightlyPrivate
 {
@@ -202,13 +208,35 @@ namespace Lightly
         delete _shadowHelper;
         delete _helper;
     }
+    
+    //______________________________________________________________
+    void Style::polish(QApplication *app)
+    {
+        const QString appName = app->applicationName();
+        if (appName == "Qt-subapplication")
+            _subApp = true;
+        else if (appName == "soffice.bin")
+            _isLibreoffice = true;
+        else if (appName == "dolphin")
+            _isDolphin = true;
+        else if (appName == "plasma" || appName.startsWith("plasma-")
+                || appName == "plasmashell" // Plasma5
+                || appName == "kded4") // this is for the infamous appmenu
+            _isPlasma = true;
+
+        if ( _opaqueApps.contains(appName, Qt::CaseInsensitive) )
+            _isOpaque = true;
+        
+        // base class polishing
+        ParentStyleClass::polish( app );
+    }
 
     //______________________________________________________________
     void Style::polish( QWidget* widget )
     {
         if( !widget ) return;
 
-        // register widget to animations
+         //register widget to animations
         _animations->registerWidget( widget );
         _windowManager->registerWidget( widget );
         _frameShadowFactory->registerWidget( widget, *_helper );
@@ -238,13 +266,87 @@ namespace Lightly
         { widget->setAttribute( Qt::WA_Hover ); }
 
         // enforce translucency for drag and drop window
-        if( widget->testAttribute( Qt::WA_X11NetWmWindowTypeDND ) && _helper->compositingActive() )
+        //if( widget->testAttribute( Qt::WA_X11NetWmWindowTypeDND ) && _helper->compositingActive() )
+        //{
+          //  widget->setAttribute( Qt::WA_TranslucentBackground );
+            //widget->clearMask();
+        //}
+
+        /*if ( qobject_cast<QToolBar*>( widget ) ) 
         {
-            widget->setAttribute( Qt::WA_TranslucentBackground );
-            widget->clearMask();
-        }
+            widget->window()->setAttribute( Qt::WA_NoSystemBackground, true );
+            widget->window()->setAttribute( Qt::WA_OpaquePaintEvent, true );
+            widget->window()->setAttribute( Qt::WA_TranslucentBackground );
+            widget->window()->setAttribute( Qt::WA_StyledBackground );
+            addEventFilter( widget->window() );
+            QWindow *window = widget->windowHandle();
+            //QSurfaceFormat format = window->format();
+            //qDebug() << "w?" << widget->window() << ", format:" << format.alphaBufferSize();
+            qDebug() << window;
+            
+        }*/
+
         
-        //if ( qobject_cast<QToolBar*>( widget ) ) widget->window()->setAttribute( Qt::WA_TranslucentBackground );
+        
+        // translucent (window) color scheme support
+        switch (widget->windowFlags() & Qt::WindowType_Mask) {
+            case Qt::Window:
+            case Qt::Dialog:
+            case Qt::Popup:
+            case Qt::ToolTip: 
+            case Qt::Sheet: { 
+                
+                //QRegion wMask = widget->mask();
+                //if( !wMask.isEmpty() && wMask != QRegion(widget->rect() ) ) break;
+                if( _isOpaque ) break;
+                if ( qobject_cast<QMenu*>( widget ) ) break;
+
+                else if (widget->inherits("QTipLabel")
+                    || qobject_cast<QLabel*>(widget) // a floating label, as in Filelight
+                    || widget->inherits("QComboBoxPrivateContainer") // at most, a menu
+                    /* like Vokoscreen's (old) QvkRegionChoise */
+                    || (widget->windowFlags().testFlag(Qt::WindowStaysOnTopHint)
+                        && widget->testAttribute(Qt::WA_NoSystemBackground)
+                        && ((widget->windowFlags() & Qt::WindowType_Mask) == Qt::ToolTip
+                            || (widget->windowState() & Qt::WindowFullScreen))))
+                {
+                    break;
+                }
+                //if ( widget->testAttribute( Qt::WA_TranslucentBackground ) && !_translucentWidgets.contains( widget ) ) break;
+                
+                // color scheme must have non opaque alpha
+                if ( widget->palette().color( widget->backgroundRole() ).alpha() == 255 ) break;
+                
+                /* take all precautions */
+                if (!_subApp && !_isLibreoffice
+                    && widget->isWindow()
+                    && widget->windowType() != Qt::Desktop
+                    && !widget->testAttribute(Qt::WA_PaintOnScreen)
+                    && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeDesktop)
+                    && !widget->inherits("KScreenSaver")
+                    && !widget->inherits("QSplashScreen"))
+                {
+                    //if( _isPlasma && !qobject_cast<QDialog*>(widget) ) break;
+                    if( !_helper->compositingActive() ) break; //TODO: remove alpha
+                    if( widget->windowFlags().testFlag( Qt::FramelessWindowHint ) ) break;
+                    
+                    //qDebug() << "transparent!";
+
+                    // make window translucent
+                    widget->setAttribute( Qt::WA_TranslucentBackground );
+                    widget->setAttribute( Qt::WA_StyledBackground );
+                    _translucentWidgets.insert( widget );
+                    
+                    //QWindow *window = widget->windowHandle();
+                    //QSurfaceFormat format = window->format();
+                    //qDebug() << widget  << ", format:" << format.alphaBufferSize();
+                    
+                    // paint the background in event filter
+                    addEventFilter( widget );
+                    
+                }
+            }
+        }
 
 
         // scrollarea polishing is somewhat complex. It is moved to a dedicated method
@@ -432,6 +534,26 @@ namespace Lightly
         }
 
     }
+    
+    //_______________________________________________________________
+    void Style::unpolish( QApplication* app )
+    {
+        QSetIterator<QWidget*> i(_translucentWidgets);
+        while (i.hasNext())
+        {
+            if (QWidget *w = i.next())
+            {
+                w->setAttribute(Qt::WA_NoSystemBackground, false);
+        #if (QT_VERSION < QT_VERSION_CHECK(5,13,1))
+                w->setAttribute(Qt::WA_TranslucentBackground, false);
+
+        #endif
+            }
+        }
+        
+        _translucentWidgets.clear();
+        ParentStyleClass::unpolish( app );
+    }
 
     //_______________________________________________________________
     void Style::unpolish( QWidget* widget )
@@ -452,6 +574,14 @@ namespace Lightly
             qobject_cast<QMdiSubWindow*>( widget ) ||
             widget->inherits( "QComboBoxPrivateContainer" ) )
             { widget->removeEventFilter( this ); }
+            
+        if ( _translucentWidgets.contains( widget ) )
+        {
+            widget->setAttribute(Qt::WA_NoSystemBackground, false);
+            widget->setAttribute(Qt::WA_TranslucentBackground, false);
+            _translucentWidgets.remove( widget );
+            widget->removeEventFilter( this );
+        }
 
         ParentStyleClass::unpolish( widget );
 
@@ -483,6 +613,8 @@ namespace Lightly
                 }
 
             }
+            
+            //if ( widget && widget->inherits( "KTextEditor::View" ) ) return 0;
 
             // fallback
             return Metrics::Frame_FrameWidth;
@@ -610,15 +742,16 @@ namespace Lightly
     //______________________________________________________________
     int Style::styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData ) const
     {
+        setSurfaceFormat(widget); /* FIXME Why here and nowhere else?
+                                     Perhaps because of its use in qapplication.cpp. */
         switch( hint )
         {
 
             case SH_RubberBand_Mask:
             {
-
+                return true;
                 if( auto mask = qstyleoption_cast<QStyleHintReturnMask*>( returnData ) )
                 {
-
                     mask->region = option->rect;
 
                     /*
@@ -821,7 +954,7 @@ namespace Lightly
         StylePrimitive fcn;
         switch( element )
         {
-
+            
             case PE_PanelButtonCommand: fcn = &Style::drawPanelButtonCommandPrimitive; break;
             case PE_PanelButtonTool: fcn = &Style::drawPanelButtonToolPrimitive; break;
             case PE_PanelScrollAreaCorner: fcn = &Style::drawPanelScrollAreaCornerPrimitive; break;
@@ -1015,6 +1148,28 @@ namespace Lightly
         QWidget *widget = static_cast<QWidget*>( object );
         if( widget->inherits( "QAbstractScrollArea" ) || widget->inherits( "KTextEditor::View" ) ) { return eventFilterScrollArea( widget, event ); }
         else if( widget->inherits( "QComboBoxPrivateContainer" ) ) { return eventFilterComboBoxContainer( widget, event ); }
+        
+        if ( event->type() == QEvent::Paint ) {
+            if (widget->isWindow() 
+                && widget->testAttribute(Qt::WA_StyledBackground)
+                && widget->testAttribute(Qt::WA_TranslucentBackground))
+            {
+                switch (widget->windowFlags() & Qt::WindowType_Mask) {
+                    case Qt::Window:
+                    case Qt::Dialog:
+                    case Qt::Popup:
+                    case Qt::ToolTip:
+                    case Qt::Sheet: {
+                        if (qobject_cast<QMenu*>(widget)) break;
+                        if ( !_translucentWidgets.contains( widget ) ) break;
+                        QPainter p(widget);
+                        p.setClipRegion(static_cast<QPaintEvent*>(event)->region());
+                        p.fillRect(widget->rect(), QColor( widget->palette().color( QPalette::Window)));
+                    }
+                }
+            }
+        }
+
 
         // fallback
         return ParentStyleClass::eventFilter( object, event );
@@ -3779,7 +3934,7 @@ namespace Lightly
 
         // animation state
         //_animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        //_animations->widgetStateEngine().updateState( widget, AnimationPressed, checkBoxState != CheckOff );
+        _animations->widgetStateEngine().updateState( widget, AnimationPressed, checkBoxState != CheckOff );
         if( _animations->widgetStateEngine().isAnimated( widget, AnimationPressed ) ) checkBoxState = CheckAnimated;
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
@@ -4859,23 +5014,42 @@ namespace Lightly
     //___________________________________________________________________________________
     bool Style::drawToolAreaControl( const QStyleOption* option, QPainter* painter, const QWidget* widget) const
     {
-        /*const auto& rect( option->rect );
-         
+        const auto& rect( option->rect );
+#if 0
         painter->setRenderHint( QPainter::Antialiasing, false );
         painter->setPen( Qt::NoPen );
         painter->setBrush( QColor(255, 255, 255) );
         
         if( !qobject_cast<const QToolBar*>( widget ) ) { painter->drawRect( rect ); return true; }
         
+        //erase the alpha
+        //painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
+        painter->drawRect( rect );
+        
+        //painter->setCompositionMode( QPainter::CompositionMode_SourceOver );     
+        painter->setBrush( QColor(255, 255, 255, 200) );
+        painter->drawRect( rect );
+        
+        // inverse shadow effect
+        painter->setBrush( Qt::NoBrush );
+        painter->setPen( QColor(0,0,0,46) );
+        painter->drawLine( rect.bottomLeft(), rect.bottomRight() );
+        painter->setPen( QColor(0,0,0,24) );
+        painter->drawLine( rect.bottomLeft() - QPoint(0, 1), rect.bottomRight() - QPoint(0, 1) );
+        painter->setPen( QColor(0,0,0,10) );
+        painter->drawLine( rect.bottomLeft() - QPoint(0, 2), rect.bottomRight() - QPoint(0, 2) );
+        painter->setPen( QColor(0,0,0,3) );
+        painter->drawLine( rect.bottomLeft() - QPoint(0, 3), rect.bottomRight() - QPoint(0, 3) );
+        
         // shadow effect
-        painter->drawRect( rect.adjusted(0, 0, 0, -2) );
+        /*painter->drawRect( rect.adjusted(0, 0, 0, -2) );
         painter->setPen( QPen(QColor(0, 0, 0, 40), 1) );
         painter->drawLine( rect.bottomLeft() - QPoint(0, 2), rect.bottomRight() - QPoint(0, 2) )
         painter->setPen( QPen(QColor(0, 0, 0, 12), 1) );
         painter->drawLine( rect.bottomLeft() - QPoint(0, 1), rect.bottomRight() - QPoint(0, 1) );
         painter->setPen( QPen(QColor(0, 0, 0, 3), 1) );
         painter->drawLine( rect.bottomLeft(), rect.bottomRight() );*/
-        
+#endif
         return true;
     }
 
@@ -7204,6 +7378,95 @@ namespace Lightly
         const_cast<QWidget*>(widget)->setProperty( PropertyNames::alteredBackground, hasAlteredBackground );
         return hasAlteredBackground;
 
+    }
+    
+    
+    //____________________________________________________________________
+    // Taken from Kvantum
+    /*
+        To make Qt windows translucent, we should set the surface format of
+        their native handles BEFORE they're created but Qt5 windows are
+        often polished AFTER they're created, so that setting the attribute
+        "WA_TranslucentBackground" in "Style::polish()" would have no effect.
+
+        Early creation of native handles could have unpredictable side effects,
+        especially for menus. However, it seems that setting of the attribute
+        "WA_TranslucentBackground" in an early stage -- before the widget is
+        created -- sets the alpha buffer size to 8 safely and automatically.
+    */
+    void Style::setSurfaceFormat(QWidget *widget) const
+    {
+
+        if (!widget || !_helper->compositingActive() || _subApp || _isLibreoffice)
+            return;
+        
+        if (widget->testAttribute(Qt::WA_WState_Created)
+            || widget->testAttribute(Qt::WA_TranslucentBackground)
+            || widget->testAttribute(Qt::WA_NoSystemBackground)
+            || widget->autoFillBackground() // video players like kaffeine
+            || _translucentWidgets.contains(widget))
+            return;
+
+        if (widget->inherits("QTipLabel") || qobject_cast<QMenu*>(widget))
+            return;
+        else
+        {
+            if ( _isPlasma || _isOpaque || !widget->isWindow() )
+            return;
+            switch (widget->windowFlags() & Qt::WindowType_Mask) {
+            case Qt::Window:
+            case Qt::Dialog:
+            case Qt::Popup:
+            case Qt::Sheet: break;
+            default: return;
+            }
+            if (widget->windowHandle() // too late
+                || widget->windowFlags().testFlag(Qt::FramelessWindowHint)
+                || widget->windowFlags().testFlag(Qt::X11BypassWindowManagerHint)
+                || qobject_cast<QFrame*>(widget) // a floating frame, as in Filelight
+                || widget->windowType() == Qt::Desktop
+                || widget->testAttribute(Qt::WA_PaintOnScreen)
+                || widget->testAttribute(Qt::WA_X11NetWmWindowTypeDesktop)
+                || widget->inherits("KScreenSaver")
+                || widget->inherits("QSplashScreen"))
+            return;
+
+            QWidget *p = widget->parentWidget();
+            if (p && (/*!p->testAttribute(Qt::WA_WState_Created) // FIXME: too soon?
+                    ||*/ qobject_cast<QMdiSubWindow*>(p))) // as in linguist
+            {
+            return;
+            }
+            
+            if (QMainWindow *mw = qobject_cast<QMainWindow*>(widget))
+            {
+                /* it's possible that a main window is inside another one
+                    (like FormPreviewView in linguist), in which case,
+                    translucency could cause weird effects */
+                if (p) return;
+                /* stylesheets with background can cause total transparency */
+                QString ss = mw->styleSheet();
+                if (!ss.isEmpty() && ss.contains("background"))
+                    return;
+                if (QWidget *cw = mw->centralWidget())
+                {
+                    if (cw->autoFillBackground())
+                    return;
+                    ss = cw->styleSheet();
+                    if (!ss.isEmpty() && ss.contains("background"))
+                    return; // as in smplayer
+                }
+                if ( widget->palette().color( QPalette::Window ).alpha() == 255 ) 
+                    return;
+            }
+        }
+
+        if( !_helper->compositingActive() ) return;
+
+        widget->setAttribute(Qt::WA_TranslucentBackground);
+        /* distinguish forced translucency from hard-coded translucency */
+        //forcedTranslucency_.insert(widget);
+        //connect(widget, &QObject::destroyed, this, &Style::noTranslucency); // needed?
     }
 
 }
