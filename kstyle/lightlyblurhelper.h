@@ -35,6 +35,7 @@
 #include "lightlyhelper.h"
 
 #include <QHash>
+#include <QSet>
 #include <QObject>
 
 namespace Lightly
@@ -56,6 +57,13 @@ namespace Lightly
 
         //! event filter
         bool eventFilter( QObject*, QEvent* ) override;
+        
+        //! force update
+        void forceUpdate( QWidget* widget )
+        { if( widget->isWindow() ) update( widget ); }
+        
+        //! set of registered widgets
+        QSet<const QObject*> _sregisteredWidgets;
 
         protected:
 

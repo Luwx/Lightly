@@ -26,6 +26,7 @@ if(WITH_DECORATIONS)
     add_subdirectory(kdecoration)
 endif()
 
+add_subdirectory(colors)
 add_subdirectory(liblightlycommon)
 add_subdirectory(kstyle)
 add_subdirectory(misc)

@@ -34,9 +34,11 @@
 #include <KWindowEffects>
 
 #include <QEvent>
+#include <QMainWindow>
 #include <QMenu>
+#include <QToolBar>
 #include <QVector>
-
+#include <QDebug>
 namespace
 {
 	
@@ -117,6 +119,7 @@ namespace Lightly
     //___________________________________________________________
     bool BlurHelper::eventFilter(QObject* object, QEvent* event)
     {
+
         switch (event->type()) {
             case QEvent::Hide:
             case QEvent::Show:
@@ -152,15 +155,46 @@ namespace Lightly
         if (!wMask.isEmpty() && wMask != QRegion(rect))
             return QRegion();
 
-        if ((qobject_cast<QMenu*>(widget)
+        else if ((qobject_cast<QMenu*>(widget)
             && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeMenu)) // not a detached menu
             || widget->inherits("QComboBoxPrivateContainer"))
         {
             return roundedRegion(rect, Metrics::Frame_FrameRadius, true, true);
         } 
         else 
-            return roundedRegion(rect, Metrics::Frame_FrameRadius, false, true);
-    }   
+            {
+                // blur entire window
+                if( widget->palette().color( QPalette::Window ).alpha() < 255 )
+                    return roundedRegion(rect, Metrics::Frame_FrameRadius, false, true);
+                
+                // blur only main toolbar and menubar
+                else if( StyleConfigData::toolBarOpacity() < 100 )
+                {
+                    QRegion region;
+                    
+                    if ( QMainWindow *mw = qobject_cast<QMainWindow*>( widget ) )
+                    {
+                        if ( QWidget *mb = mw->menuWidget() ) 
+                        {
+                            if (mb->isVisible()) region += mb->rect();
+                        }
+                    }
+                
+                    if( !_sregisteredWidgets.isEmpty() )
+                    {
+                        QSet<const QObject*>::const_iterator i = _sregisteredWidgets.constBegin();
+                        const QToolBar *tb = qobject_cast<const QToolBar*>( *i );
+                        
+                        if (tb && tb->isVisible()) region += QRegion( QRect( tb->pos(), tb->rect().size() ) );
+                    }
+                    qDebug() << region;
+                    return region;
+                    
+                }
+                
+                else return QRegion();
+            }
+        }   
 
     //___________________________________________________________
     void BlurHelper::update(QWidget* widget) const
@@ -171,8 +205,12 @@ namespace Lightly
         */
         if (!(widget->testAttribute(Qt::WA_WState_Created) || widget->internalWinId()))
             return;
-
-        KWindowEffects::enableBlurBehind(widget->winId(), true, blurRegion(widget));
+        
+        QRegion region = blurRegion(widget);
+        if (region.isNull()) return;
+        
+        KWindowEffects::enableBlurBehind(widget->isWindow() ? widget->winId() : widget->window()->winId(), true, region);
+        //KWindowEffects::enableBackgroundContrast (widget->isWindow() ? widget->winId() : widget->window()->winId(), true, 1.0, 1.2, 1.3, blurRegion(widget));
 
         // force update
         if (widget->isVisible()) {

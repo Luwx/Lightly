@@ -2,7 +2,14 @@
   <img src="logo.png"/>
 </p>
 
-*Lightly* is a theme style that aims to be visually modern and minimalistic. 
+*Lightly* is a fork of breeze theme style that aims to be visually modern and minimalistic. 
+
+## Development ⚠️
+
+Lightly is a work in progress theme, there is still a lot to change, so expect bugs! Some applications may suddenly crash or flicker.
+
+If you have any feedback or encounter some bugs, feel free to open an issue or a pr.
+
 
 ## Screenshots
 
@@ -31,7 +38,9 @@ make
 sudo make install
 ```
 
+## Acknowledgments
 
+Breeze authors and Kvantum developer Pedram Pourang.
 
 
 

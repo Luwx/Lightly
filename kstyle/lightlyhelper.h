@@ -87,8 +87,6 @@ namespace Lightly
         //* frame outline color, using animations
         QColor frameOutlineColor( const QPalette&, bool mouseOver = false, bool hasFocus = false, qreal opacity = AnimationData::OpacityInvalid, AnimationMode = AnimationNone ) const;
 
-        //* focus outline color, using animations
-        QColor focusOutlineColor( const QPalette& ) const;
 
         //* hover outline color, using animations
         QColor hoverOutlineColor( const QPalette& ) const;
@@ -167,10 +165,10 @@ namespace Lightly
         void renderMenuFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, bool roundCorners = true ) const;
         
         //* shadow for rounded (or not) rectangles
-        void renderRectShadow(QPainter*, const QRectF&, const int size, const float strength1, const float strength2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
+        void renderRectShadow(QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
         
         //* shadow for ellipses
-        void renderEllipseShadow(QPainter*, const QRectF&, const int size, const float strength1, const float strength2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;
+        void renderEllipseShadow(QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;
         
         //* button frame
         void renderButtonFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const bool focus, const bool sunken, const bool mouseOver, const bool enabled ) const;
@@ -194,7 +192,7 @@ namespace Lightly
         void renderCheckBoxBackground( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
         
         //* line edit
-        void renderLineEdit( QPainter*, const QRect&, const QColor& color, const bool hasFocus, const bool mouseOver, const bool enabled ) const;
+        void renderLineEdit( QPainter*, const QRect&, const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, const bool enabled ) const;
         
         //* group box
         void renderGroupBox( QPainter*, const QRect&, const QColor& color, const bool mouseOver ) const;
@@ -206,13 +204,13 @@ namespace Lightly
         void renderRadioButtonBackground( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
 
         //* radio button
-        void renderRadioButton( QPainter*, const QRect&, const QColor& color, const QColor& background, const QColor& shadow, bool sunken, RadioButtonState state, qreal animation = AnimationData::OpacityInvalid ) const;
+        void renderRadioButton( QPainter*, const QRect&, const QColor& color, const QColor& background, const bool mouseOver, bool sunken, RadioButtonState state, qreal animation = AnimationData::OpacityInvalid ) const;
 
         //* slider groove
         void renderSliderGroove( QPainter*, const QRect&, const QColor& ) const;
 
         //* slider handle
-        void renderSliderHandle( QPainter*, const QRect&, const QColor&, const QColor& outline, const QColor& shadow, bool sunken ) const;
+        void renderSliderHandle( QPainter*, const QRect&, const QColor&, const bool focus, bool sunken ) const;
 
         //* dial groove
         void renderDialGroove( QPainter*, const QRect&, const QColor&, qreal first, qreal last ) const;
@@ -275,6 +273,11 @@ namespace Lightly
 
         //* returns true if a given widget supports alpha channel
         bool hasAlphaChannel( const QWidget* ) const;
+        
+        //* returns true if a given palette has dark colors 
+        bool isDarkTheme( const QPalette& palette) const
+        { return qGray( palette.color( QPalette::Window ).rgb() ) > 110 ? false : true; }
+        
 
         //@}
 

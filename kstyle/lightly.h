@@ -53,7 +53,7 @@ namespace Lightly
         Layout_DefaultSpacing = 8,
 
         // line editors
-        LineEdit_FrameWidth = 6 + Frame_FrameWidth,
+        LineEdit_FrameWidth = 5 + Frame_FrameWidth,
 
         // menu items
         Menu_FrameWidth = 0,
@@ -64,7 +64,7 @@ namespace Lightly
         MenuButton_IndicatorWidth = 20,
 
         // combobox
-        ComboBox_FrameWidth = 6 + Frame_FrameWidth,
+        ComboBox_FrameWidth = 5 + Frame_FrameWidth,
 
         // spinbox
         SpinBox_FrameWidth = LineEdit_FrameWidth,
@@ -110,7 +110,7 @@ namespace Lightly
 
         // progressbars
         ProgressBar_BusyIndicatorSize = 14,
-        ProgressBar_Thickness = 6,
+        ProgressBar_Thickness = 4,
         ProgressBar_ItemSpacing = 4,
 
         // mdi title bar
@@ -119,7 +119,7 @@ namespace Lightly
         // sliders
         Slider_TickLength = 8,
         Slider_TickMarginWidth = 2,
-        Slider_GrooveThickness = 6,
+        Slider_GrooveThickness = 4,
         Slider_ControlThickness = 20,
 
         // tabbar

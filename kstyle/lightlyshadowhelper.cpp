@@ -46,9 +46,9 @@ namespace
         CompositeShadowParams(),
         // Small
         CompositeShadowParams(
-            QPoint(0, 3),
-            ShadowParams(QPoint(0, 0), 12, 1),
-            ShadowParams(QPoint(0, -2), 6, 0.2)),
+            QPoint(0, 2),
+            ShadowParams(QPoint(0, 0), 12, 0.8),
+            ShadowParams(QPoint(0, -2), 6, 0.18)),
         // Medium
         CompositeShadowParams(
             QPoint(0, 4),
@@ -269,8 +269,8 @@ namespace Lightly
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.drawRoundedRect(
             outerRect - margins,
-            frameRadius,
-            frameRadius);
+            frameRadius-1,
+            frameRadius-1);
 
         // We're done.
         painter.end();

@@ -104,10 +104,6 @@ namespace Lightly
     }
 
     //____________________________________________________________________
-    QColor Helper::focusOutlineColor( const QPalette& palette ) const
-    { return KColorUtils::mix( focusColor( palette ), palette.color( QPalette::WindowText ), 0.15 ); }
-
-    //____________________________________________________________________
     QColor Helper::hoverOutlineColor( const QPalette& palette ) const
     { return KColorUtils::mix( hoverColor( palette ), palette.color( QPalette::WindowText ), 0.15 ); }
 
@@ -321,7 +317,9 @@ namespace Lightly
             outline = focusColor( palette );
 
         }
-
+        
+        if ( hasFocus || mouseOver ) outline = QColor( 255, 255, 255, 30 );
+        else outline = QColor();
         return outline;
 
     }
@@ -389,7 +387,7 @@ namespace Lightly
 
     //______________________________________________________________________________
     QColor Helper::separatorColor( const QPalette& palette ) const
-    { return KColorUtils::mix( palette.color( QPalette::Window ), palette.color( QPalette::WindowText ), 0.25 ); }
+    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 30) : QColor(0, 0, 0, 30); }
 
     //______________________________________________________________________________
     QPalette Helper::disabledPalette( const QPalette& source, qreal ratio ) const
@@ -486,10 +484,17 @@ namespace Lightly
         QRectF frameRect( rect.adjusted( Metrics::Frame_FrameWidth, Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth ) );
         //QRectF frameRect(rect);
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
+        painter->setPen( Qt::NoPen );
         
         
-        if( enabled ) renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius);
-        else renderRectShadow(painter, frameRect, 0, 3, 6, 0, 1, radius, true, 10);
+        if( enabled ){ 
+            /*if( isDarkTheme( palette ) )
+                renderRectShadow(painter, frameRect, QColor( Qt::black ), 6, 2, 1, 0, 1, radius-1, true, 10);
+            else*/ 
+                renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 3, 6, 0, 1, radius);
+
+        }
+        else renderRectShadow(painter, frameRect, QColor( Qt::black ), 0, 3, 6, 0, 1, radius, true, 10);
 
         // set pen
         if( outline.isValid() )
@@ -507,7 +512,7 @@ namespace Lightly
 
         // set brush
         /*if( color.isValid() ) painter->setBrush( color );
-        else*/ painter->setBrush( palette.color( QPalette::Base ) );
+        else*/ painter->setBrush( color );
         
         
 
@@ -612,33 +617,49 @@ namespace Lightly
     
     //______________________________________________________________________________
     void Helper::renderRectShadow(
-        QPainter* painter, const QRectF& rect,
-        const int size, const float strengh1, const float strengh2, 
+        QPainter* painter, const QRectF& rect, QColor color,
+        const int size, const float param1, const float param2, 
         const int xOffset, const int yOffset, const int radius, const bool outline, const int outlineStrength ) const
     {
-        painter->setPen( Qt::NoPen );
         
         if ( outline ) { 
-            painter->setBrush( QColor( 0, 0, 0, outlineStrength ) );
-            painter -> drawRoundedRect( QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ), radius, radius );
+            painter->setPen( QColor( 0, 0, 0, outlineStrength ) );
+            painter->setBrush( Qt::NoBrush );
+            QRectF frameRect (QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ));
+            frameRect.adjust( 0.5, 0.5, -0.5, -0.5 );
+            painter -> drawRoundedRect( frameRect, radius, radius );
         }
         
         if ( size < 1 ) return;
         
-        // temporaty values
+        // Clipping prevents shadows from being visible inside widget
+        /*QRegion clip (rect.left() - size, rect.top() - size, rect.width() + size * 2, rect.height() + size * 2);
+        QRegion widgetRegion ( rect.left(), rect.top()+radius, rect.width(), rect.height() - 2*radius );
+        widgetRegion += QRegion( rect.left() + radius, rect.top(), rect.width() - 2*radius, radius ); // fill top part
+        widgetRegion += QRegion( rect.left() + radius, rect.bottom()-radius, rect.width() - 2*radius, radius ); // fill bottom part
+        
+        widgetRegion += QRegion( rect.left(), rect.top(), radius*2, radius*2, QRegion::Ellipse ); //top left corner
+        widgetRegion += QRegion( rect.left(), rect.bottom()-2*radius, radius*2, radius*2, QRegion::Ellipse ); //bottom left corner
+        widgetRegion += QRegion( rect.right()-radius*2, rect.bottom()-2*radius, radius*2, radius*2, QRegion::Ellipse ); //bottom right corner
+        widgetRegion += QRegion( rect.right()-radius*2, rect.top(), radius*2, radius*2, QRegion::Ellipse ); //top right corner
+        
+        clip -= widgetRegion;
+        painter->save();
+        painter->setClipRegion( clip );*/
+        painter->setPen( Qt::NoPen );
+        
         int tx = rect.left() - size + xOffset;
         int ty = rect.top() - size + yOffset;
         int tw = rect.width() + size * 2;
         int th = rect.height() + size * 2;
         int tr = radius + size;
         float alpha = 1;
-        
-        QColor shadowColor;
-        
+
         while (tx <= rect.left() + qMax(xOffset, yOffset)) {
             
-            shadowColor = QColor( 0, 0, 0, static_cast<int> ( alpha ) );
-            painter->setBrush( shadowColor );
+            //shadowColor = color.setAlpha( alpha );
+            color.setAlpha( alpha );
+            painter->setBrush( color );
             
             painter->drawRoundedRect( QRect(tx, ty, tw, th), tr, tr);
             
@@ -647,14 +668,16 @@ namespace Lightly
             tw -= 2;
             th -= 2;
             tr--;
-            alpha += strengh1 + alpha/strengh2;
+            alpha += param1 + alpha/param2;
         }
+        //painter->restore();
+        
     }
     
     //______________________________________________________________________________
     void Helper::renderEllipseShadow(
-        QPainter* painter, const QRectF& rect,
-        const int size, const float strengh1, const float strengh2, 
+        QPainter* painter, const QRectF& rect, QColor color,
+        const int size, const float param1, const float param2, 
         const int xOffset, const int yOffset, const bool outline, const int outlineStrength ) const
     {
         painter->setPen( Qt::NoPen );
@@ -677,8 +700,8 @@ namespace Lightly
         
         while (tx <= rect.left() + qMax(xOffset, yOffset)) {
             
-            shadowColor = QColor( 0, 0, 0, static_cast<int> ( alpha ) );
-            painter->setBrush( shadowColor );
+            color.setAlpha( alpha );
+            painter->setBrush( color );
             
             painter->drawEllipse( QRect(tx, ty, tw, th) );
             
@@ -686,7 +709,7 @@ namespace Lightly
             ty++;
             tw -= 2;
             th -= 2;
-            alpha += strengh1 + alpha/strengh2;
+            alpha += param1 + alpha/param2;
         }
     }
 
@@ -720,9 +743,9 @@ namespace Lightly
             
             if (mouseOver){
                 frameRect.translate( 0, -1 );
-                renderRectShadow(painter, frameRect, 5, 5, 9, 0, 1, shadowRadius);
+                renderRectShadow(painter, frameRect, color.darker(200), 5, 5, 9, 0, 1, shadowRadius);
             } else {
-            renderRectShadow(painter, frameRect, 3, 8, 6, 0, 1, shadowRadius);
+            renderRectShadow(painter, frameRect, QColor(Qt::black), 3, 8, 6, 0, 1, shadowRadius);
             }
         }
 
@@ -731,11 +754,11 @@ namespace Lightly
         {
 
             QLinearGradient gradient( frameRect.topLeft(), frameRect.bottomLeft() );
-            gradient.setColorAt( 0, color.lighter( hasFocus ? 105:100 ) );
-            gradient.setColorAt( 1, color.darker( hasFocus ? 110:100 ) );
+            gradient.setColorAt( 0, color.lighter( hasFocus ? 105 : mouseOver ? 115 : 100) );
+            gradient.setColorAt( 1, color.darker( hasFocus ? 110 : mouseOver ? 85 : 100 ) );
             painter->setBrush( gradient );
 
-        } else painter->setBrush( Qt::NoBrush );
+        } else painter->setBrush( Qt::NoBrush ); 
 
         // render
         painter->drawRoundedRect( frameRect, radius, radius );
@@ -842,8 +865,8 @@ namespace Lightly
         } else painter->setPen( Qt::NoPen );
 
         // set brush
-        /*if( color.isValid() ) painter->setBrush( color );
-        else*/ painter->setBrush( Qt::NoBrush );
+        if( color.isValid() ) painter->setBrush( color );
+        else painter->setBrush( Qt::NoBrush );
 
         // render
         QPainterPath path( roundedPath( frameRect, corners, radius ) );
@@ -875,7 +898,7 @@ namespace Lightly
         painter->setRenderHint( QPainter::Antialiasing, false );
         painter->setBrush( Qt::NoBrush );
         //painter->setPen( color );
-        painter->setPen( QColor(0, 0, 0, 30) );
+        painter->setPen( color );
 
         if( vertical )
         {
@@ -897,7 +920,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderLineEdit(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const bool hasFocus, const bool mouseOver, bool enabled ) const
+        const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, bool enabled ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -906,21 +929,31 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
         
         painter->setPen( Qt::NoPen );
-
+        
         if (enabled)
         {
             // draw shadow
-            if( hasFocus || mouseOver ) renderRectShadow(painter, frameRect, 5, 4, 4, 0, 1, radius);
-            else renderRectShadow(painter, frameRect, 2, 15, 2, 0, 1, radius);
+            if( hasFocus && outline.isValid() ) renderRectShadow(painter, frameRect, outline.darker(120), 6, 3, 4, 0, 1, radius);
+            if ( mouseOver && !hasFocus ) renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 4, 4, 0, 1, radius);
+            else renderRectShadow(painter, frameRect, QColor( Qt::black ), 2, 15, 1.6, 0, 1, radius, true, 6);
+        }
+        
+        if ( hasFocus && outline.isValid() )
+        {
+            painter->setBrush( alphaColor( outline, 0.6 ) ) ;
+            QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
+            painter->drawRoundedRect( focusFrame, radius + 1, radius + 1);
+            
         }
 
         // set brush
-        if( color.isValid() ) painter->setBrush( color );
+        if( background.isValid() ) painter->setBrush( background );
         else painter->setBrush( Qt::NoBrush );
+        
+        if( hasFocus ) radius--;
 
         // render
-        painter->drawRoundedRect( frameRect, radius, radius );
-
+        painter->drawRoundedRect( hasFocus ? frameRect.adjusted(1, 1, -1, -1) : frameRect, radius, radius );
     }
     
     //______________________________________________________________________________
@@ -938,7 +971,7 @@ namespace Lightly
 
         // draw shadow
         //renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius );
-        /*if (mouseOver)*/ renderRectShadow(painter, frameRect, 5, 3, 6, 0, 1, radius );
+        /*if (mouseOver)*/ renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 3, 6, 0, 1, radius );
 
         // set brush
         if( color.isValid() ) painter->setBrush( color );
@@ -979,6 +1012,7 @@ namespace Lightly
 
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
+        painter->setPen( Qt::NoPen );
         
         // check if the colorscheme is somewhat dark
         const bool darkTheme( qGray(background.rgb()) < 140 ? true : false );
@@ -992,20 +1026,17 @@ namespace Lightly
         if( sunken ) frameRect.translate(1, 1);
         else if( state != CheckOff && !mouseOver ) frameRect.translate(-1, -1);
         
-        qDebug() << animation;
-
-    
         if( state == CheckOff)
         {
             // small shadow
-            renderRectShadow(painter, frameRect, 2, 12, 3, 1, 1, radius, true, 15);
+            renderRectShadow(painter, frameRect, QColor( Qt::black ), 2, 12, 3, 1, 1, radius, true, 15);
             painter->setBrush( background );
             painter->drawRoundedRect( frameRect, radius, radius );
             
         } else if( state == CheckOn ) { //mark
             
-            if ( darkTheme ) renderRectShadow(painter, frameRect, 4, 8, 5, 1, 1, radius, true, 15);
-            else renderRectShadow(painter, frameRect, 4, 4, 6, 1, 1, radius, true, 8);
+            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? color.darker(120) : color.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, color.darker(200), 4, 4, 6, 1, 1, radius, true, 8);
             painter->setBrush( color );
             painter->drawRoundedRect( frameRect, radius, radius );
 
@@ -1030,8 +1061,8 @@ namespace Lightly
 
         } else if( state == CheckAnimated ) {
 
-            if ( darkTheme ) renderRectShadow(painter, frameRect, 4, 8, 5, 1, 1, radius, true, 15);
-            else renderRectShadow(painter, frameRect, 4, 4, 6, 1, 1, radius, true, 8);
+            if ( darkTheme ) renderRectShadow(painter, frameRect, color.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, color.darker(200), 4, 4, 6, 1, 1, radius, true, 8);
             const QRectF markerRect( frameRect.adjusted( 3, 3, -3, -3 ) );
             QPainterPath path;
             path.moveTo( markerRect.topRight() );
@@ -1069,7 +1100,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderRadioButton(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const QColor& background, const QColor& shadow,
+        const QColor& color, const QColor& background, const bool mouseOver,
         bool sunken, RadioButtonState state, qreal animation ) const
     {
 
@@ -1092,8 +1123,8 @@ namespace Lightly
         {
             
             // strong shadows don't look good with light themes
-            if ( darkTheme ) renderEllipseShadow(painter, frameRect, 4, 8, 5, 1, 1, true, 15);
-            else renderEllipseShadow(painter, frameRect, 4, 4, 6, 1, 1, true, 8);
+            if ( darkTheme ) renderEllipseShadow(painter, frameRect, mouseOver ? color.darker(110) : color.darker(200), 4, 8, 5, 1, 1, true, 15);
+            else renderEllipseShadow(painter, frameRect, mouseOver ? color.darker(110) : color.darker(200), 4, 4, 6, 1, 1, true, 8);
 
             painter->setBrush( color );
             painter->drawEllipse( frameRect );
@@ -1101,7 +1132,7 @@ namespace Lightly
             // inner ellipse
             const QRectF markerRect( frameRect.adjusted( 4, 4, -4, -4 ) );
             //renderEllipseShadow(painter, markerRect, 3, 10, 4, 1, 1, true, 15);
-            renderEllipseShadow(painter, markerRect, 0, 1, 4, 1, 1, true, 15);
+            renderEllipseShadow(painter, markerRect, QColor(0,0,0), 0, 1, 4, 1, 1, true, 15);
             painter->setBrush( darkTheme ? background.darker(120) : background.lighter(115) );
             painter->drawEllipse( markerRect );
             
@@ -1111,7 +1142,7 @@ namespace Lightly
         } else if ( state == RadioOff ) 
         {
             
-            renderEllipseShadow(painter, frameRect, 2, 12, 3, 1, 1, true, 15);
+            renderEllipseShadow(painter, frameRect, QColor(0,0,0), 2, 12, 3, 1, 1, true, 15);
             painter->setBrush( background );
             painter->drawEllipse( frameRect );
             
@@ -1147,8 +1178,24 @@ namespace Lightly
         // content
         if( color.isValid() )
         {
+            if ( color.alpha() == 255 )
+            {
+                QColor c = color;
+                QLinearGradient gradient( rect.topLeft(), rect.bottomRight() );
+                
+                c.setHsv( color.hue() < 5 ? 0 : color.hue() - 5, color.saturation(), color.value() );
+                gradient.setColorAt(0, c);
+                //qDebug() <<
+                
+                c.setHsv(color.hue() + 5, color.saturation(), color.value() );
+                gradient.setColorAt(1, c);
+                
+                painter->setBrush( gradient );
+            } else 
+                painter->setBrush( color );
+            
+            
             painter->setPen( Qt::NoPen );
-            painter->setBrush( color );
             painter->drawRoundedRect( baseRect, radius, radius );
         }
 
@@ -1234,8 +1281,7 @@ namespace Lightly
     void Helper::renderSliderHandle(
         QPainter* painter, const QRect& rect,
         const QColor& color,
-        const QColor& outline,
-        const QColor& shadow,
+        const bool focus,
         bool sunken ) const
     {
 
@@ -1244,24 +1290,17 @@ namespace Lightly
 
         // copy rect
         QRectF frameRect( rect );
-        frameRect.adjust( 1, 1, -1, -1 );
+        frameRect.adjust( 3, 3, -3, -3 );
 
         // shadow
         if( !sunken )
         {
 
-            renderEllipseShadow( painter, frameRect, shadow );
-
+            renderEllipseShadow( painter, frameRect, focus ? QColor(0,0,0) : QColor( 0, 0, 0 ), 5, 2, 5, 0, 1, true, 20 );
+            
         }
 
-        // set pen
-        if( outline.isValid() )
-        {
-
-            painter->setPen( outline );
-            frameRect = strokedRect( frameRect );
-
-        } else painter->setPen( Qt::NoPen );
+        painter->setPen( Qt::NoPen );
 
         // set brush
         if( color.isValid() ) painter->setBrush( color );
