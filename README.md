@@ -16,6 +16,15 @@ If you have any feedback or encounter some bugs, feel free to open an issue or a
 ![screenshot](https://github.com/Luwx/Lightly/blob/master/Screenshot.png)
 
 
+## Transparency
+
+The Lightly configuration file can be found at ~/.config/lightlyrc (if it does not exist, just create it or change a setting in the lightly config page in system settings). To configure the toolbar and menubar transparency, add the following line below the ```[Style]``` section: ```ToolBarOpacity=100```, where **100** is totally opaque (and no blur) and **0** is completely transparent. This setting is not exposed in the config page, yet.
+
+The entire window can also be made transparent and blurred, for this you will have to change the color scheme file directly in ~/.local/share/color-schemes. Open your desired color scheme and add a fourth value to ```BackgroundNormal```, like ```BackgroundNormal=0,0,0,127``` where the last value is the alpha.
+
+Likewise, the decoration background alpha can be changed in the ```[WM]``` section. 
+
+
 ## TO DO
 
 - [ ] Refactor and simplify the code 
