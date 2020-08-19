@@ -4995,11 +4995,12 @@ namespace Lightly
         if( useStrongFocus && ( selected || sunken ) )
         {
 
-            const auto color = _helper->focusColor( palette );
+            const auto color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
-            painter->drawRoundedRect( rect.adjusted(1, 1, -1, -1), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+            
+            painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
 
         }
 
