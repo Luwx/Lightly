@@ -93,13 +93,17 @@
       <default>false</default>
     </entry>
     
-    <!--<entry name="ToolBarDrawSeparator" type="Bool">
+    <entry name="ToolBarDrawSeparator" type="Bool">
       <default>false</default>
-    </entry>-->
+    </entry>
 
     <!-- views -->
     <entry name="ViewDrawFocusIndicator" type="Bool">
       <default>true</default>
+    </entry>
+    
+    <entry name="TransparentDolphinView" type="Bool">
+      <default>false</default>
     </entry>
 
     <!-- sliders -->

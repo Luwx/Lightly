@@ -354,7 +354,14 @@ namespace Lightly
                 }
             }
         }
-
+        
+        // hack Dolphin's view 
+        if( _isDolphin && StyleConfigData::transparentDolphinView()
+            && qobject_cast<QAbstractScrollArea*>(getParent(widget,2))
+            && !qobject_cast<QAbstractScrollArea*>(getParent(widget,3)) )
+        {
+            if( widget->autoFillBackground() )  widget->setAutoFillBackground( false );
+        }
 
         // scrollarea polishing is somewhat complex. It is moved to a dedicated method
         polishScrollArea( qobject_cast<QAbstractScrollArea*>( widget ) );
@@ -1167,11 +1174,16 @@ namespace Lightly
             }
         }
         
-        if ( (qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && StyleConfigData::toolBarOpacity() < 100 )
+        // update blur region if window is not completely blurred
+        if( widget->palette().color( QPalette::Window).alpha() == 255 )
         {
-            if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide)
+            if( (qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && StyleConfigData::toolBarOpacity() < 100 )
             {
-                _blurHelper->forceUpdate( widget->window() );
+                if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide)
+                {
+                    if( _translucentWidgets.contains( widget->window() ) )
+                        _blurHelper->forceUpdate( widget->window() );
+                }
             }
         }
 
@@ -3129,6 +3141,22 @@ namespace Lightly
         // copy palette and rect
         const auto& palette( option->palette );
         const auto& rect( option->rect );
+        
+        // from kvantum
+        if (_isDolphin)
+          {
+            if (QWidget *pw = widget->parentWidget())
+            {
+              if (StyleConfigData::transparentDolphinView()
+                  // not renaming area
+                  && !qobject_cast<QAbstractScrollArea*>(pw)
+                  // only Dolphin's view
+                  && QString(pw->metaObject()->className()).startsWith("Dolphin"))
+              {
+                return true;
+              }
+            }
+          }
 
         // detect title widgets
         const bool isTitleWidget(
@@ -5170,14 +5198,16 @@ namespace Lightly
         
         painter->setRenderHint( QPainter::Antialiasing, false );
         
-        /*if ( StyleConfigData::toolBarDrawSeparator() ) 
+        if ( StyleConfigData::toolBarDrawSeparator() ) 
         {
             painter->setPen( QColor( 0, 0, 0, _helper->isDarkTheme( palette ) ? 40 : 22 ) );
             painter->drawLine( rect.topRight(), rect.bottomRight() );
-        }*/
+        }
         
         // do nothing more if widget is opaque or should not be transparent
-        if( StyleConfigData::toolBarOpacity() == 100 ) return true;
+        if( StyleConfigData::toolBarOpacity() == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
+            return true;
+
         if( !isStylableToolbar( widget ) )
         {
             if ( _blurHelper->_sregisteredWidgets.contains( widget ) ) _blurHelper->_sregisteredWidgets.remove( widget );
@@ -5198,8 +5228,14 @@ namespace Lightly
         painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
     
         // paint background
-        painter->setBrush( _helper->alphaColor( palette.color( QPalette::Window ), opacity/100.0 ) );   
+        QColor backgroundColor = palette.color( QPalette::Window );
+        backgroundColor.setAlphaF(opacity/100.0);
+        painter->setBrush( backgroundColor );   
         painter->drawRect( rect );
+        
+        //stop here if window is transparent
+        if( widget->window()->palette().color( QPalette::Window ).alpha() < 255 ) 
+            return true;
         
         // inner shadow effect
         if( option->state & State_Horizontal )
@@ -7664,21 +7700,31 @@ namespace Lightly
     void Style::setSurfaceFormat(QWidget *widget) const
     {
 
-        if (!widget || !_helper->compositingActive() || _subApp || _isLibreoffice)
+        if( !widget || !_helper->compositingActive() || _subApp || _isLibreoffice)
             return;
         
-        if (widget->testAttribute(Qt::WA_WState_Created)
+        if( widget->testAttribute(Qt::WA_WState_Created)
             || widget->testAttribute(Qt::WA_TranslucentBackground)
             || widget->testAttribute(Qt::WA_NoSystemBackground)
             || widget->autoFillBackground() // video players like kaffeine
-            || _translucentWidgets.contains(widget))
-            return;
-        
-        if ( widget->palette().color( QPalette::Window ).alpha() == 255 && StyleConfigData::toolBarOpacity() == 100) 
+            || _translucentWidgets.contains(widget) )
             return;
 
-        if (widget->inherits("QTipLabel") || qobject_cast<QMenu*>(widget))
+        if( widget->inherits("QTipLabel") )
             return;
+        
+        else if( qobject_cast<QMenu*>(widget) )
+        {
+            qDebug() << "setting surface menu";
+            QWindow *window = widget->windowHandle();
+            if (window)
+            {
+                QSurfaceFormat format = window->format();
+                format.setAlphaBufferSize(8);
+                window->setFormat(format);
+            }
+        }
+        
         else
         {
             if ( _isPlasma || _isOpaque || !widget->isWindow() )
@@ -7700,7 +7746,10 @@ namespace Lightly
                 || widget->inherits("KScreenSaver")
                 || widget->inherits("QSplashScreen"))
             return;
-
+            
+            if( widget->palette().color( QPalette::Window ).alpha() == 255 && StyleConfigData::toolBarOpacity() == 100 ) 
+                return;
+            
             QWidget *p = widget->parentWidget();
             if (p && (/*!p->testAttribute(Qt::WA_WState_Created) // FIXME: too soon?
                     ||*/ qobject_cast<QMdiSubWindow*>(p))) // as in linguist
@@ -7818,5 +7867,16 @@ namespace Lightly
             }
         }
         return false;
+    }
+    
+    //____________________________________________________________________
+    // also checks for NULL widgets
+    QWidget* Style::getParent(const QWidget *widget, int level) const
+    {
+        if (!widget || level <= 0) return nullptr;
+        QWidget *w = widget->parentWidget();
+        for (int i = 1; i < level && w; ++i)
+            w = w->parentWidget();
+        return w;
     }
 }

@@ -478,6 +478,9 @@ namespace Lightly
         
         //* Is this a toolbar that should be styled? 
         bool isStylableToolbar(const QWidget* w, bool allowInvisible = false) const;
+        
+        //* get widget parent 
+        QWidget* getParent(const QWidget *widget, int level) const;
 
         //*@name scrollbar button types (for addLine and subLine )
         //@{
