@@ -94,9 +94,6 @@ namespace Lightly
         
         //* widget polishing
         void polish( QWidget* ) override;
-        
-        //* application unpolishing
-        void unpolish( QApplication* ) override;
 
         //* widget unpolishing
         void unpolish( QWidget* ) override;

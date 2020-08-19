@@ -187,7 +187,7 @@ namespace Lightly
                         
                         if (tb && tb->isVisible()) region += QRegion( QRect( tb->pos(), tb->rect().size() ) );
                     }
-                    qDebug() << region;
+                    //qDebug() << region;
                     return region;
                     
                 }

@@ -61,9 +61,9 @@ namespace Lightly
         connect( _scrollBarSubLineButtons, SIGNAL(currentIndexChanged(int)), SLOT(updateChanged()) );
         connect( _windowDragMode, SIGNAL(currentIndexChanged(int)), SLOT(updateChanged()) );
         connect( _menuOpacity, &QAbstractSlider::valueChanged, this, &StyleConfig::updateChanged );
-        //connect( _toolBarOpacity, &QAbstractSlider::valueChanged, this, &StyleConfig::updateChanged );
-        //connect( _kTextEditDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
-        //connect( _widgetDrawShadow, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
+        connect( _toolBarOpacity, &QAbstractSlider::valueChanged, this, &StyleConfig::updateChanged );
+        connect( _kTextEditDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
+        connect( _widgetDrawShadow, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
 
     }
 
@@ -86,9 +86,9 @@ namespace Lightly
         StyleConfigData::setAnimationsDuration( _animationsDuration->value() );
         StyleConfigData::setWindowDragMode( _windowDragMode->currentIndex() );
         StyleConfigData::setMenuOpacity( _menuOpacity->value() );
-        //StyleConfigData::setToolBarOpacity( _toolBarOpacity->value() );
-        //StyleConfigData::setKTextEditDrawFrame( _kTextEditDrawFrame->isChecked() );
-        //StyleConfigData::setWidgetDrawShadow( _widgetDrawShadow->isChecked() );
+        StyleConfigData::setToolBarOpacity( _toolBarOpacity->value() );
+        StyleConfigData::setKTextEditDrawFrame( _kTextEditDrawFrame->isChecked() );
+        StyleConfigData::setWidgetDrawShadow( _widgetDrawShadow->isChecked() );
         
 
         StyleConfigData::self()->save();
@@ -138,9 +138,9 @@ namespace Lightly
         else if( _animationsDuration->value() != StyleConfigData::animationsDuration() ) modified = true;
         else if( _windowDragMode->currentIndex() != StyleConfigData::windowDragMode() ) modified = true;
         else if( _menuOpacity->value() != StyleConfigData::menuOpacity() ) modified = true;
-        //else if( _toolBarOpacity->value() != StyleConfigData::toolBarOpacity() ) modified = true;
-        //else if( _kTextEditDrawFrame->isChecked() != StyleConfigData::kTextEditDrawFrame() ) modified = true;
-        //else if( _widgetDrawShadow->isChecked() != StyleConfigData::widgetDrawShadow() ) modified = true;
+        else if( _toolBarOpacity->value() != StyleConfigData::toolBarOpacity() ) modified = true;
+        else if( _kTextEditDrawFrame->isChecked() != StyleConfigData::kTextEditDrawFrame() ) modified = true;
+        else if( _widgetDrawShadow->isChecked() != StyleConfigData::widgetDrawShadow() ) modified = true;
         
         
 
@@ -168,9 +168,9 @@ namespace Lightly
         _animationsDuration->setValue( StyleConfigData::animationsDuration() );
         _windowDragMode->setCurrentIndex( StyleConfigData::windowDragMode() );
         _menuOpacity->setValue( StyleConfigData::menuOpacity() );
-        //_toolBarOpacity->setValue( StyleConfigData::toolBarOpacity() );
-        //_kTextEditDrawFrame->setChecked( StyleConfigData::kTextEditDrawFrame() );
-        //_widgetDrawShadow->setChecked( StyleConfigData::widgetDrawShadow() );
+        _toolBarOpacity->setValue( StyleConfigData::toolBarOpacity() );
+        _kTextEditDrawFrame->setChecked( StyleConfigData::kTextEditDrawFrame() );
+        _widgetDrawShadow->setChecked( StyleConfigData::widgetDrawShadow() );
 
 
     }

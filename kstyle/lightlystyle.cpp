@@ -232,6 +232,8 @@ namespace Lightly
         if ( _opaqueApps.contains(appName, Qt::CaseInsensitive) )
             _isOpaque = true;
         
+        if (_translucentWidgets.size() > 0) _translucentWidgets.clear();
+        
         // base class polishing
         ParentStyleClass::polish( app );
     }
@@ -538,26 +540,6 @@ namespace Lightly
             }
         }
 
-    }
-    
-    //_______________________________________________________________
-    void Style::unpolish( QApplication* app )
-    {
-        QSetIterator<QWidget*> i(_translucentWidgets);
-        while (i.hasNext())
-        {
-            if (QWidget *w = i.next())
-            {
-                w->setAttribute(Qt::WA_NoSystemBackground, false);
-        #if (QT_VERSION < QT_VERSION_CHECK(5,13,1))
-                w->setAttribute(Qt::WA_TranslucentBackground, false);
-
-        #endif
-            }
-        }
-        
-        _translucentWidgets.clear();
-        ParentStyleClass::unpolish( app );
     }
 
     //_______________________________________________________________

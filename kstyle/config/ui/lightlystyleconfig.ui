@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>264</height>
+    <width>563</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,25 +39,6 @@
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="6" column="1">
-        <widget class="QLabel" name="_windowDragLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>W&amp;indows' drag mode:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buddy">
-          <cstring>_windowDragMode</cstring>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="1" colspan="4">
         <widget class="QCheckBox" name="_viewDrawFocusIndicator">
          <property name="text">
@@ -65,20 +46,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="_mnemonicsLabel">
-         <property name="text">
-          <string>&amp;Keyboard accelerators visibility:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buddy">
-          <cstring>_mnemonicsMode</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2" colspan="2">
+       <item row="6" column="2" colspan="2">
         <widget class="QComboBox" name="_mnemonicsMode">
          <item>
           <property name="text">
@@ -97,20 +65,33 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="4">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="0" column="1" colspan="4">
+        <widget class="QCheckBox" name="_tabBarDrawCenteredTabs">
+         <property name="text">
+          <string>Center tabbar tabs</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>65</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
+        </widget>
        </item>
-       <item row="6" column="2" colspan="2">
+       <item row="7" column="1">
+        <widget class="QLabel" name="_windowDragLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>W&amp;indows' drag mode:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>_windowDragMode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2" colspan="2">
         <widget class="QComboBox" name="_windowDragMode">
          <item>
           <property name="text">
@@ -129,7 +110,20 @@
          </item>
         </widget>
        </item>
-       <item row="7" column="1" colspan="3">
+       <item row="6" column="1">
+        <widget class="QLabel" name="_mnemonicsLabel">
+         <property name="text">
+          <string>&amp;Keyboard accelerators visibility:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>_mnemonicsMode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" colspan="3">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -142,13 +136,6 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="1" colspan="4">
-        <widget class="QCheckBox" name="_tabBarDrawCenteredTabs">
-         <property name="text">
-          <string>Center tabbar tabs</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1" colspan="4">
         <widget class="QCheckBox" name="_toolBarDrawItemSeparator">
          <property name="text">
@@ -156,17 +143,37 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="4">
+       <item row="4" column="1" colspan="4">
         <widget class="QCheckBox" name="_sliderDrawTickMarks">
          <property name="text">
           <string>Draw slider tick marks</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="4">
+       <item row="6" column="4">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>65</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="1" colspan="4">
         <widget class="QCheckBox" name="_splitterProxyEnabled">
          <property name="text">
           <string>Enable extended resize handles</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="_widgetDrawShadow">
+         <property name="text">
+          <string>Draw widget shadow</string>
          </property>
         </widget>
        </item>
@@ -257,6 +264,13 @@
         <widget class="QCheckBox" name="_titleWidgetDrawFrame">
          <property name="text">
           <string>Draw frame around page titles</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="_kTextEditDrawFrame">
+         <property name="text">
+          <string>Draw frame around KTextEdit</string>
          </property>
         </widget>
        </item>
@@ -518,6 +532,54 @@
          </property>
         </spacer>
        </item>
+       <item row="8" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>ToolBar:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="_toolBarOpacity">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="singleStep">
+            <number>1</number>
+           </property>
+           <property name="pageStep">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>100</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="invertedAppearance">
+            <bool>false</bool>
+           </property>
+           <property name="invertedControls">
+            <bool>false</bool>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksBelow</enum>
+           </property>
+           <property name="tickInterval">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -576,4 +638,4 @@
    </hints>
   </connection>
  </connections>
-</ui> 
+</ui>
