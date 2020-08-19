@@ -56,7 +56,7 @@ namespace Lightly
         LineEdit_FrameWidth = 5 + Frame_FrameWidth,
 
         // menu items
-        Menu_FrameWidth = 0,
+        Menu_FrameWidth = 4,
         MenuItem_MarginWidth = 5,
         MenuItem_MarginHeight = 3,
         MenuItem_ItemSpacing = 4,

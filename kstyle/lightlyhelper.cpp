@@ -422,42 +422,6 @@ namespace Lightly
     }
 
     //______________________________________________________________________________
-    void Helper::renderFocusRect( QPainter* painter, const QRect& rect, const QColor& color, const QColor& outline, Sides sides ) const
-    {
-        if( !color.isValid() ) return;
-
-        painter->save();
-        painter->setRenderHints( QPainter::Antialiasing );
-        painter->setBrush( color );
-
-        if( !( outline.isValid() && sides ) )
-        {
-
-            painter->setPen( Qt::NoPen );
-            painter->drawRect( rect );
-
-        } else {
-
-            painter->setClipRect( rect );
-
-            QRectF copy( strokedRect( rect ) );
-
-            const qreal radius( frameRadius( PenWidth::Frame, -1 ) );
-            if( !(sides&SideTop) ) copy.adjust( 0, -radius, 0, 0 );
-            if( !(sides&SideBottom) ) copy.adjust( 0, 0, 0, radius );
-            if( !(sides&SideLeft) ) copy.adjust( -radius, 0, 0, 0 );
-            if( !(sides&SideRight) ) copy.adjust( 0, 0, radius, 0 );
-
-            painter->setPen( outline );
-            // painter->setBrush( Qt::NoBrush );
-            painter->drawRoundedRect( copy, radius, radius );
-
-        }
-
-        painter->restore();
-   }
-
-    //______________________________________________________________________________
     void Helper::renderFocusLine( QPainter* painter, const QRect& rect, const QColor& color ) const
     {
         if( !color.isValid() ) return;

@@ -587,7 +587,7 @@ namespace Lightly
 
             // frame width
             case PM_DefaultFrameWidth:
-            if( qobject_cast<const QMenu*>( widget ) ) return Metrics::Menu_FrameWidth;
+            if( qobject_cast<const QMenu*>( widget ) ) return 4;
             if( qobject_cast<const QLineEdit*>( widget ) ) return Metrics::LineEdit_FrameWidth;
             else if( isQtQuickControl( option, widget ) )
             {
@@ -4860,10 +4860,14 @@ namespace Lightly
         if( useStrongFocus && ( selected || sunken ) )
         {
 
-            QColor outlineColor;
-            if( sunken ) outlineColor = _helper->focusColor( palette );
-            else if( selected ) outlineColor = _helper->hoverColor( palette );
-            _helper->renderFocusRect( painter, rect, outlineColor );
+            QColor backgroundColor;
+            if( sunken ) backgroundColor = _helper->focusColor( palette );
+            else if( selected ) backgroundColor = _helper->hoverColor( palette );
+            
+            painter->setRenderHints( QPainter::Antialiasing );
+            painter->setBrush( backgroundColor );
+            painter->setPen( Qt::NoPen );
+            painter->drawRoundedRect( rect.adjusted(1, 1, -1, -1), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
 
         }
 
@@ -4992,17 +4996,10 @@ namespace Lightly
         {
 
             const auto color = _helper->focusColor( palette );
-
-            Sides sides = nullptr;
-            if( !menuItemOption->menuRect.isNull() )
-            {
-                if( rect.top() <= menuItemOption->menuRect.top() ) sides |= SideTop;
-                if( rect.bottom() >= menuItemOption->menuRect.bottom() ) sides |= SideBottom;
-                if( rect.left() <= menuItemOption->menuRect.left() ) sides |= SideLeft;
-                if( rect.right() >= menuItemOption->menuRect.right() ) sides |= SideRight;
-            }
-
-            _helper->renderFocusRect( painter, rect, color, QColor(), sides );
+            painter->setRenderHints( QPainter::Antialiasing );
+            painter->setBrush( color );
+            painter->setPen( Qt::NoPen );
+            painter->drawRoundedRect( rect.adjusted(1, 1, -1, -1), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
 
         }
 

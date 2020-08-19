@@ -149,9 +149,6 @@ namespace Lightly
         //* debug frame
         void renderDebugFrame( QPainter*, const QRect& ) const;
 
-        //* focus rect
-        void renderFocusRect( QPainter*, const QRect&, const QColor&, const QColor& outline = QColor(), Sides = {} ) const;
-
         //* focus line
         void renderFocusLine( QPainter*, const QRect&, const QColor& ) const;
 
