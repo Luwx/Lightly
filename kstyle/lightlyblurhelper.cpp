@@ -36,23 +36,27 @@
 #include <QEvent>
 #include <QMainWindow>
 #include <QMenu>
+#include <QPair>
+#include <QRegularExpression>
 #include <QToolBar>
 #include <QVector>
 #include <QDebug>
 namespace
 {
 	
-    QRegion roundedRegion(const QRect &rect, int radius, bool top, bool bottom)
+    QRegion roundedRegion(const QRect &rect, int radius, bool topLeft, bool topRight, bool bottomLeft, bool bottomRight)
     {
         QRegion region(rect, QRegion::Rectangle);
 
-        if (top) {
+        if (topLeft) {
             // Round top-left corner.
             const QRegion topLeftCorner(rect.x(), rect.y(), radius, radius, QRegion::Rectangle);
             const QRegion topLeftRounded(rect.x(), rect.y(), 2 * radius, 2 * radius, QRegion::Ellipse);
             const QRegion topLeftEar = topLeftCorner - topLeftRounded;
             region -= topLeftEar;
+        }
         
+        if (topRight) {
             // Round top-right corner.
             const QRegion topRightCorner(
                 rect.x() + rect.width() - radius, rect.y(),
@@ -64,7 +68,7 @@ namespace
             region -= topRightEar;
         }
 
-        if (bottom) {
+        if (bottomRight) {
             // Round bottom-right corner.
             const QRegion bottomRightCorner(
                 rect.x() + rect.width() - radius, rect.y() + rect.height() - radius,
@@ -74,7 +78,9 @@ namespace
                 2 * radius, 2 * radius, QRegion::Ellipse);
             const QRegion bottomRightEar = bottomRightCorner - bottomRightRounded;
             region -= bottomRightEar;
+        }
         
+        if (bottomLeft){
             // Round bottom-left corner.
             const QRegion bottomLeftCorner(
                 rect.x(), rect.y() + rect.height() - radius,
@@ -100,13 +106,15 @@ namespace Lightly
     }
 
     //___________________________________________________________
-    void BlurHelper::registerWidget(QWidget* widget)
+    void BlurHelper::registerWidget(QWidget* widget, const bool isDolphin)
     {
         // install event filter
         addEventFilter(widget);
 
         // schedule shadow area repaint
         update(widget);
+        
+        _isDolphin = isDolphin;
     }
 
     //___________________________________________________________
@@ -159,40 +167,125 @@ namespace Lightly
             && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeMenu)) // not a detached menu
             || widget->inherits("QComboBoxPrivateContainer"))
         {
-            return roundedRegion(rect, Metrics::Frame_FrameRadius, true, true);
+            return roundedRegion(rect, Metrics::Frame_FrameRadius, true, true, true, true);
         } 
         else 
             {
                 // blur entire window
                 if( widget->palette().color( QPalette::Window ).alpha() < 255 )
-                    return roundedRegion(rect, Metrics::Frame_FrameRadius, false, true);
+                    return roundedRegion(rect, Metrics::Frame_FrameRadius, false, false, true, true);
                 
-                // blur only main toolbar and menubar
-                else if( StyleConfigData::toolBarOpacity() < 100 )
+                // blur specific widgets
+                QRegion region;
+                
+                // toolbar and menubar
+                if( StyleConfigData::toolBarOpacity() < 100 )
                 {
-                    QRegion region;
-                    
+                    // menubar
+                    int menubarHeight = 0;
                     if ( QMainWindow *mw = qobject_cast<QMainWindow*>( widget ) )
                     {
                         if ( QWidget *mb = mw->menuWidget() ) 
                         {
-                            if (mb->isVisible()) region += mb->rect();
+                            if ( mb->isVisible() )
+                            {
+                                region += mb->rect();
+                                menubarHeight = mb->height();
+                            }
                         }
                     }
                 
-                    if( !_sregisteredWidgets.isEmpty() )
-                    {
-                        QSet<const QObject*>::const_iterator i = _sregisteredWidgets.constBegin();
-                        const QToolBar *tb = qobject_cast<const QToolBar*>( *i );
-                        
-                        if (tb && tb->isVisible()) region += QRegion( QRect( tb->pos(), tb->rect().size() ) );
-                    }
-                    //qDebug() << region;
-                    return region;
+                    QList<QToolBar *> toolbars = widget->window()->findChildren<QToolBar *>( QString(), Qt::FindDirectChildrenOnly );
+                    QRect mainToolbar = QRect();
                     
+                    // just assuming
+                    Qt::Orientation orientation = Qt::Vertical;
+                    
+                    // find which one is the main toolbar
+                    for( auto tb : toolbars )
+                    {
+                        // single toolbar
+                        if ( tb && tb->isVisible() && toolbars.length() == 1 ) {
+                            region += QRegion( QRect( tb->pos(), tb->rect().size() ) );
+                            orientation = tb->orientation();
+                        }
+                        
+                        else 
+                        {
+                            if( mainToolbar.isNull() ) {
+                                mainToolbar = QRect( tb->pos(), tb->rect().size() );
+                                orientation = tb->orientation();
+                            }
+                            
+                            // test against the previous best caditate
+                            else
+                            {
+                                if( (tb->y() < mainToolbar.y()) || (tb->y() == mainToolbar.y() && tb->x() < mainToolbar.x()) ) {
+                                    mainToolbar = QRect( tb->pos(), tb->rect().size() );
+                                    orientation = tb->orientation();
+                                }
+                            }
+                        }
+                    }
+                    
+                    if ( mainToolbar.isValid() )
+                    {
+    
+                        // make adjustments
+                        if( orientation == Qt::Horizontal )
+                        {
+                            // toolbar may be at the top but not ocupy the whole avaliable width
+                            // so we blur the whole area instead
+                            if( mainToolbar.y() == 0 || mainToolbar.y() == menubarHeight )
+                            {
+                                mainToolbar.setX( 0 );
+                                mainToolbar.setWidth( widget->width() );
+                                region += mainToolbar;
+                            }
+                            
+                            // round corners if it is at the bottom
+                            else if ( mainToolbar.y() + mainToolbar.height() == widget->height() )
+                                region += roundedRegion( mainToolbar, Metrics::Frame_FrameRadius,  false, false, false, true );
+                            
+                            //else
+                            //    region += mainToolbar;
+                            
+                        } else {
+                            
+                            // round bottom left
+                            if( mainToolbar.x() == 0 ) 
+                                region += roundedRegion( mainToolbar, Metrics::Frame_FrameRadius,  false, false, true, false );
+                            
+                            // round bottom right
+                            else if( mainToolbar.x() + mainToolbar.width() == widget->width() ) 
+                                region += roundedRegion( mainToolbar, Metrics::Frame_FrameRadius,  false, false, false, true );
+                            
+                            // no round corners
+                            //else region += mainToolbar; //FIXME: is this valid?
+                        }
+                        
+                    }
                 }
-                
-                else return QRegion();
+
+                // dolphin's sidebar
+                if( StyleConfigData::dolphinSidebarOpacity() < 100 && _isDolphin )
+                {
+                    QList<QWidget *> sidebars = widget->findChildren<QWidget *>( QRegularExpression("^(places|terminal|info|folders)Dock$"), Qt::FindDirectChildrenOnly );
+
+                    for ( auto sb : sidebars )
+                    {
+                        if ( sb && sb->isVisible() )
+                        {
+                            if( sb->x() == 0 ) 
+                                region += roundedRegion( QRect( sb->pos(), sb->rect().size() ), Metrics::Frame_FrameRadius, false, false, true, false);
+                            else if ( sb->x() + sb->width() == widget->width() ) 
+                                region += roundedRegion( QRect( sb->pos(), sb->rect().size() ), Metrics::Frame_FrameRadius, false, false, false, true);
+                            else region += QRect( sb->pos(), sb->rect().size() );
+                        }
+                    }
+                }
+                    
+                return region;
             }
         }   
 
@@ -210,7 +303,7 @@ namespace Lightly
         if (region.isNull()) return;
         
         KWindowEffects::enableBlurBehind(widget->isWindow() ? widget->winId() : widget->window()->winId(), true, region);
-        //KWindowEffects::enableBackgroundContrast (widget->isWindow() ? widget->winId() : widget->window()->winId(), true, 1.0, 1.2, 1.3, blurRegion(widget));
+        KWindowEffects::enableBackgroundContrast (widget->isWindow() ? widget->winId() : widget->window()->winId(), true, 1.0, 1.2, 1.3, region );
 
         // force update
         if (widget->isVisible()) {

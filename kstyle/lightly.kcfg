@@ -94,7 +94,7 @@
     </entry>
     
     <entry name="ToolBarDrawSeparator" type="Bool">
-      <default>false</default>
+      <default>true</default>
     </entry>
 
     <!-- views -->
@@ -103,7 +103,7 @@
     </entry>
     
     <entry name="TransparentDolphinView" type="Bool">
-      <default>false</default>
+      <default>true</default>
     </entry>
 
     <!-- sliders -->
@@ -113,6 +113,11 @@
     
     <!-- shadows on widgets -->
     <entry name="WidgetDrawShadow" type="Bool">
+      <default>true</default>
+    </entry>
+    
+    <!-- window -->
+    <entry name="RoundBottomCorners" type="Bool">
       <default>true</default>
     </entry>
 
@@ -209,6 +214,10 @@
     
      <entry name="ToolBarOpacity" type="Int">
         <default>80</default>
+    </entry>
+    
+    <entry name="DolphinSidebarOpacity" type="Int">
+        <default>60</default>
     </entry>
 
   </group>

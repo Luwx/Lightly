@@ -224,6 +224,8 @@ namespace Lightly
             _isLibreoffice = true;
         else if (appName == "dolphin")
             _isDolphin = true;
+        else if (appName == "kdevelop")
+            _isKdevelop = true;
         else if (appName == "plasma" || appName.startsWith("plasma-")
                 || appName == "plasmashell" // Plasma5
                 || appName == "kded4") // this is for the infamous appmenu
@@ -288,8 +290,6 @@ namespace Lightly
                      addEventFilter( widget );
             }
         }
-
-        //if (widget->inherits("DolphinDockWidget")) qDebug() << widget << widget->rect();
         
         // translucent (window) color scheme support
         switch (widget->windowFlags() & Qt::WindowType_Mask) {
@@ -316,10 +316,8 @@ namespace Lightly
                 {
                     break;
                 }
-                //if ( widget->testAttribute( Qt::WA_TranslucentBackground ) && !_translucentWidgets.contains( widget ) ) break;
                 
-                // color scheme must have non opaque alpha
-                if ( widget->palette().color( widget->backgroundRole() ).alpha() == 255 && StyleConfigData::toolBarOpacity() == 100) break;
+                if ( !_helper->shouldWindowHaveAlpha( widget->palette(), _isDolphin ) || _isOpaque ) break;
                 
                 /* take all precautions */
                 if (!_subApp && !_isLibreoffice
@@ -340,16 +338,16 @@ namespace Lightly
                     widget->setAttribute( Qt::WA_StyledBackground );
                     _translucentWidgets.insert( widget );
                     
-                    //QWindow *window = widget->windowHandle();
-                    //QSurfaceFormat format = window->format();
-                    //qDebug() << widget  << ", format:" << format.alphaBufferSize();
-                    
                     // paint the background in event filter
                     addEventFilter( widget );
                     
                     // blur
-                    if( widget->palette().color( widget->backgroundRole() ).alpha() < 255 )
-                        _blurHelper->registerWidget( widget );
+                    if( widget->palette().color( widget->backgroundRole() ).alpha() < 255 
+                        || StyleConfigData::toolBarOpacity() < 100
+                        || (StyleConfigData::dolphinSidebarOpacity() < 100 && _isDolphin ) )
+                    {
+                        _blurHelper->registerWidget( widget, _isDolphin );
+                    }
                     
                 }
             }
@@ -447,7 +445,7 @@ namespace Lightly
             setTranslucentBackground( widget );
 
             if ( _helper->hasAlphaChannel( widget ) && StyleConfigData::menuOpacity() < 100 ) {
-                _blurHelper->registerWidget( widget->window() );
+                _blurHelper->registerWidget( widget->window(), false );
             }
 
         } else if( qobject_cast<QCommandLinkButton*>( widget ) ) {
@@ -611,7 +609,24 @@ namespace Lightly
 
             }
             
-            if ( widget && widget->inherits( "KTextEditor::View" ) && !StyleConfigData::kTextEditDrawFrame()) return 0;
+            else if( widget && widget->inherits( "KTextEditor::View" ) && !StyleConfigData::kTextEditDrawFrame() && !_isKdevelop ) return 0;
+            
+            // from kvantum
+            else if ( widget && _isDolphin )
+            {
+                if (QWidget *pw = widget->parentWidget())
+                {
+                    if (StyleConfigData::transparentDolphinView()
+                        // not renaming area
+                        && !qobject_cast<QAbstractScrollArea*>(pw)
+                        // only Dolphin's view
+                        && QString(pw->metaObject()->className()).startsWith("Dolphin"))
+                    {
+                        // for the top and bottom separators
+                        return 1;
+                    }
+                }
+            }
 
             // fallback
             return Metrics::Frame_FrameWidth;
@@ -1162,13 +1177,45 @@ namespace Lightly
                         if ( !_translucentWidgets.contains( widget ) ) break;
                         QPainter p(widget);
                         p.setClipRegion(static_cast<QPaintEvent*>(event)->region());
-                        p.fillRect(widget->rect(), QColor( widget->palette().color( QPalette::Window)));
+                        p.setRenderHint( QPainter::Antialiasing, true );
+                        
+                        if( StyleConfigData::roundBottomCorners() ) {
+                            //_helper->roundedPath( widget->rect(), CornersBottom, Metrics::Frame_FrameRadius );
+                            p.setBrush( widget->palette().color( QPalette::Window ) );
+                            p.setPen( Qt::NoPen );
+                            QPainterPath path = _helper->roundedPath( widget->rect(), CornersBottom, Metrics::Frame_FrameRadius );
+                            p.drawPath( path );
+                        } else {
+                            p.fillRect(widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
+                        }
+                        
+                        p.setRenderHint( QPainter::Antialiasing, false );
+                        
+                        // separator between the window and decoration
                         if( StyleConfigData::toolBarOpacity() < 100 )
                         {
                             p.setBrush( Qt::NoBrush );
                             p.setPen( QColor( 0,0,0,40 ) );
                             p.drawLine(widget->rect().topLeft(), widget->rect().topRight());
                         }
+                        
+                        // shadow between toolbar and the rest of the window
+                        if( (widget->palette().color( QPalette::Window ).alpha()/255)*100  < StyleConfigData::toolBarOpacity() )
+                        {
+                            if( LightlyPrivate::possibleTranslucentToolBars.size() == 1 )
+                            {
+                                QSet<const QWidget *>::const_iterator i = LightlyPrivate::possibleTranslucentToolBars.constBegin();
+                                const QToolBar *tb = qobject_cast<const QToolBar*>( *i );
+                                
+                                if( tb ){
+                                    if( tb->orientation() == Qt::Horizontal){ 
+                                        p.setPen( QColor( 0,0,0,40 ) );
+                                        p.drawLine(widget->rect().topLeft() + QPoint( 0, tb->y() + tb->height() ), widget->rect().topRight() + QPoint( 0, tb->y() + tb->height() ) ); 
+                                    }
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -1362,10 +1409,83 @@ namespace Lightly
                 _helper->renderMenuFrame( &painter, rect, background, outline, false );
 
             } else if( StyleConfigData::dockWidgetDrawFrame() || (dockWidget->features()&QDockWidget::AllDockWidgetFeatures) ) {
-
+    
                 _helper->renderFrame( &painter, rect, background, palette, outline );
 
+            } else {
+                
+                if( _isDolphin && dockWidget->inherits("DolphinDockWidget") )
+                {
+                    painter.setRenderHints( QPainter::Antialiasing, false );
+                    // erase the alpha
+                    painter.setBrush( Qt::black );
+                    painter.setCompositionMode( QPainter::CompositionMode_DestinationOut );
+                    painter.drawRect( rect );
+                    painter.setCompositionMode( QPainter::CompositionMode_SourceOver ); 
+                    
+                    // draw background
+                    QColor backgroundColor = palette.color( QPalette::Window );
+                    backgroundColor.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
+                    painter.setBrush( backgroundColor );
+                    
+                    if( StyleConfigData::roundBottomCorners() && dockWidget->x() == 0)
+                    {
+                        painter.setRenderHints( QPainter::Antialiasing, true );
+                        QPainterPath path = _helper->roundedPath( rect, CornerBottomLeft, Metrics::Frame_FrameRadius );
+                        painter.setPen( Qt::NoPen );
+                        painter.drawPath( path );
+                        painter.setRenderHints( QPainter::Antialiasing, false );
+                    }
+                    else painter.fillRect( rect, backgroundColor );
+                    
+                    // top shadow
+                    if( StyleConfigData::dolphinSidebarOpacity() <   StyleConfigData::toolBarOpacity() )
+                    {
+                        painter.setBrush( Qt::NoBrush );
+                        painter.setPen( QColor(0, 0, 0, 40) );
+                        painter.drawLine( rect.topLeft(), rect.topRight() );
+                        
+                        painter.setPen( QColor(0, 0, 0, 16) );
+                        painter.drawLine( rect.topLeft() + QPoint(0, 1), rect.topRight() + QPoint(0, 1) );
+                        
+                        painter.setPen( QColor(0, 0, 0, 4) );
+                        painter.drawLine( rect.topLeft() + QPoint(0, 2), rect.topRight() + QPoint(0, 2) );
+                        
+                        painter.setPen( QColor(0, 0, 0, 3) );
+                        painter.drawLine( rect.topLeft() + QPoint(0, 3), rect.topRight() + QPoint(0, 3) );
+                        
+                        painter.setPen( QColor(0, 0, 0, 1) );
+                        painter.drawLine( rect.topLeft() + QPoint(0, 4), rect.topRight() + QPoint(0, 4) );
+                    }
+                    
+                    // side shadow
+                    if( StyleConfigData::dolphinSidebarOpacity() < ( palette.color( QPalette::Window ).alpha()/255 )*100 )
+                    {
+                        painter.setBrush( Qt::NoBrush );
+                        QLinearGradient gradient( rect.topLeft(), rect.bottomLeft() );
+                        gradient.setColorAt( 0, QColor(0,0,0,0) );
+                        gradient.setColorAt( 0.1, QColor(0,0,0,40) );
+                        gradient.setColorAt( 1, QColor(0,0,0,40) );
+                        //painter.setPen( QPen(gradient, 1) );
+                        painter.setPen( QColor(0,0,0,40) );
+                        painter.drawLine( rect.topRight(), rect.bottomRight() );
+                        
+                        gradient.setColorAt( 0.1, QColor(0,0,0,12) );
+                        gradient.setColorAt(1, QColor(0,0,0,12) );
+                        //painter.setPen( QPen(gradient, 1) );
+                        painter.setPen( QColor(0,0,0,12) );
+                        painter.drawLine( rect.topRight() - QPoint(1, 0), rect.bottomRight() - QPoint(1, 0) );
+                        
+                        gradient.setColorAt( 0.1, QColor(0,0,0,3) );
+                        gradient.setColorAt(1, QColor(0,0,0,3) );
+                        //painter.setPen( QPen(gradient, 1) );
+                        painter.setPen( QColor(0,0,0,3) );
+                        painter.drawLine( rect.topRight() - QPoint(2, 0), rect.bottomRight() - QPoint(2, 0) );
+                    }
+                }
+                
             }
+            
 
         }
 
@@ -3153,6 +3273,12 @@ namespace Lightly
                   // only Dolphin's view
                   && QString(pw->metaObject()->className()).startsWith("Dolphin"))
               {
+                QRect copy = rect.adjusted(12, 0, -12, 0);
+                painter->setRenderHint( QPainter::Antialiasing, false );
+                painter->setBrush( Qt::NoBrush );
+                painter->setPen( QColor(0, 0, 0, 30) );
+                painter->drawLine( copy.topLeft(), copy.topRight());
+                painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
                 return true;
               }
             }
@@ -3438,7 +3564,7 @@ namespace Lightly
 
         // get rect, orientation, palette
         const auto rect( option->rect );
-        const auto outline( _helper->frameOutlineColor( option->palette ) );
+        const auto outline( QColor(0,0,0,1) );
 
         // setup painter
         painter->setBrush( Qt::NoBrush );
@@ -5198,23 +5324,14 @@ namespace Lightly
         
         painter->setRenderHint( QPainter::Antialiasing, false );
         
-        if ( StyleConfigData::toolBarDrawSeparator() ) 
-        {
-            painter->setPen( QColor( 0, 0, 0, _helper->isDarkTheme( palette ) ? 40 : 22 ) );
-            painter->drawLine( rect.topRight(), rect.bottomRight() );
-        }
-        
         // do nothing more if widget is opaque or should not be transparent
         if( StyleConfigData::toolBarOpacity() == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
             return true;
 
         if( !isStylableToolbar( widget ) )
         {
-            if ( _blurHelper->_sregisteredWidgets.contains( widget ) ) _blurHelper->_sregisteredWidgets.remove( widget );
             return true;
         }
-        else if( !_blurHelper->_sregisteredWidgets.contains( widget ) ) _blurHelper->_sregisteredWidgets.insert( widget );
-        
         
         //qDebug() << _blurHelper->_sregisteredWidgets;
         const int opacity = StyleConfigData::toolBarOpacity();
@@ -5233,49 +5350,80 @@ namespace Lightly
         painter->setBrush( backgroundColor );   
         painter->drawRect( rect );
         
-        //stop here if window is transparent
-        if( widget->window()->palette().color( QPalette::Window ).alpha() < 255 ) 
+        if( StyleConfigData::toolBarDrawSeparator() && !_isDolphin )
+        {
+            painter->setBrush( Qt::NoBrush );   
+            painter->setPen( QColor(0,0,0,40) );
+            painter->drawLine( rect.bottomLeft(), rect.bottomRight() );
+        }
+            
+        
+        //stop here if the window is more transparent
+        if( widget->window()->palette().color( QPalette::Window ).alpha() < (opacity/100.0)*255 ) 
             return true;
+        
+        //if( opacity == 100 )
+            
         
         // inner shadow effect
         if( option->state & State_Horizontal )
         {
             bool bellowMenuBar = false;
-            if (QMainWindow *mw = qobject_cast<QMainWindow*>(widget->parentWidget()))
+            if( QMainWindow *mw = qobject_cast<QMainWindow*>( widget->parentWidget() ) )
             {
-                if (QWidget *mb = mw->menuWidget())
+                if( QWidget *mb = mw->menuWidget() )
                 {
-                    if (mb->isVisible())
+                    if( mb->isVisible() )
                     {
-                        if (mb->y()+mb->height() == widget->y()) bellowMenuBar = true;
+                        if( mb->y()+mb->height() == widget->y() ) bellowMenuBar = true;
                     }
                 }
             }
+            
             // top toolbar 
             if ( bellowMenuBar || widget->y() == 0 )
             {
+                QRect copy = rect;
+                
+                // adjust shadow rect if there is no widget "above" the toolbar
+                if( _isDolphin && StyleConfigData::dolphinSidebarOpacity() < 100 )
+                {
+                    QList<QWidget *> sidebars = widget->window()->findChildren<QWidget *>( QRegularExpression("^(places|terminal|info|folders)Dock$"), Qt::FindDirectChildrenOnly );
+                    for( auto sb : sidebars )
+                    {
+                        // directly bellow the toolbar
+                        if( sb->isVisible() && sb->y() == widget->y() + widget->height() )
+                        {
+                            // left sidebar
+                            if( sb->x() == 0 ) copy.adjust(  sb->width(), 0, 0, 0 );
+                            // right sidebar
+                            else copy.adjust(  0, 0, -sb->width(), 0 );
+                        }
+                    }
+                }
+                
                 painter->setBrush( Qt::NoBrush );
-                QLinearGradient gradient( rect.bottomLeft(), rect.bottomRight() );
-                gradient.setColorAt( 0, QColor(0,0,0,40/2) );
+                QLinearGradient gradient( copy.bottomLeft(), copy.bottomRight() );
+                gradient.setColorAt( 0, QColor(0,0,0,0) );
                 gradient.setColorAt( 0.02, QColor(0,0,0,40) );
                 gradient.setColorAt( 0.98, QColor(0,0,0,40) );
                 gradient.setColorAt( 1, QColor(0,0,0,40/2) );
                 painter->setPen( QPen(gradient, 1) );
-                painter->drawLine( rect.bottomLeft(), rect.bottomRight() );
+                painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
                 
-                gradient.setColorAt( 0, QColor(0,0,0,12/2) );
+                //gradient.setColorAt( 0, QColor(0,0,0,0) );
                 gradient.setColorAt( 0.02, QColor(0,0,0,12) );
                 gradient.setColorAt( 0.98, QColor(0,0,0,12) );
                 gradient.setColorAt( 1, QColor(0,0,0,12/2) );
                 painter->setPen( QPen(gradient, 1) );
-                painter->drawLine( rect.bottomLeft() - QPoint(0, 1), rect.bottomRight() - QPoint(0, 1) );
+                painter->drawLine( copy.bottomLeft() - QPoint(0, 1), copy.bottomRight() - QPoint(0, 1) );
                 
-                gradient.setColorAt( 0, QColor(0,0,0,3/2) );
+                //gradient.setColorAt( 0, QColor(0,0,0,0) );
                 gradient.setColorAt( 0.02, QColor(0,0,0,3) );
                 gradient.setColorAt( 0.98, QColor(0,0,0,3) );
                 gradient.setColorAt( 1, QColor(0,0,0,3/2) );
                 painter->setPen( QPen(gradient, 1) );
-                painter->drawLine( rect.bottomLeft() - QPoint(0, 2), rect.bottomRight() - QPoint(0, 2) );
+                painter->drawLine( copy.bottomLeft() - QPoint(0, 2), copy.bottomRight() - QPoint(0, 2) );
             }
             // bottom toolbar
             else
@@ -6076,17 +6224,15 @@ namespace Lightly
             if( selected )
             {
 
-                corners = CornerBottomLeft|CornerBottomRight;
-                rect.adjust( 0, - 1, 0, 0 );
+                corners = AllCorners;
+                //rect.adjust( 0, - 1, 0, 0 );
 
             } else {
 
-                rect.adjust( 0, 1, 0, 0 );
-                if( isFirst ) corners |= CornerBottomLeft;
-                if( isLast ) corners |= CornerBottomRight;
-                if( isRightOfSelected ) rect.adjust( -Metrics::Frame_FrameRadius, 0, 0, 0 );
-                if( isLeftOfSelected ) rect.adjust( 0, 0, Metrics::Frame_FrameRadius, 0 );
-                else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
+                //rect.adjust( 0, 1, 0, 0 );
+                if( isFirst ) corners = CornersLeft;
+                if( isLast ) corners = CornersRight;
+                //else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
 
             }
             break;
@@ -7715,7 +7861,6 @@ namespace Lightly
         
         else if( qobject_cast<QMenu*>(widget) )
         {
-            qDebug() << "setting surface menu";
             QWindow *window = widget->windowHandle();
             if (window)
             {
@@ -7727,8 +7872,8 @@ namespace Lightly
         
         else
         {
-            if ( _isPlasma || _isOpaque || !widget->isWindow() )
-            return;
+            if ( _isPlasma || _isOpaque || !widget->isWindow() || !_helper->shouldWindowHaveAlpha( widget->palette(), _isDolphin )) return;
+            
             switch (widget->windowFlags() & Qt::WindowType_Mask) {
             case Qt::Window:
             case Qt::Dialog:
@@ -7746,9 +7891,6 @@ namespace Lightly
                 || widget->inherits("KScreenSaver")
                 || widget->inherits("QSplashScreen"))
             return;
-            
-            if( widget->palette().color( QPalette::Window ).alpha() == 255 && StyleConfigData::toolBarOpacity() == 100 ) 
-                return;
             
             QWidget *p = widget->parentWidget();
             if (p && (/*!p->testAttribute(Qt::WA_WState_Created) // FIXME: too soon?

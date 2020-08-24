@@ -50,7 +50,7 @@ namespace Lightly
         BlurHelper( QObject* );
 
         //! register widget
-        void registerWidget( QWidget* );
+        void registerWidget( QWidget*, const bool isDolphin );
 
         //! register widget
         void unregisterWidget( QWidget* );
@@ -62,8 +62,6 @@ namespace Lightly
         void forceUpdate( QWidget* widget )
         { if( widget->isWindow() ) update( widget ); }
         
-        //! set of registered widgets
-        QSet<const QObject*> _sregisteredWidgets;
 
         protected:
 
@@ -79,6 +77,11 @@ namespace Lightly
 
         //! update blur regions for given widget
         void update( QWidget* ) const;
+        
+        private:
+        
+        bool _isDolphin = false;
+            
 
     };
 

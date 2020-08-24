@@ -64,6 +64,8 @@ namespace Lightly
         connect( _toolBarOpacity, &QAbstractSlider::valueChanged, this, &StyleConfig::updateChanged );
         connect( _kTextEditDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _widgetDrawShadow, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
+        connect( _roundBottomCorners, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
+        connect( _transparentDolphinView, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
 
     }
 
@@ -89,7 +91,8 @@ namespace Lightly
         StyleConfigData::setToolBarOpacity( _toolBarOpacity->value() );
         StyleConfigData::setKTextEditDrawFrame( _kTextEditDrawFrame->isChecked() );
         StyleConfigData::setWidgetDrawShadow( _widgetDrawShadow->isChecked() );
-        
+        StyleConfigData::setRoundBottomCorners( _roundBottomCorners->isChecked() );
+        StyleConfigData::setTransparentDolphinView( _transparentDolphinView->isChecked() );
 
         StyleConfigData::self()->save();
 
@@ -141,7 +144,8 @@ namespace Lightly
         else if( _toolBarOpacity->value() != StyleConfigData::toolBarOpacity() ) modified = true;
         else if( _kTextEditDrawFrame->isChecked() != StyleConfigData::kTextEditDrawFrame() ) modified = true;
         else if( _widgetDrawShadow->isChecked() != StyleConfigData::widgetDrawShadow() ) modified = true;
-        
+        else if( _roundBottomCorners->isChecked() != StyleConfigData::roundBottomCorners() ) modified = true;
+        else if( _transparentDolphinView->isChecked() != StyleConfigData::transparentDolphinView() ) modified = true;
         
 
         emit changed(modified);
@@ -171,6 +175,8 @@ namespace Lightly
         _toolBarOpacity->setValue( StyleConfigData::toolBarOpacity() );
         _kTextEditDrawFrame->setChecked( StyleConfigData::kTextEditDrawFrame() );
         _widgetDrawShadow->setChecked( StyleConfigData::widgetDrawShadow() );
+        _roundBottomCorners->setChecked( StyleConfigData::widgetDrawShadow() );
+        _transparentDolphinView->setChecked( StyleConfigData::transparentDolphinView() );
 
 
     }

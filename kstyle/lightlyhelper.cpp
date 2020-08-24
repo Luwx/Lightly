@@ -695,7 +695,7 @@ namespace Lightly
         // reduce the size of the actual button, the rest will be the shadow
         frameRect.adjust( 5, 5, -5, -5 );
         
-        qreal radius( frameRadius() );
+        qreal radius( frameRadius() - 1 );
         
         if( sunken ) {
 
@@ -1719,6 +1719,19 @@ namespace Lightly
     //____________________________________________________________________
     bool Helper::hasAlphaChannel( const QWidget* widget ) const
     { return compositingActive() && widget && widget->testAttribute( Qt::WA_TranslucentBackground ); }
+    
+    //____________________________________________________________________
+    bool Helper::shouldWindowHaveAlpha( const QPalette& palette, bool isDolphin ) const
+    { 
+        if( StyleConfigData::toolBarOpacity() < 100
+            || ( StyleConfigData::dolphinSidebarOpacity() < 100 && isDolphin )
+            || StyleConfigData::roundBottomCorners()
+            || palette.color( QPalette::Window ).alpha() < 255 )
+        {
+            return true;
+        }
+        return false;
+    }
 
     //______________________________________________________________________________________
     qreal Helper::devicePixelRatio( const QPixmap& pixmap ) const

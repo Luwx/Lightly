@@ -271,6 +271,9 @@ namespace Lightly
         //* returns true if a given widget supports alpha channel
         bool hasAlphaChannel( const QWidget* ) const;
         
+        //* returns true if the window should have an alpha channel
+        bool shouldWindowHaveAlpha( const QPalette&, bool isDolphin ) const;
+        
         //* returns true if a given palette has dark colors 
         bool isDarkTheme( const QPalette& palette) const
         { return qGray( palette.color( QPalette::Window ).rgb() ) > 110 ? false : true; }
@@ -298,7 +301,7 @@ namespace Lightly
         QPixmap coloredIcon(const QIcon &icon, const QPalette& palette, const QSize &size,
                             QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off);
 
-        protected:
+        //protected:
 
         //* return rounded path in a given rect, with only selected corners rounded, and for a given radius
         QPainterPath roundedPath( const QRectF&, Corners, qreal ) const;

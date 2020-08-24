@@ -558,6 +558,7 @@ namespace Lightly
         bool _isLibreoffice = false;
         bool _isPlasma = false;
         bool _isDolphin = false;
+        bool _isKdevelop = false;
         //* So far, only VirtualBox has introduced itself as "Qt-subapplication" and doesn't accept compositing. 
         bool _subApp = false;
         //* Some apps shouldn't have translucent windows. 
