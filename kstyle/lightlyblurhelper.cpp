@@ -179,7 +179,7 @@ namespace Lightly
                 QRegion region;
                 
                 // toolbar and menubar
-                if( StyleConfigData::toolBarOpacity() < 100 )
+                if( _translucentTitlebar )
                 {
                     // menubar
                     int menubarHeight = 0;

@@ -231,8 +231,9 @@ namespace Lightly
                 || appName == "kded4") // this is for the infamous appmenu
             _isPlasma = true;
 
-        if ( _opaqueApps.contains(appName, Qt::CaseInsensitive) )
+        if ( StyleConfigData::opaqueApps().contains(appName, Qt::CaseInsensitive) )
             _isOpaque = true;
+
         
         if (_translucentWidgets.size() > 0) _translucentWidgets.clear();
         
@@ -281,7 +282,7 @@ namespace Lightly
             widget->clearMask();
         }
 
-        if ((qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && StyleConfigData::toolBarOpacity() < 100) 
+        if ((qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF()*100.0 < 100) 
         {
             // only accept top most widgets, besides the main window
             if ( !widget->isWindow() && widget->parentWidget()->isWindow() ){
@@ -343,7 +344,7 @@ namespace Lightly
                     
                     // blur
                     if( widget->palette().color( widget->backgroundRole() ).alpha() < 255 
-                        || StyleConfigData::toolBarOpacity() < 100
+                        || _helper->titleBarColor( true ).alphaF()*100.0 < 100
                         || (StyleConfigData::dolphinSidebarOpacity() < 100 && _isDolphin ) )
                     {
                         _blurHelper->registerWidget( widget, _isDolphin );
@@ -970,7 +971,7 @@ namespace Lightly
             
             case PE_PanelButtonCommand: fcn = &Style::drawPanelButtonCommandPrimitive; break;
             case PE_PanelButtonTool: fcn = &Style::drawPanelButtonToolPrimitive; break;
-            case PE_PanelScrollAreaCorner: fcn = &Style::drawPanelScrollAreaCornerPrimitive; break;
+            case PE_PanelScrollAreaCorner: break; // TODO: delete? fcn = &Style::drawPanelScrollAreaCornerPrimitive; break;
             case PE_PanelMenu: fcn = &Style::drawPanelMenuPrimitive; break;
             case PE_PanelMenuBar: fcn = &Style::emptyPrimitive; break;
             case PE_PanelTipLabel: fcn = &Style::drawPanelTipLabelPrimitive; break;
@@ -1192,7 +1193,7 @@ namespace Lightly
                         p.setRenderHint( QPainter::Antialiasing, false );
                         
                         // separator between the window and decoration
-                        if( StyleConfigData::toolBarOpacity() < 100 )
+                        if( _helper->titleBarColor( true ).alphaF()*100.0 < 100 )
                         {
                             p.setBrush( Qt::NoBrush );
                             p.setPen( QColor( 0,0,0,40 ) );
@@ -1200,7 +1201,7 @@ namespace Lightly
                         }
                         
                         // shadow between toolbar and the rest of the window
-                        if( (widget->palette().color( QPalette::Window ).alpha()/255)*100  < StyleConfigData::toolBarOpacity() )
+                        if( (widget->palette().color( QPalette::Window ).alpha()/255)*100  < _helper->titleBarColor( true ).alphaF()*100.0 )
                         {
                             if( LightlyPrivate::possibleTranslucentToolBars.size() == 1 )
                             {
@@ -1224,7 +1225,7 @@ namespace Lightly
         // update blur region if window is not completely blurred
         if( widget->palette().color( QPalette::Window).alpha() == 255 )
         {
-            if( (qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && StyleConfigData::toolBarOpacity() < 100 )
+            if( (qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF()*100.0 < 100 )
             {
                 if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide)
                 {
@@ -1244,7 +1245,7 @@ namespace Lightly
     {
 
         switch( event->type() )
-        {
+        {   // TODO: delete
             case QEvent::Paint:
             {
 
@@ -1279,8 +1280,8 @@ namespace Lightly
                 painter.setBrush( background );
 
                 // render
-                foreach( auto* child, children )
-                { painter.drawRect( child->geometry() ); }
+                //foreach( auto* child, children )
+                //{ painter.drawRect( child->geometry() ); }
 
             }
             break;
@@ -1414,7 +1415,7 @@ namespace Lightly
 
             } else {
                 
-                if( _isDolphin && dockWidget->inherits("DolphinDockWidget") )
+                if( _isDolphin && dockWidget->inherits("DolphinDockWidget") && _translucentWidgets.contains( dockWidget->window() ) )
                 {
                     painter.setRenderHints( QPainter::Antialiasing, false );
                     // erase the alpha
@@ -1439,7 +1440,7 @@ namespace Lightly
                     else painter.fillRect( rect, backgroundColor );
                     
                     // top shadow
-                    if( StyleConfigData::dolphinSidebarOpacity() <   StyleConfigData::toolBarOpacity() )
+                    if( StyleConfigData::dolphinSidebarOpacity() <   _helper->titleBarColor( true ).alphaF()*100.0 )
                     {
                         painter.setBrush( Qt::NoBrush );
                         painter.setPen( QColor(0, 0, 0, 40) );
@@ -1461,7 +1462,7 @@ namespace Lightly
                     // side shadow
                     if( StyleConfigData::dolphinSidebarOpacity() < ( palette.color( QPalette::Window ).alpha()/255 )*100 )
                     {
-                        painter.setBrush( Qt::NoBrush );
+                        /*painter.setBrush( Qt::NoBrush );
                         QLinearGradient gradient( rect.topLeft(), rect.bottomLeft() );
                         gradient.setColorAt( 0, QColor(0,0,0,0) );
                         gradient.setColorAt( 0.1, QColor(0,0,0,40) );
@@ -1480,7 +1481,14 @@ namespace Lightly
                         gradient.setColorAt(1, QColor(0,0,0,3) );
                         //painter.setPen( QPen(gradient, 1) );
                         painter.setPen( QColor(0,0,0,3) );
-                        painter.drawLine( rect.topRight() - QPoint(2, 0), rect.bottomRight() - QPoint(2, 0) );
+                        painter.drawLine( rect.topRight() - QPoint(2, 0), rect.bottomRight() - QPoint(2, 0) );*/
+                        
+                        QRect shadowRect ( rect.topRight(), QSize(30, rect.height() ) );
+                        
+                        _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 0.04, 10, 0, 3, 2 );
+                        _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 0.5, 2, 0, 3, 1 );
+                        _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 1, 12, 2, 0, 3, 1 );
+                        
                     }
                 }
                 
@@ -1679,6 +1687,9 @@ namespace Lightly
 
         // load helper configuration
         _helper->loadConfig();
+        
+        //update blurhelper
+        _blurHelper->setTranslucentTitlebar( _helper->titleBarColor( true ).alphaF() < 1.0 ? true : false );
 
         // reinitialize engines
         _animations->setupEngines();
@@ -4852,7 +4863,7 @@ namespace Lightly
     bool Style::drawMenuBarEmptyAreaControl( const QStyleOption* option, QPainter* painter, const QWidget* widget) const
     {
         if (!widget) return true;
-        if ( StyleConfigData::toolBarOpacity() == 100 ) return true;
+        if ( _helper->titleBarColor( true ).alphaF()*100.0 == 100 || !_translucentWidgets.contains( widget->window() ) ) return true;
         
         const auto& rect( option->rect );
         
@@ -4864,7 +4875,7 @@ namespace Lightly
         painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
         
         // draw background
-        int opacity = StyleConfigData::toolBarOpacity();
+        int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
         painter->fillRect(rect, _helper->alphaColor(option->palette.color( QPalette::Window ), opacity/100.0) );
         
         
@@ -4920,7 +4931,8 @@ namespace Lightly
         const auto& rect( option->rect );
         const auto& palette( option->palette );
         
-        if ( widget && StyleConfigData::toolBarOpacity() < 100 ){
+        if ( widget && _helper->titleBarColor( true ).alphaF()*100.0 < 100 && _translucentWidgets.contains( widget->window() ) )
+        {
             
             // erase the alpha
             painter->setBrush( Qt::black );
@@ -4930,7 +4942,7 @@ namespace Lightly
             painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
 
             // draw background
-            int opacity = StyleConfigData::toolBarOpacity();
+            int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
             painter->fillRect(rect, _helper->alphaColor(option->palette.color( QPalette::Window ), opacity/100.0) );
             
             bool shouldDrawShadow = false;
@@ -5186,7 +5198,7 @@ namespace Lightly
             const auto shadow( _helper->shadowColor( palette ) );
             const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, color, palette.color( QPalette::Button ), shadow, sunken, true, state );
+            _helper->renderCheckBox( painter, checkBoxRect, color.lighter(115), palette.color( QPalette::Button ), shadow, sunken, true, state );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -5325,8 +5337,11 @@ namespace Lightly
         painter->setRenderHint( QPainter::Antialiasing, false );
         
         // do nothing more if widget is opaque or should not be transparent
-        if( StyleConfigData::toolBarOpacity() == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
+        if( (_helper->titleBarColor( true ).alphaF()*100.0 == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
+            || !_translucentWidgets.contains( widget->window() ) )
+        {
             return true;
+        }
 
         if( !isStylableToolbar( widget ) )
         {
@@ -5334,7 +5349,7 @@ namespace Lightly
         }
         
         //qDebug() << _blurHelper->_sregisteredWidgets;
-        const int opacity = StyleConfigData::toolBarOpacity();
+        const int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
         
         painter->setPen( Qt::NoPen );
 
@@ -6310,21 +6325,56 @@ namespace Lightly
         if( selected )
         {
             Corners b;
-            //background    //only works with north tab shape for now
+            int shadow_size = 7; //TODO: put in metrics
+            //background    //only works with horizontal tab shape for now
             if( isFirst ){ 
                 rect.adjust(1, 0, 0, 0);
                 _helper->renderTabBarTab( painter, rect.adjusted(-1, 0, 0, 0), _helper->alphaColor( palette.color( QPalette::Shadow ), 0.2 ), QColor(), CornersLeft );
                 painter->save();
-                painter->setClipRegion(rect.adjusted(-1, -1, 7, 1));
-                _helper->renderRectShadow( painter, option->rect, color.darker(200), 7, 2, 4, 0, 0, Metrics::Frame_FrameRadius);
+                
+                painter->setClipRegion(rect.adjusted(-1, -1, shadow_size, 1));
+                
+                // shadow mask
+                QPixmap mask( rect.width()+shadow_size*2, rect.height()+shadow_size*2 );
+                mask.fill( Qt::transparent );
+                QPainter p( &mask );
+                p.setRenderHint( QPainter::Antialiasing );
+                p.setPen( Qt::NoPen );
+                p.setBrush( Qt::black );
+                p.fillRect( QRect( QPoint( 0, 0 ), mask.size() ), Qt::black );
+                p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+                p.drawRoundedRect( QRect( shadow_size - 1, shadow_size , rect.width() + shadow_size, rect.height() ), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+                
+                // shadow
+                QRect target( QRect(rect.topLeft() - QPoint(shadow_size, shadow_size), QSize( rect.width()+shadow_size*2, rect.height()+shadow_size*2 ) )  );
+                QPixmap shadow = _helper->renderRectShadow( mask, rect, color.darker(200), shadow_size, 2, 4, 0, 0, Metrics::Frame_FrameRadius );
+                
+                painter->drawPixmap( target, shadow );
                 painter->restore();
             }
             else if( isLast ) {
                 rect.adjust(0, 0, -1, 0);
                 _helper->renderTabBarTab( painter, rect.adjusted(0, 0, 1, 0), _helper->alphaColor( palette.color( QPalette::Shadow ), 0.2 ), QColor(), CornersRight );
                 painter->save();
-                painter->setClipRegion(rect.adjusted(-7, 0, 1, 1));
-                _helper->renderRectShadow( painter, option->rect, color.darker(200), 7, 2, 4, 0, 0, Metrics::Frame_FrameRadius);
+                
+                painter->setClipRegion(rect.adjusted(-shadow_size, 0, 1, 1));
+                
+                // shadow mask
+                QPixmap mask( rect.width()+shadow_size*2, rect.height()+shadow_size*2 );
+                mask.fill( Qt::transparent );
+                QPainter p( &mask );
+                p.setRenderHint( QPainter::Antialiasing );
+                p.setPen( Qt::NoPen );
+                p.setBrush( Qt::black );
+                p.fillRect( QRect( QPoint( 0, 0 ), mask.size() ), Qt::black );
+                p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+                p.drawRoundedRect( QRect( 0, shadow_size , rect.width() + shadow_size + 1, rect.height() ), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+                
+                // shadow
+                QRect target( QRect(rect.topLeft() - QPoint(shadow_size, shadow_size), QSize( rect.width()+shadow_size*2, rect.height()+shadow_size*2 ) )  );
+                QPixmap shadow = _helper->renderRectShadow( mask, rect, color.darker(200), shadow_size, 2, 4, 0, 0, Metrics::Frame_FrameRadius );
+                
+                painter->drawPixmap( target, shadow );
                 painter->restore();
                 
             }

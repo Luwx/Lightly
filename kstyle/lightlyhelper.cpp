@@ -65,6 +65,7 @@ namespace Lightly
         _activeTitleBarTextColor = group.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) );
         _inactiveTitleBarColor = group.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) );
         _inactiveTitleBarTextColor = group.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) );
+        
     }
 
     //____________________________________________________________________
@@ -633,8 +634,44 @@ namespace Lightly
             th -= 2;
             tr--;
             alpha += param1 + alpha/param2;
+            alpha = alpha > 255 ? 255 : alpha;
         }
         //painter->restore();
+        
+    }
+    
+    //______________________________________________________________________________
+    QPixmap Helper::renderRectShadow(
+        const QPixmap& mask, const QRectF& rect, QColor color,
+        const int size, const float param1, const float param2, 
+        const int xOffset, const int yOffset, const int radius, const bool outline, const int outlineStrength ) const
+    {
+        
+        //TODO: test with different offsets
+        
+        QPixmap pixmap = QPixmap(rect.width()+size*2, rect.height()+size*2);
+        pixmap.fill( Qt::transparent );
+        
+        QPainter p( &pixmap );
+        p.setRenderHint( QPainter::Antialiasing );
+        
+        QRectF copy( QPoint(size, size), QSize(rect.width(), rect.height() ) );
+        
+        //shadow rect
+        //p.setPen( Qt::NoPen );
+        //p.setBrush( Qt::green );
+        //p.drawRect( QRect(0, 0, rect.width()+size*2, rect.height()+size*2 ) );
+        //Debug() << rect;
+    
+        renderRectShadow( &p, copy, color, size, param1, param2, xOffset, yOffset, radius, outline, outlineStrength );
+        
+        if( !mask.isNull() && mask.size() == pixmap.size() )
+        {
+            p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+            p.drawPixmap( QRect(0, 0, pixmap.width(), pixmap.height() ), mask);
+        }
+        
+        return pixmap;
         
     }
     
@@ -707,9 +744,9 @@ namespace Lightly
             
             if (mouseOver){
                 frameRect.translate( 0, -1 );
-                renderRectShadow(painter, frameRect, color.darker(200), 5, 5, 9, 0, 1, shadowRadius);
+                renderRectShadow( painter, frameRect, color.darker(200), 5, 5, 9, 0, 1, shadowRadius );
             } else {
-            renderRectShadow(painter, frameRect, QColor(Qt::black), 3, 8, 6, 0, 1, shadowRadius);
+                renderRectShadow(painter, frameRect, QColor(Qt::black), 3, 8, 6, 0, 1, shadowRadius);
             }
         }
 
@@ -988,7 +1025,7 @@ namespace Lightly
 
         // float and sunken effect
         if( sunken ) frameRect.translate(1, 1);
-        else if( state != CheckOff && !mouseOver ) frameRect.translate(-1, -1);
+        else if( state == CheckOn || (state == CheckOff && mouseOver) ) frameRect.translate(-1, -1);
         
         if( state == CheckOff)
         {
@@ -999,10 +1036,41 @@ namespace Lightly
             
         } else if( state == CheckOn ) { //mark
             
-            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? color.darker(120) : color.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
-            else renderRectShadow(painter, frameRect, color.darker(200), 4, 4, 6, 1, 1, radius, true, 8);
+            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? color.darker(140) : color.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, color.darker(220), 4, 4, 6, 1, 1, radius, true, 8);
             painter->setBrush( color );
             painter->drawRoundedRect( frameRect, radius, radius );
+            
+            
+            //draw check icon
+            painter->setBrush( Qt::NoBrush );
+            
+            QPen pen = QPen();
+            pen.setWidth(2);
+            pen.setCapStyle( Qt::RoundCap );
+            
+            pen.setColor( QColor( 0, 0, 0, 100 ) );
+            painter->setPen( pen );
+            
+            QPainterPath checkShadow;
+            checkShadow.moveTo(7.01, 13.95);
+            checkShadow.cubicTo(7.67, 14.64, 8.31, 15.29, 8.95, 16.12);
+            checkShadow.cubicTo(9.58, 16.95, 10.23, 17.99, 10.78, 17.87);
+            checkShadow.cubicTo(11.33, 17.76, 12.3, 16.34, 13.52, 14.55);
+            checkShadow.cubicTo(14.75, 12.76, 16.38, 10.38, 18.01, 8.0);
+
+            painter->drawPath( checkShadow );
+
+            QPainterPath check;
+            pen.setColor(Qt::white);
+            painter->setPen( pen );
+            check.moveTo(7.01, 12.95);
+            check.cubicTo(7.67, 13.64, 8.31, 14.29, 8.95, 15.12);
+            check.cubicTo(9.58, 15.95, 10.23, 16.99, 10.78, 16.87);
+            check.cubicTo(11.33, 16.76, 12.3, 15.34, 13.52, 13.55);
+            check.cubicTo(14.75, 11.76, 16.38, 9.38, 18.01, 7.0);
+
+            painter->drawPath( check );
 
         } else if( state == CheckPartial ) {
 
@@ -1723,7 +1791,7 @@ namespace Lightly
     //____________________________________________________________________
     bool Helper::shouldWindowHaveAlpha( const QPalette& palette, bool isDolphin ) const
     { 
-        if( StyleConfigData::toolBarOpacity() < 100
+        if( _activeTitleBarColor.alphaF() < 1.0
             || ( StyleConfigData::dolphinSidebarOpacity() < 100 && isDolphin )
             || StyleConfigData::roundBottomCorners()
             || palette.color( QPalette::Window ).alpha() < 255 )

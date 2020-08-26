@@ -164,6 +164,8 @@ namespace Lightly
         //* shadow for rounded (or not) rectangles
         void renderRectShadow(QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
         
+        QPixmap renderRectShadow( const QPixmap& mask, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
+        
         //* shadow for ellipses
         void renderEllipseShadow(QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;
         

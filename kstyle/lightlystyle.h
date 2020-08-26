@@ -551,9 +551,6 @@ namespace Lightly
         //* set of transparent widgets (as defined in ::polish)
         QSet<QWidget*> _translucentWidgets;
         
-        //* list of apps that shouldn't have window translucency 
-        QStringList _opaqueApps = QStringList() << "kscreenlocker" << "wine" << "vlc"; //should this be here?
-        
         //* LibreOffice and Plasma need workarounds.
         bool _isLibreoffice = false;
         bool _isPlasma = false;

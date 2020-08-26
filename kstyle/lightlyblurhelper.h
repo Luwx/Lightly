@@ -62,6 +62,8 @@ namespace Lightly
         void forceUpdate( QWidget* widget )
         { if( widget->isWindow() ) update( widget ); }
         
+        void setTranslucentTitlebar( bool value )
+        { _translucentTitlebar = value; }
 
         protected:
 
@@ -81,6 +83,7 @@ namespace Lightly
         private:
         
         bool _isDolphin = false;
+        bool _translucentTitlebar = false;
             
 
     };
