@@ -30,7 +30,7 @@ Lightly configuration page can be found in the KDE system settings under the App
 
 Most of these options are inherited from Breeze style, but Lightly has a few exclusive options that are enabled by default, including:
 
-* Round bottom corners. When this option is enabled, Lightly will try to round the window's bottom corners whenever it's possible. This **will not work** if the window has a widget that covers it's background, like a text editor or a terminal. If you want all windows to have rounded corners I recommend [] or a similar effect.
+* Round bottom corners. When this option is enabled, Lightly will try to round the window's bottom corners whenever it's possible. This **will not work** if the window has a widget that covers it's background, like a text editor or a terminal. If you want all windows to have rounded corners I recommend https://github.com/alex47/KDE-Rounded-Corners or a similar effect.
 
 * Transparent Dolphin view (under the **frames** tab). This option disables the background and shadows of Dolphin view widget and draws top and bottom separators when the view has scrollable content.
 
