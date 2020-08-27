@@ -587,7 +587,9 @@ namespace Lightly
         const int xOffset, const int yOffset, const int radius, const bool outline, const int outlineStrength ) const
     {
         
-        if ( outline ) { 
+        if( !StyleConfigData::widgetDrawShadow() ) return;
+        
+        if( outline ) { 
             painter->setPen( QColor( 0, 0, 0, outlineStrength ) );
             painter->setBrush( Qt::NoBrush );
             QRectF frameRect (QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ));
@@ -595,7 +597,7 @@ namespace Lightly
             painter -> drawRoundedRect( frameRect, radius, radius );
         }
         
-        if ( size < 1 ) return;
+        if( size < 1 ) return;
         
         // Clipping prevents shadows from being visible inside widget
         /*QRegion clip (rect.left() - size, rect.top() - size, rect.width() + size * 2, rect.height() + size * 2);

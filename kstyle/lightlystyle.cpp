@@ -1472,7 +1472,7 @@ namespace Lightly
                     else painter.fillRect( rect, backgroundColor );
                     
                     // top shadow
-                    if( StyleConfigData::dolphinSidebarOpacity() <   _helper->titleBarColor( true ).alphaF()*100.0 )
+                    if( StyleConfigData::dolphinSidebarOpacity() <   _helper->titleBarColor( true ).alphaF()*100.0 && StyleConfigData::widgetDrawShadow() )
                     {
                         painter.setBrush( Qt::NoBrush );
                         painter.setPen( QColor(0, 0, 0, 40) );
@@ -4965,7 +4965,7 @@ namespace Lightly
         const auto& rect( option->rect );
         const auto& palette( option->palette );
         
-        if ( widget && _helper->titleBarColor( true ).alphaF()*100.0 < 100 && _translucentWidgets.contains( widget->window() ) )
+        if ( widget && _helper->titleBarColor( true ).alphaF()*100.0 < 100 && _translucentWidgets.contains( widget->window() ) && StyleConfigData::widgetDrawShadow() )
         {
             
             // erase the alpha
@@ -5297,7 +5297,7 @@ namespace Lightly
             if( useStrongFocus && ( selected || sunken ) ) arrowColor = palette.color( QPalette::HighlightedText );
             else if( sunken ) arrowColor = _helper->focusColor( palette );
             else if( selected ) arrowColor = _helper->hoverColor( palette );
-            else arrowColor = _helper->arrowColor( palette, QPalette::WindowText );
+            else arrowColor = _helper->arrowColor( palette, QPalette::Text );
 
             // render
             _helper->renderArrow( painter, arrowRect, arrowColor, orientation );
@@ -5319,7 +5319,7 @@ namespace Lightly
             painter->setFont( menuItemOption->font );
 
             // color role
-            const QPalette::ColorRole role = (useStrongFocus && ( selected || sunken )) ? QPalette::HighlightedText : QPalette::WindowText;
+            const QPalette::ColorRole role = (useStrongFocus && ( selected || sunken )) ? QPalette::HighlightedText : QPalette::Text;
 
             // locate accelerator and render
             const int tabPosition( text.indexOf( QLatin1Char( '\t' ) ) );
@@ -5411,9 +5411,8 @@ namespace Lightly
         if( widget->window()->palette().color( QPalette::Window ).alpha() < (opacity/100.0)*255 ) 
             return true;
         
-        //if( opacity == 100 )
+        if( !StyleConfigData::widgetDrawShadow() ) return true;
             
-        
         // inner shadow effect
         if( option->state & State_Horizontal )
         {
