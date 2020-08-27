@@ -3986,7 +3986,7 @@ namespace Lightly
         if( widget && !widget->isWindow() ) return true;
 
         const auto& palette( option->palette );
-        //const auto outline( _helper->frameOutlineColor( palette ) );
+        const auto outline( _helper->isDarkTheme( palette ) ? QColor( 255, 255, 255, 30) : QColor() );
         const bool hasAlpha( _helper->hasAlphaChannel( widget ) );
         //auto background( _helper->frameBackgroundColor( palette ) );
         auto background (palette.color( QPalette::Base ));
@@ -3995,7 +3995,7 @@ namespace Lightly
             background.setAlphaF(StyleConfigData::menuOpacity() / 100.0);
         }
 
-        _helper->renderMenuFrame( painter, option->rect, background, QColor(), hasAlpha );
+        _helper->renderMenuFrame( painter, option->rect, background, outline, hasAlpha );
 
         return true;
 
