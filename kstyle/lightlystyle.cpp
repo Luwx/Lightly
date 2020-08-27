@@ -1257,8 +1257,40 @@ namespace Lightly
                 // get scrollarea horizontal and vertical containers
                 QWidget* child( nullptr );
                 QList<QWidget*> children;
-                if( ( child = scrollArea->findChild<QWidget*>( "qt_scrollarea_vcontainer" ) ) && child->isVisible() )
-                { children.append( child ); }
+                if( ( child = scrollArea->findChild<QWidget*>( "qt_scrollarea_vcontainer" ) ) )
+                { 
+                    if( child->isVisible() ){
+                        children.append( child );
+                        
+                        if( scrollArea->inherits( "KItemListContainer" ) )
+                        {
+                            QWidget *parent = scrollArea->parentWidget();
+                            if( parent && parent->inherits( "DolphinView" ) ){
+                                // update if needed
+                                if( !scrollArea->property("VISIBLE-SEPARATORS").toBool() ) {
+                                    scrollArea->setProperty( "VISIBLE-SEPARATORS", true );
+                                    scrollArea->update();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if( scrollArea->inherits( "KItemListContainer" ) )
+                        {
+                            QWidget *parent = scrollArea->parentWidget();
+                            if( parent && parent->inherits( "DolphinView" ) )
+                            {
+                                // update if needed
+                                if( scrollArea->property("VISIBLE-SEPARATORS").toBool() ) {
+                                    scrollArea->setProperty( "VISIBLE-SEPARATORS", false );
+                                    scrollArea->update();
+                                }
+                            }
+                        }
+                    }
+                    
+                }
 
                 if( ( child = scrollArea->findChild<QWidget*>( "qt_scrollarea_hcontainer" ) ) && child->isVisible() )
                 { children.append( child ); }
@@ -3284,12 +3316,14 @@ namespace Lightly
                   // only Dolphin's view
                   && QString(pw->metaObject()->className()).startsWith("Dolphin"))
               {
-                QRect copy = rect.adjusted(12, 0, -12, 0);
-                painter->setRenderHint( QPainter::Antialiasing, false );
-                painter->setBrush( Qt::NoBrush );
-                painter->setPen( QColor(0, 0, 0, 30) );
-                painter->drawLine( copy.topLeft(), copy.topRight());
-                painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
+                if( widget->property("VISIBLE-SEPARATORS").toBool() ) {
+                    QRect copy = rect.adjusted(12, 0, -12, 0);
+                    painter->setRenderHint( QPainter::Antialiasing, false );
+                    painter->setBrush( Qt::NoBrush );
+                    painter->setPen( QColor(0, 0, 0, 30) );
+                    painter->drawLine( copy.topLeft(), copy.topRight());
+                    painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
+                }
                 return true;
               }
             }
