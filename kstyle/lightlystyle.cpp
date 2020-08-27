@@ -234,7 +234,6 @@ namespace Lightly
         if ( StyleConfigData::opaqueApps().contains(appName, Qt::CaseInsensitive) )
             _isOpaque = true;
 
-        
         if (_translucentWidgets.size() > 0) _translucentWidgets.clear();
         
         // base class polishing
@@ -446,7 +445,7 @@ namespace Lightly
             setTranslucentBackground( widget );
 
             if ( _helper->hasAlphaChannel( widget ) && StyleConfigData::menuOpacity() < 100 ) {
-                _blurHelper->registerWidget( widget->window(), false );
+                _blurHelper->registerWidget( widget->window(), _isDolphin );
             }
 
         } else if( qobject_cast<QCommandLinkButton*>( widget ) ) {
