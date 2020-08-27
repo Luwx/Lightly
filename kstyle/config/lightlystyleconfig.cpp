@@ -175,7 +175,7 @@ namespace Lightly
         _sidebarOpacity->setValue( StyleConfigData::dolphinSidebarOpacity() );
         _kTextEditDrawFrame->setChecked( StyleConfigData::kTextEditDrawFrame() );
         _widgetDrawShadow->setChecked( StyleConfigData::widgetDrawShadow() );
-        _roundBottomCorners->setChecked( StyleConfigData::widgetDrawShadow() );
+        _roundBottomCorners->setChecked( StyleConfigData::roundBottomCorners() );
         _transparentDolphinView->setChecked( StyleConfigData::transparentDolphinView() );
 
 
