@@ -1043,34 +1043,35 @@ namespace Lightly
             painter->setBrush( color );
             painter->drawRoundedRect( frameRect, radius, radius );
             
-            
             //draw check icon
-            painter->setBrush( Qt::NoBrush );
+            int x = frameRect.x();
+            int y = frameRect.y();
             
             QPen pen = QPen();
             pen.setWidth(2);
             pen.setCapStyle( Qt::RoundCap );
-            
             pen.setColor( QColor( 0, 0, 0, 100 ) );
+            
             painter->setPen( pen );
+            painter->setBrush( Qt::NoBrush );
             
             QPainterPath checkShadow;
-            checkShadow.moveTo(7.01, 13.95);
-            checkShadow.cubicTo(7.67, 14.64, 8.31, 15.29, 8.95, 16.12);
-            checkShadow.cubicTo(9.58, 16.95, 10.23, 17.99, 10.78, 17.87);
-            checkShadow.cubicTo(11.33, 17.76, 12.3, 16.34, 13.52, 14.55);
-            checkShadow.cubicTo(14.75, 12.76, 16.38, 10.38, 18.01, 8.0);
+            checkShadow.moveTo(4.01+x, 10.95+y);
+            checkShadow.cubicTo(4.67+x, 11.64+y, 5.31+x, 12.29+y, 5.95+x, 13.12+y);
+            checkShadow.cubicTo(6.58+x, 13.95+y, 7.23+x, 14.99+y, 7.78+x, 14.87+y);
+            checkShadow.cubicTo(8.33+x, 14.76+y, 9.3+x, 13.34+y, 10.52+x, 11.55+y);
+            checkShadow.cubicTo(11.75+x, 9.76+y, 13.38+x, 7.38+y, 15.0+x, 5.0+y);
 
             painter->drawPath( checkShadow );
 
             QPainterPath check;
-            pen.setColor(Qt::white);
+            pen.setColor( background ); // TODO: use HighlightedText
             painter->setPen( pen );
-            check.moveTo(7.01, 12.95);
-            check.cubicTo(7.67, 13.64, 8.31, 14.29, 8.95, 15.12);
-            check.cubicTo(9.58, 15.95, 10.23, 16.99, 10.78, 16.87);
-            check.cubicTo(11.33, 16.76, 12.3, 15.34, 13.52, 13.55);
-            check.cubicTo(14.75, 11.76, 16.38, 9.38, 18.01, 7.0);
+            check.moveTo(4.01+x, 9.95+y);
+            check.cubicTo(4.67+x, 10.64+y, 5.31+x, 11.29+y, 5.95+x, 12.12+y);
+            check.cubicTo(6.58+x, 12.95+y, 7.23+x, 13.99+y, 7.78+x, 13.87+y);
+            check.cubicTo(8.33+x, 13.76+y, 9.3+x, 12.34+y, 10.52+x, 10.55+y);
+            check.cubicTo(11.75+x, 8.76+y, 13.38+x, 6.38+y, 15.0+x, 4.0+y);
 
             painter->drawPath( check );
 
