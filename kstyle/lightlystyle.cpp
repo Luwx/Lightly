@@ -1461,10 +1461,13 @@ namespace Lightly
                     backgroundColor.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
                     painter.setBrush( backgroundColor );
                     
-                    if( StyleConfigData::roundBottomCorners() && dockWidget->x() == 0)
+                    if( StyleConfigData::roundBottomCorners() )
                     {
                         painter.setRenderHints( QPainter::Antialiasing, true );
-                        QPainterPath path = _helper->roundedPath( rect, CornerBottomLeft, Metrics::Frame_FrameRadius );
+                        Corners corners;
+                        if( dockWidget->x() == 0 ) corners = CornerBottomLeft;
+                        if( dockWidget->x() + dockWidget->width() == dockWidget->window()->width() ) corners |= CornerBottomRight;
+                        QPainterPath path = _helper->roundedPath( rect, corners, Metrics::Frame_FrameRadius );
                         painter.setPen( Qt::NoPen );
                         painter.drawPath( path );
                         painter.setRenderHints( QPainter::Antialiasing, false );
@@ -1516,6 +1519,12 @@ namespace Lightly
                         painter.drawLine( rect.topRight() - QPoint(2, 0), rect.bottomRight() - QPoint(2, 0) );*/
                         
                         QRect shadowRect ( rect.topRight(), QSize(30, rect.height() ) );
+                        
+                        const QWidget* tabWidget = dockWidget->window()->findChild<const QWidget *>( "tabWidget", Qt::FindDirectChildrenOnly );
+                        if( tabWidget )
+                        {
+                            if( tabWidget->x() < dockWidget->x() ) shadowRect = QRect( rect.topLeft() - QPoint(29, 0), QSize(30, rect.height() ) );
+                        }
                         
                         _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 0.04, 10, 0, 3, 2 );
                         _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 0.5, 2, 0, 3, 1 );
