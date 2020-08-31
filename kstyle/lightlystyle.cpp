@@ -1162,21 +1162,22 @@ namespace Lightly
         if( widget->inherits( "QAbstractScrollArea" ) || widget->inherits( "KTextEditor::View" ) ) { return eventFilterScrollArea( widget, event ); }
         else if( widget->inherits( "QComboBoxPrivateContainer" ) ) { return eventFilterComboBoxContainer( widget, event ); }
         
+        // paint background
         if ( event->type() == QEvent::Paint ) {
             if (widget->isWindow() 
-                && widget->testAttribute(Qt::WA_StyledBackground)
-                && widget->testAttribute(Qt::WA_TranslucentBackground))
+                && widget->testAttribute( Qt::WA_StyledBackground )
+                && widget->testAttribute( Qt::WA_TranslucentBackground ) )
             {
-                switch (widget->windowFlags() & Qt::WindowType_Mask) {
+                switch ( widget->windowFlags() & Qt::WindowType_Mask ) {
                     case Qt::Window:
                     case Qt::Dialog:
-                    case Qt::Popup:
-                    case Qt::ToolTip:
+                    //case Qt::Popup:
+                    //case Qt::ToolTip:
                     case Qt::Sheet: {
-                        if (qobject_cast<QMenu*>(widget)) break;
+                        if ( qobject_cast<QMenu*>( widget ) ) break;
                         if ( !_translucentWidgets.contains( widget ) ) break;
-                        QPainter p(widget);
-                        p.setClipRegion(static_cast<QPaintEvent*>(event)->region());
+                        QPainter p( widget );
+                        p.setClipRegion(static_cast<QPaintEvent*>( event )->region());
                         p.setRenderHint( QPainter::Antialiasing, true );
                         
                         if( StyleConfigData::roundBottomCorners() ) {
@@ -1186,7 +1187,7 @@ namespace Lightly
                             QPainterPath path = _helper->roundedPath( widget->rect(), CornersBottom, Metrics::Frame_FrameRadius );
                             p.drawPath( path );
                         } else {
-                            p.fillRect(widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
+                            p.fillRect( widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
                         }
                         
                         p.setRenderHint( QPainter::Antialiasing, false );
@@ -1208,9 +1209,9 @@ namespace Lightly
                                 const QToolBar *tb = qobject_cast<const QToolBar*>( *i );
                                 
                                 if( tb ){
-                                    if( tb->orientation() == Qt::Horizontal){ 
-                                        p.setPen( QColor( 0,0,0,40 ) );
-                                        p.drawLine(widget->rect().topLeft() + QPoint( 0, tb->y() + tb->height() ), widget->rect().topRight() + QPoint( 0, tb->y() + tb->height() ) ); 
+                                    if( tb->orientation() == Qt::Horizontal) { 
+                                        p.setPen( QColor( 0, 0, 0, 40 ) );
+                                        p.drawLine( widget->rect().topLeft() + QPoint( 0, tb->y() + tb->height() ), widget->rect().topRight() + QPoint( 0, tb->y() + tb->height() ) ); 
                                     }
                                 }
                             }
@@ -1220,13 +1221,13 @@ namespace Lightly
                 }
             }
         }
-        
-        // update blur region if window is not completely blurred
+        if (widget->inherits( "DolphinDockWidget" )) qDebug() << widget;
+        // update blur region if window is not completely transparent
         if( widget->palette().color( QPalette::Window).alpha() == 255 )
         {
-            if( (qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF()*100.0 < 100 )
+            if( ( qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF() < 1.0 )
             {
-                if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide)
+                if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide )
                 {
                     if( _translucentWidgets.contains( widget->window() ) )
                         _blurHelper->forceUpdate( widget->window() );
@@ -1524,8 +1525,16 @@ namespace Lightly
                 }
                 
             }
-            
 
+        } 
+        // update blur region
+        else if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide )
+        {
+            if( dockWidget->inherits( "DolphinDockWidget" ) && _isDolphin && StyleConfigData::dolphinSidebarOpacity() < 100 )
+            {
+                if( _translucentWidgets.contains( dockWidget->window() ) )
+                        _blurHelper->forceUpdate( dockWidget->window() );
+            }
         }
 
         return false;
