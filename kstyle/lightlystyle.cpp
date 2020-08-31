@@ -235,7 +235,7 @@ namespace Lightly
             _isOpaque = true;
 
         if (_translucentWidgets.size() > 0) _translucentWidgets.clear();
-        
+
         // base class polishing
         ParentStyleClass::polish( app );
     }
@@ -5215,7 +5215,7 @@ namespace Lightly
             contentsRect.setLeft( checkBoxRect.right() + Metrics::MenuItem_ItemSpacing + 1 );
         } else {
             // always have some left margin
-            contentsRect.setLeft(4* Metrics::MenuItem_ItemSpacing);
+            contentsRect.setLeft( rect.left() + 3*Metrics::MenuItem_ItemSpacing );
         }
 
         // render checkbox indicator
