@@ -43,7 +43,7 @@ namespace Lightly
         //* titlebar metrics, in units of small spacing
         TitleBar_TopMargin = 2,
         TitleBar_BottomMargin = 2,
-        TitleBar_SideMargin = 2,
+        TitleBar_SideMargin = 4,
         TitleBar_ButtonSpacing = 2,
 
         // shadow dimensions (pixels)
