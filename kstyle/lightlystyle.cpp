@@ -231,7 +231,7 @@ namespace Lightly
                 || appName == "kded4") // this is for the infamous appmenu
             _isPlasma = true;
 
-        if ( StyleConfigData::opaqueApps().contains(appName, Qt::CaseInsensitive) )
+        if ( StyleConfigData::opaqueApps().contains(appName, Qt::CaseInsensitive) || StyleConfigData::forceOpaque().contains(appName, Qt::CaseInsensitive))
             _isOpaque = true;
 
         if (_translucentWidgets.size() > 0) _translucentWidgets.clear();
@@ -1163,7 +1163,7 @@ namespace Lightly
         else if( widget->inherits( "QComboBoxPrivateContainer" ) ) { return eventFilterComboBoxContainer( widget, event ); }
         
         // paint background
-        if ( event->type() == QEvent::Paint ) {
+        if ( widget && event->type() == QEvent::Paint ) {
             if (widget->isWindow() 
                 && widget->testAttribute( Qt::WA_StyledBackground )
                 && widget->testAttribute( Qt::WA_TranslucentBackground ) )
@@ -1221,9 +1221,9 @@ namespace Lightly
                 }
             }
         }
-        if (widget->inherits( "DolphinDockWidget" )) qDebug() << widget;
+
         // update blur region if window is not completely transparent
-        if( widget->palette().color( QPalette::Window).alpha() == 255 )
+        if( widget &&  widget->palette().color( QPalette::Window ).alpha() == 255 )
         {
             if( ( qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF() < 1.0 )
             {
