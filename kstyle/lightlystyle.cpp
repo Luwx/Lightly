@@ -702,7 +702,7 @@ namespace Lightly
             case PM_ToolBarExtensionExtent:
             return pixelMetric( PM_SmallIconSize, option, widget ) + 2*Metrics::ToolButton_MarginWidth;
 
-            case PM_ToolBarItemMargin: return 0;
+            case PM_ToolBarItemMargin: return 2;
             case PM_ToolBarItemSpacing: return Metrics::ToolBar_ItemSpacing;
 
             // tabbars
@@ -1474,6 +1474,8 @@ namespace Lightly
                     backgroundColor.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
                     painter.setBrush( backgroundColor );
                     
+                    bool darkTheme = _helper->isDarkTheme( palette );
+                    
                     if( StyleConfigData::roundBottomCorners() )
                     {
                         painter.setRenderHints( QPainter::Antialiasing, true );
@@ -1489,7 +1491,7 @@ namespace Lightly
                     else painter.fillRect( rect, backgroundColor );
                     
                     // outline
-                    if( _helper->isDarkTheme( palette ) )
+                    if( darkTheme )
                     {
                         painter.setRenderHints( QPainter::Antialiasing, true );
                         Corners corners;
@@ -1513,22 +1515,19 @@ namespace Lightly
                     
                     
                     // top shadow
-                    if( StyleConfigData::dolphinSidebarOpacity() <   _helper->titleBarColor( true ).alphaF()*100.0 && StyleConfigData::widgetDrawShadow() )
+                    if( StyleConfigData::dolphinSidebarOpacity() <  _helper->titleBarColor( true ).alphaF()*100.0 && StyleConfigData::widgetDrawShadow() )
                     {
                         painter.setBrush( Qt::NoBrush );
-                        painter.setPen( QColor(0, 0, 0, 40) );
+                        painter.setPen( QColor(0, 0, 0, darkTheme ? 80 : 40) );
                         painter.drawLine( rect.topLeft(), rect.topRight() );
                         
-                        painter.setPen( QColor(0, 0, 0, 16) );
+                        painter.setPen( QColor(0, 0, 0, darkTheme ? 28 : 16) );
                         painter.drawLine( rect.topLeft() + QPoint(0, 1), rect.topRight() + QPoint(0, 1) );
                         
-                        painter.setPen( QColor(0, 0, 0, 4) );
-                        painter.drawLine( rect.topLeft() + QPoint(0, 2), rect.topRight() + QPoint(0, 2) );
-                        
-                        painter.setPen( QColor(0, 0, 0, 3) );
+                        painter.setPen( QColor(0, 0, 0, darkTheme ? 6 : 3) );
                         painter.drawLine( rect.topLeft() + QPoint(0, 3), rect.topRight() + QPoint(0, 3) );
                         
-                        painter.setPen( QColor(0, 0, 0, 1) );
+                        painter.setPen( QColor(0, 0, 0, darkTheme ? 2 : 1) );
                         painter.drawLine( rect.topLeft() + QPoint(0, 4), rect.topRight() + QPoint(0, 4) );
                     }
                     
@@ -1564,10 +1563,16 @@ namespace Lightly
                             if( tabWidget->x() < dockWidget->x() ) shadowRect = QRect( rect.topLeft() - QPoint(29, 0), QSize(30, rect.height() ) );
                         }
                         
-                        _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 0.04, 10, 0, 3, 2 );
-                        _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 0.5, 2, 0, 3, 1 );
-                        _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 1, 12, 2, 0, 3, 1 );
-                        
+                        if( darkTheme ){
+                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 1, 5, 0, 0, 1 );
+                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 3, 2, 0, 0, 1 );
+                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 1, 24, 1, 0, 0, 1 );
+                        }
+                        else {
+                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 0.04, 10, 0, 3, 2 );
+                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 0.5, 2, 0, 3, 1 );
+                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 1, 12, 2, 0, 3, 1 );
+                        }
                     }
                 }
                 
@@ -5576,35 +5581,45 @@ namespace Lightly
                     }
                 }
                 
-                painter->setBrush( Qt::NoBrush );
-                QLinearGradient gradient( copy.bottomLeft(), copy.bottomRight() );
-                gradient.setColorAt( 0, QColor(0,0,0,0) );
-                gradient.setColorAt( 0.02, QColor(0,0,0,40) );
-                gradient.setColorAt( 0.98, QColor(0,0,0,40) );
-                gradient.setColorAt( 1, QColor(0,0,0,40/2) );
-                painter->setPen( QPen(gradient, 1) );
-                painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
+                bool darkTheme = _helper->isDarkTheme( palette );
                 
-                //gradient.setColorAt( 0, QColor(0,0,0,0) );
-                gradient.setColorAt( 0.02, QColor(0,0,0,12) );
-                gradient.setColorAt( 0.98, QColor(0,0,0,12) );
-                gradient.setColorAt( 1, QColor(0,0,0,12/2) );
-                painter->setPen( QPen(gradient, 1) );
-                painter->drawLine( copy.bottomLeft() - QPoint(0, 1), copy.bottomRight() - QPoint(0, 1) );
-                
-                //gradient.setColorAt( 0, QColor(0,0,0,0) );
-                gradient.setColorAt( 0.02, QColor(0,0,0,3) );
-                gradient.setColorAt( 0.98, QColor(0,0,0,3) );
-                gradient.setColorAt( 1, QColor(0,0,0,3/2) );
-                painter->setPen( QPen(gradient, 1) );
-                painter->drawLine( copy.bottomLeft() - QPoint(0, 2), copy.bottomRight() - QPoint(0, 2) );
-                
-                if( _helper->isDarkTheme( palette ) )
+                if ( !darkTheme )
                 {
+                    painter->setBrush( Qt::NoBrush );
+                    QLinearGradient gradient( copy.bottomLeft(), copy.bottomRight() );
+                    gradient.setColorAt( 0, QColor(0,0,0,0) );
+                    gradient.setColorAt( 0.02, QColor(0,0,0,40) );
+                    gradient.setColorAt( 0.98, QColor(0,0,0,40) );
+                    gradient.setColorAt( 1, QColor(0,0,0,40/2) );
+                    painter->setPen( QPen(gradient, 1) );
+                    painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
+                    
+                    //gradient.setColorAt( 0, QColor(0,0,0,0) );
+                    gradient.setColorAt( 0.02, QColor(0,0,0,12) );
+                    gradient.setColorAt( 0.98, QColor(0,0,0,2) );
+                    gradient.setColorAt( 1, QColor(0,0,0,12/2) );
+                    painter->setPen( QPen(gradient, 1) );
+                    painter->drawLine( copy.bottomLeft() - QPoint(0, 1), copy.bottomRight() - QPoint(0, 1) );
+                    
+                    //gradient.setColorAt( 0, QColor(0,0,0,0) );
+                    gradient.setColorAt( 0.02, QColor(0,0,0,3) );
+                    gradient.setColorAt( 0.98, QColor(0,0,0,3) );
+                    gradient.setColorAt( 1, QColor(0,0,0,3/2) );
+                    painter->setPen( QPen(gradient, 1) );
+                    painter->drawLine( copy.bottomLeft() - QPoint(0, 2), copy.bottomRight() - QPoint(0, 2) );
+                }
+                
+                else
+                {
+                    QRect shadowRect( copy.bottomLeft() + QPoint(-1, 1), QSize(copy.width(), 50) );
+                    _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 8, 0.7, 5, 0, 0, 1 );
+                    _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 3, 4, 1, 0, 0, 1 );
+                    _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 2, 20, 1, 0, 0, 1 );
+                    
                     painter->setPen( QColor(255, 255, 255, 30) );
                     painter->drawLine( rect.topRight(), rect.bottomRight() );
                     painter->drawLine( rect.topLeft(), rect.bottomLeft() );
-                }   
+                }
                 
             }
             // bottom toolbar
