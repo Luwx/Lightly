@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>563</width>
-    <height>316</height>
+    <height>344</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -576,7 +576,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Dolphin sidebar: </string>
+            <string>Sidebars:</string>
            </property>
           </widget>
          </item>
