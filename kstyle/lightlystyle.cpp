@@ -1233,14 +1233,17 @@ namespace Lightly
         }
 
         // update blur region if window is not completely transparent
-        if( widget &&  widget->palette().color( QPalette::Window ).alpha() == 255 )
+        if( widget && widget->inherits( "QWidget" ) )
         {
-            if( ( qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF() < 1.0 )
+            if( widget->palette().color( QPalette::Window ).alpha() == 255 )
             {
-                if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide )
+                if( ( qobject_cast<QToolBar*>( widget ) || qobject_cast<QMenuBar*>( widget )) && _helper->titleBarColor( true ).alphaF() < 1.0 )
                 {
-                    if( _translucentWidgets.contains( widget->window() ) )
-                        _blurHelper->forceUpdate( widget->window() );
+                    if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide )
+                    {
+                        if( _translucentWidgets.contains( widget->window() ) )
+                            _blurHelper->forceUpdate( widget->window() );
+                    }
                 }
             }
         }
