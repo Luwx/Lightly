@@ -29,6 +29,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "lightlyblurhelper.h"
+#include "lightlypropertynames.h"
 #include "lightlystyleconfigdata.h"
 
 #include <KWindowEffects>
@@ -167,13 +168,13 @@ namespace Lightly
             && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeMenu)) // not a detached menu
             || widget->inherits("QComboBoxPrivateContainer"))
         {
-            return roundedRegion(rect, Metrics::Frame_FrameRadius, true, true, true, true);
+            return roundedRegion(rect, StyleConfigData::cornerRadius(), true, true, true, true);
         } 
         else 
             {
                 // blur entire window
                 if( widget->palette().color( QPalette::Window ).alpha() < 255 )
-                    return roundedRegion(rect, Metrics::Frame_FrameRadius, false, false, true, true);
+                    return roundedRegion(rect, StyleConfigData::cornerRadius(), false, false, true, true);
                 
                 // blur specific widgets
                 QRegion region;
@@ -245,7 +246,7 @@ namespace Lightly
                             
                             // round corners if it is at the bottom
                             else if ( mainToolbar.y() + mainToolbar.height() == widget->height() )
-                                region += roundedRegion( mainToolbar, Metrics::Frame_FrameRadius,  false, false, false, true );
+                                region += roundedRegion( mainToolbar, StyleConfigData::cornerRadius(),  false, false, false, true );
                             
                             //else
                             //    region += mainToolbar;
@@ -254,11 +255,11 @@ namespace Lightly
                             
                             // round bottom left
                             if( mainToolbar.x() == 0 ) 
-                                region += roundedRegion( mainToolbar, Metrics::Frame_FrameRadius,  false, false, true, false );
+                                region += roundedRegion( mainToolbar, StyleConfigData::cornerRadius(),  false, false, true, false );
                             
                             // round bottom right
                             else if( mainToolbar.x() + mainToolbar.width() == widget->width() ) 
-                                region += roundedRegion( mainToolbar, Metrics::Frame_FrameRadius,  false, false, false, true );
+                                region += roundedRegion( mainToolbar, StyleConfigData::cornerRadius(),  false, false, false, true );
                             
                             // no round corners
                             //else region += mainToolbar; //FIXME: is this valid?
@@ -268,21 +269,43 @@ namespace Lightly
                 }
 
                 // dolphin's sidebar
-                if( StyleConfigData::dolphinSidebarOpacity() < 100 && _isDolphin )
+                if( StyleConfigData::dolphinSidebarOpacity() < 100 )
                 {
-                    QList<QWidget *> sidebars = widget->findChildren<QWidget *>( QRegularExpression("^(places|terminal|info|folders)Dock$"), Qt::FindDirectChildrenOnly );
-
-                    for ( auto sb : sidebars )
+                    if( _isDolphin  )
                     {
-                        if ( sb && sb->isVisible() )
+                        QList<QWidget *> sidebars = widget->findChildren<QWidget *>( QRegularExpression("^(places|terminal|info|folders)Dock$"), Qt::FindDirectChildrenOnly );
+
+                        for ( auto sb : sidebars )
                         {
-                            if( sb->x() == 0 ) 
-                                region += roundedRegion( QRect( sb->pos(), sb->rect().size() ), Metrics::Frame_FrameRadius, false, false, true, false);
-                            else if ( sb->x() + sb->width() == widget->width() ) 
-                                region += roundedRegion( QRect( sb->pos(), sb->rect().size() ), Metrics::Frame_FrameRadius, false, false, false, true);
-                            else region += QRect( sb->pos(), sb->rect().size() );
+                            if ( sb && sb->isVisible() )
+                            {
+                                if( sb->x() == 0 ) 
+                                    region += roundedRegion( QRect( sb->pos(), sb->rect().size() ), StyleConfigData::cornerRadius(), false, false, true, false);
+                                else if ( sb->x() + sb->width() == widget->width() ) 
+                                    region += roundedRegion( QRect( sb->pos(), sb->rect().size() ), StyleConfigData::cornerRadius(), false, false, false, true);
+                                else region += QRect( sb->pos(), sb->rect().size() );
+                            }
                         }
                     }
+
+                    if( (widget->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog )
+                    {
+                        QList<QWidget *> dialogWidgets = widget->findChildren<QWidget *>( QString(), Qt::FindDirectChildrenOnly );
+                        for( auto w : dialogWidgets ) 
+                        {
+                            if( w->inherits( "KPageWidget" ) )
+                            {
+                                QList<QWidget *> KPageWidgets = w->findChildren<QWidget *>( QString(), Qt::FindDirectChildrenOnly );
+                                for ( auto wid : KPageWidgets ){
+                                    if( wid->property( PropertyNames::sidePanelView ).toBool() ) {
+                                        region += roundedRegion( QRect( wid->pos(), wid->rect().size() ), StyleConfigData::cornerRadius(),  false, false, true, false );
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                 }
                     
                 return region;
@@ -298,10 +321,10 @@ namespace Lightly
         */
         if (!(widget->testAttribute(Qt::WA_WState_Created) || widget->internalWinId()))
             return;
-        
+
         QRegion region = blurRegion(widget);
         if (region.isNull()) return;
-        
+
         KWindowEffects::enableBlurBehind(widget->isWindow() ? widget->winId() : widget->window()->winId(), true, region);
         //KWindowEffects::enableBackgroundContrast (widget->isWindow() ? widget->winId() : widget->window()->winId(), true, 1.0, 1.2, 1.3, region );
 

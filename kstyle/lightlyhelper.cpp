@@ -20,7 +20,6 @@
 #include "lightlyhelper.h"
 
 #include "lightly.h"
-#include "lightlystyleconfigdata.h"
 
 #include <KColorUtils>
 #include <KIconLoader>
@@ -549,18 +548,21 @@ namespace Lightly
             QRectF frameRect( rect );
             qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
 
-            // set pen
-            if( outline.isValid() )
-            {
-
-                painter->setPen( outline );
-                frameRect = strokedRect( frameRect );
-                radius = frameRadiusForNewPenWidth( radius, PenWidth::Frame );
-
-            } else painter->setPen( Qt::NoPen );
+           painter->setPen( Qt::NoPen );
 
             // render
             painter->drawRoundedRect( frameRect, radius, radius );
+            
+            //outline
+            if( outline.isValid() )
+            {
+                painter->setPen( outline );
+                painter->setBrush( Qt::NoBrush );
+                frameRect = strokedRect( frameRect );
+                radius = frameRadiusForNewPenWidth( radius, PenWidth::Frame );
+                
+                painter->drawRoundedRect( frameRect, radius, radius );
+            }
 
         } else {
 
@@ -715,6 +717,27 @@ namespace Lightly
             alpha += param1 + alpha/param2;
         }
     }
+    
+    //______________________________________________________________________________
+    void Helper::topHighlight( QPainter* painter, const QRectF& rect, const int radius, const QColor& color ) const
+    {
+        QPixmap pixmap = QPixmap(rect.width(), rect.height());
+        pixmap.fill( Qt::transparent );
+        QPainter p( &pixmap );
+        
+        p.setRenderHint( QPainter::Antialiasing );
+        
+        p.setPen( Qt::NoPen );
+        p.setBrush( color );
+        p.drawRoundedRect( QRect( 0, 0, rect.width(), rect.height() ), radius, radius );
+        
+        p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+        p.setBrush( Qt::black );
+        p.drawRoundedRect( QRect( 0, 1, rect.width(), rect.height() ), radius, radius );
+        
+        painter->drawPixmap( QRect( rect.x(), rect.y(), rect.width(), rect.height() ), pixmap );
+        
+    }
 
     //______________________________________________________________________________
     void Helper::renderButtonFrame(
@@ -766,6 +789,7 @@ namespace Lightly
         // render
         painter->drawRoundedRect( frameRect, radius, radius );
 
+        if( isDarkTheme( palette ) && enabled ) topHighlight( painter, frameRect, StyleConfigData::cornerRadius() );
     }
 
     //______________________________________________________________________________
@@ -887,7 +911,7 @@ namespace Lightly
         painter->setRenderHint( QPainter::Antialiasing );
         painter->setPen( Qt::NoPen );
         painter->setBrush( color );
-        if ( rounded ) painter->drawRoundedRect( rect, Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+        if ( rounded ) painter->drawRoundedRect( rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
         else painter->drawRect( rect );
 
     }
@@ -1038,9 +1062,9 @@ namespace Lightly
             
         } else if( state == CheckOn ) { //mark
             
-            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? color.darker(140) : color.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
-            else renderRectShadow(painter, frameRect, color.darker(220), 4, 4, 6, 1, 1, radius, true, 8);
-            painter->setBrush( color );
+            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? background.darker(140) : background.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, background.darker(220), 4, 4, 6, 1, 1, radius, true, 8);
+            painter->setBrush( background );
             painter->drawRoundedRect( frameRect, radius, radius );
             
             //draw check icon
@@ -1065,7 +1089,7 @@ namespace Lightly
             painter->drawPath( checkShadow );
 
             QPainterPath check;
-            pen.setColor( background ); // TODO: use HighlightedText
+            pen.setColor( color ); // TODO: use HighlightedText
             painter->setPen( pen );
             check.moveTo(4.01+x, 9.95+y);
             check.cubicTo(4.67+x, 10.64+y, 5.31+x, 11.29+y, 5.95+x, 12.12+y);
@@ -1111,6 +1135,8 @@ namespace Lightly
             painter->drawPath( path );
 
         }
+        
+        if( darkTheme ) topHighlight( painter, frameRect, radius );
 
     }
 
@@ -1158,20 +1184,20 @@ namespace Lightly
         {
             
             // strong shadows don't look good with light themes
-            if ( darkTheme ) renderEllipseShadow(painter, frameRect, mouseOver ? color.darker(110) : color.darker(200), 4, 8, 5, 1, 1, true, 15);
-            else renderEllipseShadow(painter, frameRect, mouseOver ? color.darker(110) : color.darker(200), 4, 4, 6, 1, 1, true, 8);
+            if ( darkTheme ) renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 8, 5, 1, 1, true, 15);
+            else renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 4, 6, 1, 1, true, 8);
 
-            painter->setBrush( color );
+            painter->setBrush( background );
             painter->drawEllipse( frameRect );
 
             // inner ellipse
             const QRectF markerRect( frameRect.adjusted( 4, 4, -4, -4 ) );
             //renderEllipseShadow(painter, markerRect, 3, 10, 4, 1, 1, true, 15);
             renderEllipseShadow(painter, markerRect, QColor(0,0,0), 0, 1, 4, 1, 1, true, 15);
-            painter->setBrush( darkTheme ? background.darker(120) : background.lighter(115) );
+            painter->setBrush( darkTheme ? color.darker(120) : color.lighter(115) );
             painter->drawEllipse( markerRect );
             
-            painter->setBrush( background );
+            painter->setBrush( color );
             painter->drawEllipse( markerRect.adjusted(1, 1, -1, -1) );
 
         } else if ( state == RadioOff ) 
@@ -1343,6 +1369,9 @@ namespace Lightly
 
         // render
         painter->drawEllipse( frameRect );
+        
+        topHighlight( painter, frameRect, frameRect.width()/2 );
+
 
     }
 

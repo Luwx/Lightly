@@ -45,7 +45,7 @@ namespace Lightly
 
         // frames
         Frame_FrameWidth = 5,
-        Frame_FrameRadius = 6,
+        //Frame_FrameRadius = 6,
 
         // layout
         Layout_TopLevelMarginWidth = 10,
@@ -56,7 +56,7 @@ namespace Lightly
         LineEdit_FrameWidth = 5 + Frame_FrameWidth,
 
         // menu items
-        Menu_FrameWidth = 4,
+        //Menu_FrameWidth = 4,
         MenuItem_MarginWidth = 5,
         MenuItem_MarginHeight = 3,
         MenuItem_ItemSpacing = 4,

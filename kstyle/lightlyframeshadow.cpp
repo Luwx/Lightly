@@ -20,6 +20,7 @@
 #include "lightlyframeshadow.h"
 
 #include "lightly.h"
+#include "lightlystyleconfigdata.h"
 
 #include <QDebug>
 #include <QAbstractScrollArea>
@@ -251,7 +252,7 @@ namespace Lightly
         rect.adjust( 1, 1, -1, -1 );
 
         // adjust geometry
-        const int shadowSize( Metrics::Frame_FrameRadius );
+        const int shadowSize( StyleConfigData::cornerRadius() );
         switch( _area )
         {
 

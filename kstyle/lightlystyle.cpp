@@ -508,6 +508,9 @@ namespace Lightly
             auto font( scrollArea->font() );
             font.setBold( false );
             scrollArea->setFont( font );
+
+            QWidget* viewPort = scrollArea->findChild<QWidget *>( QString("qt_scrollarea_viewport"), Qt::FindDirectChildrenOnly );
+            if( viewPort ) viewPort->setAutoFillBackground( false );
         }
 
         // disable autofill background for flat (== NoFrame) scrollareas, with QPalette::Window as a background
@@ -1181,11 +1184,18 @@ namespace Lightly
                         p.setRenderHint( QPainter::Antialiasing, true );
                         
                         if( StyleConfigData::roundBottomCorners() ) {
-                            //_helper->roundedPath( widget->rect(), CornersBottom, Metrics::Frame_FrameRadius );
+
                             p.setBrush( widget->palette().color( QPalette::Window ) );
                             p.setPen( Qt::NoPen );
-                            QPainterPath path = _helper->roundedPath( widget->rect(), CornersBottom, Metrics::Frame_FrameRadius );
+                            QPainterPath path = _helper->roundedPath( widget->rect(), CornersBottom, StyleConfigData::cornerRadius() );
                             p.drawPath( path );
+                            if( _helper->isDarkTheme( widget->palette() ) ) {
+                                p.setBrush( Qt::NoBrush );
+                                p.setPen( QColor(255, 255, 255, 30) );
+                                QRectF rect = widget->rect().adjusted(0, -2, 0, 0);
+                                path = _helper->roundedPath( rect.adjusted(0.5, 0.5, -0.5, -0.5), CornersBottom, StyleConfigData::cornerRadius() );
+                                p.drawPath( path );
+                            }
                         } else {
                             p.fillRect( widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
                         }
@@ -1467,12 +1477,37 @@ namespace Lightly
                         Corners corners;
                         if( dockWidget->x() == 0 ) corners = CornerBottomLeft;
                         if( dockWidget->x() + dockWidget->width() == dockWidget->window()->width() ) corners |= CornerBottomRight;
-                        QPainterPath path = _helper->roundedPath( rect, corners, Metrics::Frame_FrameRadius );
+                        QPainterPath path = _helper->roundedPath( rect, corners, StyleConfigData::cornerRadius() );
+                        
                         painter.setPen( Qt::NoPen );
                         painter.drawPath( path );
                         painter.setRenderHints( QPainter::Antialiasing, false );
                     }
                     else painter.fillRect( rect, backgroundColor );
+                    
+                    // outline
+                    if( _helper->isDarkTheme( palette ) )
+                    {
+                        painter.setRenderHints( QPainter::Antialiasing, true );
+                        Corners corners;
+                        QRectF outlineRect ( rect );
+                        outlineRect.adjust(0.5, 0.5, -0.5, -0.5);
+                        
+                        if( dockWidget->x() == 0 ) {
+                            corners = CornerBottomLeft;
+                            outlineRect.adjust(0, -1, 1, 0);
+                        }
+                        if( dockWidget->x() + dockWidget->width() == dockWidget->window()->width() ){ 
+                            corners |= CornerBottomRight;
+                            outlineRect.adjust(-1, -1, 0, 0);
+                        }
+                        QPainterPath path = _helper->roundedPath( outlineRect, corners, StyleConfigData::cornerRadius() );
+                        
+                        painter.setPen( QColor(255, 255, 255, 30) );
+                        painter.drawPath( path );
+                        painter.setRenderHints( QPainter::Antialiasing, false );
+                    }
+                    
                     
                     // top shadow
                     if( StyleConfigData::dolphinSidebarOpacity() <   _helper->titleBarColor( true ).alphaF()*100.0 && StyleConfigData::widgetDrawShadow() )
@@ -3379,6 +3414,47 @@ namespace Lightly
             const auto outline( _helper->sidePanelOutlineColor( palette, hasFocus, opacity, mode ) );
             const bool reverseLayout( option->direction == Qt::RightToLeft );
             const Side side( reverseLayout ? SideRight : SideLeft );
+            if( StyleConfigData::roundBottomCorners() ) 
+            {
+                
+                painter->setRenderHint( QPainter::Antialiasing );
+                QColor background( palette.color( QPalette::Base ) );
+                
+                if( StyleConfigData::dolphinSidebarOpacity() < 100 ) {
+                    // erase the alpha
+                    painter->setBrush( Qt::black );
+                    painter->setPen( Qt::NoPen );
+                    painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
+                    painter->drawRect( rect );
+                    painter->setCompositionMode( QPainter::CompositionMode_SourceOver );
+                    
+                    background.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
+                }
+                
+                QRectF backgroundRect ( rect );
+                QPainterPath path = _helper->roundedPath( backgroundRect, reverseLayout ? CornerBottomRight : CornerBottomLeft, StyleConfigData::cornerRadius() );
+                painter->setPen( Qt::NoPen );
+                painter->setBrush( background );
+                painter->drawPath( path );
+                
+                if( _helper->titleBarColor(true).alpha() != palette.color( QPalette::Window ).alpha() ) {
+                    painter->setRenderHint( QPainter::Antialiasing, false );
+                    painter->setPen( QColor(0,0,0,30) );
+                    painter->drawLine( backgroundRect.topLeft(), backgroundRect.topRight() );
+                    painter->setRenderHint( QPainter::Antialiasing );
+                }
+                
+                if( _helper->isDarkTheme( palette ) ) {
+                    backgroundRect.adjust( 0.5, 0.5, -0.5, -0.5 );
+                    if( reverseLayout ) backgroundRect.adjust( -1, -1, 0, 0 );
+                    else backgroundRect.adjust( 0, -1, 1, 0 );
+                    path = _helper->roundedPath( backgroundRect, reverseLayout ? CornerBottomRight : CornerBottomLeft, StyleConfigData::cornerRadius() );
+                    painter->setBrush( Qt::NoBrush );
+                    painter->setPen( QColor( 255, 255, 255, 30 ) );
+                    painter->drawPath( path );
+                    
+                }
+            }
             _helper->renderSidePanelFrame( painter, rect, outline, side );
 
         } else {
@@ -3569,33 +3645,33 @@ namespace Lightly
             case QTabBar::RoundedNorth:
             case QTabBar::TriangularNorth:
             if( isQtQuickControl ) rect.adjust( -1, -1, 1, 0 );
-            if( tabBarSize.width() >= rect.width() - 2*Metrics::Frame_FrameRadius ) corners &= ~CornersTop;
-            if( tabBarRect.left() < rect.left() + Metrics::Frame_FrameRadius ) corners &= ~CornerTopLeft;
-            if( tabBarRect.right() > rect.right() - Metrics::Frame_FrameRadius ) corners &= ~CornerTopRight;
+            if( tabBarSize.width() >= rect.width() - 2*StyleConfigData::cornerRadius() ) corners &= ~CornersTop;
+            if( tabBarRect.left() < rect.left() + StyleConfigData::cornerRadius() ) corners &= ~CornerTopLeft;
+            if( tabBarRect.right() > rect.right() - StyleConfigData::cornerRadius() ) corners &= ~CornerTopRight;
             break;
 
             case QTabBar::RoundedSouth:
             case QTabBar::TriangularSouth:
             if( isQtQuickControl ) rect.adjust( -1, 0, 1, 1 );
-            if( tabBarSize.width() >= rect.width()-2*Metrics::Frame_FrameRadius ) corners &= ~CornersBottom;
-            if( tabBarRect.left() < rect.left() + Metrics::Frame_FrameRadius ) corners &= ~CornerBottomLeft;
-            if( tabBarRect.right() > rect.right() - Metrics::Frame_FrameRadius ) corners &= ~CornerBottomRight;
+            if( tabBarSize.width() >= rect.width()-2*StyleConfigData::cornerRadius() ) corners &= ~CornersBottom;
+            if( tabBarRect.left() < rect.left() + StyleConfigData::cornerRadius() ) corners &= ~CornerBottomLeft;
+            if( tabBarRect.right() > rect.right() - StyleConfigData::cornerRadius() ) corners &= ~CornerBottomRight;
             break;
 
             case QTabBar::RoundedWest:
             case QTabBar::TriangularWest:
             if( isQtQuickControl ) rect.adjust( -1, 0, 0, 0 );
-            if( tabBarSize.height() >= rect.height()-2*Metrics::Frame_FrameRadius ) corners &= ~CornersLeft;
-            if( tabBarRect.top() < rect.top() + Metrics::Frame_FrameRadius ) corners &= ~CornerTopLeft;
-            if( tabBarRect.bottom() > rect.bottom() - Metrics::Frame_FrameRadius ) corners &= ~CornerBottomLeft;
+            if( tabBarSize.height() >= rect.height()-2*StyleConfigData::cornerRadius() ) corners &= ~CornersLeft;
+            if( tabBarRect.top() < rect.top() + StyleConfigData::cornerRadius() ) corners &= ~CornerTopLeft;
+            if( tabBarRect.bottom() > rect.bottom() - StyleConfigData::cornerRadius() ) corners &= ~CornerBottomLeft;
             break;
 
             case QTabBar::RoundedEast:
             case QTabBar::TriangularEast:
             if( isQtQuickControl ) rect.adjust( 0, 0, 1, 0 );
-            if( tabBarSize.height() >= rect.height()-2*Metrics::Frame_FrameRadius ) corners &= ~CornersRight;
-            if( tabBarRect.top() < rect.top() + Metrics::Frame_FrameRadius ) corners &= ~CornerTopRight;
-            if( tabBarRect.bottom() > rect.bottom() - Metrics::Frame_FrameRadius ) corners &= ~CornerBottomRight;
+            if( tabBarSize.height() >= rect.height()-2*StyleConfigData::cornerRadius() ) corners &= ~CornersRight;
+            if( tabBarRect.top() < rect.top() + StyleConfigData::cornerRadius() ) corners &= ~CornerTopRight;
+            if( tabBarRect.bottom() > rect.bottom() - StyleConfigData::cornerRadius() ) corners &= ~CornerBottomRight;
             break;
 
             default: break;
@@ -3896,7 +3972,7 @@ namespace Lightly
             if( hasPopupMenu )
             {
                 painter->setClipRect( rect );
-                rect.adjust( 0, 0, Metrics::Frame_FrameRadius + 2, 0 );
+                rect.adjust( 0, 0, StyleConfigData::cornerRadius() + 2, 0 );
                 rect = visualRect( option, rect );
             }
 
@@ -4090,7 +4166,7 @@ namespace Lightly
             painter->setBrushOrigin( viewItemOption->rect.topLeft() );
             painter->setBrush( viewItemOption->backgroundBrush );
             painter->setPen( Qt::NoPen );
-            painter->drawRoundedRect( viewItemOption->rect, Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius  );
+            painter->drawRoundedRect( viewItemOption->rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius()  );
             return true;
 
         }
@@ -4108,27 +4184,36 @@ namespace Lightly
             else color = color.lighter( 110 );
         }
         
-        if ( !(widget && widget->property( PropertyNames::sidePanelView ).toBool() ) ) 
-         {
-
-            if ( !(qobject_cast<const QTableView *>(widget) 
-                || qobject_cast<const QListWidget *>(widget)
-                || qobject_cast<const QListView *>(widget)
-            ) ) 
+        if( widget )
+        {
+            if( !widget->property( PropertyNames::sidePanelView ).toBool() ) 
             {
-                /*Sides sides = SideTop|SideBottom;
-                if( !viewItemOption->rect.isNull() )
-                {
-                    if( viewItemOption->viewItemPosition == QStyleOptionViewItem::Beginning 
-                        || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideLeft;
-                    if( viewItemOption->viewItemPosition == QStyleOptionViewItem::End 
-                        || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideRight;
-                }*/
 
-                _helper->renderSelection( painter, rect, color, true );
-                return true;
+                if ( !(qobject_cast<const QTableView *>(widget) 
+                    || qobject_cast<const QListWidget *>(widget)
+                    || qobject_cast<const QListView *>(widget)
+                ) ) 
+                {
+                    /*Sides sides = SideTop|SideBottom;
+                    if( !viewItemOption->rect.isNull() )
+                    {
+                        if( viewItemOption->viewItemPosition == QStyleOptionViewItem::Beginning 
+                            || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideLeft;
+                        if( viewItemOption->viewItemPosition == QStyleOptionViewItem::End 
+                            || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideRight;
+                    }*/
+
+                    _helper->renderSelection( painter, rect, color, true );
+                    return true;
+                }
+            } 
+            else 
+            {
+                if( StyleConfigData::cornerRadius() > 1 ) {
+                    _helper->renderSelection( painter, rect.adjusted(4, 2, -4, -2), color, true );
+                    return true;
+                }
             }
-            
         }
 
         // render
@@ -4168,12 +4253,12 @@ namespace Lightly
         const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
         const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
         //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
-        const auto background( _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
-        QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && active, opacity, mode  );
+        const auto background( checkBoxState == CheckOn ? _helper->focusColor( palette ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
+        //QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && active, opacity, mode  );
 
         // render
         //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
-        _helper->renderCheckBox( painter, rect, color, background, shadow, sunken, mouseOver, checkBoxState, animation );
+        _helper->renderCheckBox( painter, rect, palette.color( QPalette::HighlightedText ), background, shadow, sunken, mouseOver, checkBoxState, animation );
         return true;
 
     }
@@ -4207,8 +4292,8 @@ namespace Lightly
         const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
         const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
         //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
-        const auto background( _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
-        QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && checked, opacity, mode  );
+        const auto background( checked ? _helper->focusColor( palette ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
+        const QColor color( palette.color( QPalette::HighlightedText ) );
 
         // render
         //_helper->renderRadioButtonBackground( painter, rect, background, sunken );
@@ -4258,7 +4343,7 @@ namespace Lightly
 
         auto frameRect( rect );
         painter->setClipRect( rect );
-        frameRect.adjust( -Metrics::Frame_FrameRadius - 1, 0, 0, 0 );
+        frameRect.adjust( -StyleConfigData::cornerRadius() - 1, 0, 0, 0 );
         frameRect = visualRect( option, frameRect );
 
         // render
@@ -4914,9 +4999,11 @@ namespace Lightly
     bool Style::drawMenuBarEmptyAreaControl( const QStyleOption* option, QPainter* painter, const QWidget* widget) const
     {
         if (!widget) return true;
-        if ( _helper->titleBarColor( true ).alphaF()*100.0 == 100 || !_translucentWidgets.contains( widget->window() ) ) return true;
+        
+        if ( _helper->titleBarColor( true ).alphaF() == 1 || !_translucentWidgets.contains( widget->window() ) ) return true;
         
         const auto& rect( option->rect );
+        const auto& palette( option->palette );
         
         // erase the alpha
         painter->setBrush( Qt::black );
@@ -4965,6 +5052,12 @@ namespace Lightly
                 gradient.setColorAt( 1, QColor(0,0,0,3/2) );
                 painter->setPen( QPen(gradient, 1) );
                 painter->drawLine( rect.bottomLeft() - QPoint(0, 2), rect.bottomRight() - QPoint(0, 2) );
+        }
+        
+        if( _helper->isDarkTheme( palette ) )
+        {
+            painter->setPen( QColor(255, 255, 255, 30) );
+            painter->drawLine( rect.topRight(), rect.bottomRight() );
         }
         
         return true;
@@ -5064,6 +5157,13 @@ namespace Lightly
                 painter->setPen( QPen(gradient, 1) );
                 painter->drawLine( shadowRect.bottomLeft() - QPoint(0, 2), shadowRect.bottomRight() - QPoint(0, 2) );*/
             }
+            
+            if( _helper->isDarkTheme( palette ) )
+            {
+                painter->setPen( QColor(255, 255, 255, 30) );
+                painter->drawLine( widget->rect().topLeft(), widget->rect().bottomLeft() );
+            }
+            
         }
 
         // store state
@@ -5084,7 +5184,7 @@ namespace Lightly
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( backgroundColor );
             painter->setPen( Qt::NoPen );
-            painter->drawRoundedRect( rect.adjusted(1, 1, -1, -1), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+            painter->drawRoundedRect( rect.adjusted(1, 1, -1, -1), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
 
         }
 
@@ -5216,8 +5316,10 @@ namespace Lightly
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
-            
-            painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+            if( StyleConfigData::cornerRadius() > 1 )
+                painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
+            else
+                painter->drawRoundedRect( sunken ? rect.adjusted(1, 1, -1, -1) : rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
 
         }
 
@@ -5247,9 +5349,10 @@ namespace Lightly
             CheckBoxState state( menuItemOption->checked ? CheckOn : CheckOff );
             const bool active( menuItemOption->checked );
             const auto shadow( _helper->shadowColor( palette ) );
-            const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
+            //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
+            const auto background( state == CheckOn ? _helper->focusColor( palette ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, color.lighter(115), palette.color( QPalette::Button ), shadow, sunken, true, state );
+            _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -5257,9 +5360,9 @@ namespace Lightly
 
             const bool active( menuItemOption->checked );
             //const auto shadow( _helper->shadowColor( palette ) );
-            const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
+            //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, color, palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff );
+            _helper->renderRadioButton( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), active ? _helper->focusColor( palette ).lighter(115) : palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff );
 
         }
 
@@ -5448,7 +5551,7 @@ namespace Lightly
             // top toolbar 
             if ( bellowMenuBar || widget->y() == 0 )
             {
-                QRect copy = rect;
+                QRect copy ( rect );
                 
                 // adjust shadow rect if there is no widget "above" the toolbar
                 if( _isDolphin && StyleConfigData::dolphinSidebarOpacity() < 100 )
@@ -5489,6 +5592,14 @@ namespace Lightly
                 gradient.setColorAt( 1, QColor(0,0,0,3/2) );
                 painter->setPen( QPen(gradient, 1) );
                 painter->drawLine( copy.bottomLeft() - QPoint(0, 2), copy.bottomRight() - QPoint(0, 2) );
+                
+                if( _helper->isDarkTheme( palette ) )
+                {
+                    painter->setPen( QColor(255, 255, 255, 30) );
+                    painter->drawLine( rect.topRight(), rect.bottomRight() );
+                    painter->drawLine( rect.topLeft(), rect.bottomLeft() );
+                }   
+                
             }
             // bottom toolbar
             else
@@ -6026,7 +6137,7 @@ namespace Lightly
 
         // make the top left corner of the first header rounded so that it doest poke out of the view
         if ( isFirst && horizontal ) {
-            const int radius = Metrics::Frame_FrameRadius;
+            const int radius = StyleConfigData::cornerRadius();
             painter->setRenderHint( QPainter::Antialiasing, true );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
@@ -6279,8 +6390,8 @@ namespace Lightly
                 //if( isLast ) corners |= CornerTopRight;
                 if( isFirst ) corners = CornersLeft;
                 if( isLast ) corners = CornersRight;
-                //if( isRightOfSelected ) rect.adjust( -Metrics::Frame_FrameRadius, 0, 0, 0 );
-                //if( isLeftOfSelected ) rect.adjust( 0, 0, Metrics::Frame_FrameRadius, 0 );
+                //if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius(), 0, 0, 0 );
+                //if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius(), 0 );
                 //else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
                 break;
 
@@ -6314,8 +6425,8 @@ namespace Lightly
                 rect.adjust( 0, 0, -1, 0 );
                 if( isFirst ) corners |= CornerTopLeft;
                 if( isLast ) corners |= CornerBottomLeft;
-                if( isRightOfSelected ) rect.adjust( 0, -Metrics::Frame_FrameRadius, 0, 0 );
-                if( isLeftOfSelected ) rect.adjust( 0, 0, 0, Metrics::Frame_FrameRadius );
+                if( isRightOfSelected ) rect.adjust( 0, -StyleConfigData::cornerRadius(), 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, 0, StyleConfigData::cornerRadius() );
                 else if( !isLast ) rect.adjust( 0, 0, 0, overlap );
 
             }
@@ -6334,8 +6445,8 @@ namespace Lightly
                 rect.adjust( 1, 0, 0, 0 );
                 if( isFirst ) corners |= CornerTopRight;
                 if( isLast ) corners |= CornerBottomRight;
-                if( isRightOfSelected ) rect.adjust( 0, -Metrics::Frame_FrameRadius, 0, 0 );
-                if( isLeftOfSelected ) rect.adjust( 0, 0, 0, Metrics::Frame_FrameRadius );
+                if( isRightOfSelected ) rect.adjust( 0, -StyleConfigData::cornerRadius(), 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, 0, StyleConfigData::cornerRadius() );
                 else if( !isLast ) rect.adjust( 0, 0, 0, overlap );
 
             }
@@ -6393,11 +6504,11 @@ namespace Lightly
                 p.setBrush( Qt::black );
                 p.fillRect( QRect( QPoint( 0, 0 ), mask.size() ), Qt::black );
                 p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
-                p.drawRoundedRect( QRect( shadow_size - 1, shadow_size , rect.width() + shadow_size, rect.height() ), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+                p.drawRoundedRect( QRect( shadow_size - 1, shadow_size , rect.width() + shadow_size, rect.height() ), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
                 
                 // shadow
                 QRect target( QRect(rect.topLeft() - QPoint(shadow_size, shadow_size), QSize( rect.width()+shadow_size*2, rect.height()+shadow_size*2 ) )  );
-                QPixmap shadow = _helper->renderRectShadow( mask, rect, color.darker(200), shadow_size, 2, 4, 0, 0, Metrics::Frame_FrameRadius );
+                QPixmap shadow = _helper->renderRectShadow( mask, rect, color.darker(200), shadow_size, 2, 4, 0, 0, StyleConfigData::cornerRadius() );
                 
                 painter->drawPixmap( target, shadow );
                 painter->restore();
@@ -6418,11 +6529,11 @@ namespace Lightly
                 p.setBrush( Qt::black );
                 p.fillRect( QRect( QPoint( 0, 0 ), mask.size() ), Qt::black );
                 p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
-                p.drawRoundedRect( QRect( 0, shadow_size , rect.width() + shadow_size + 1, rect.height() ), Metrics::Frame_FrameRadius, Metrics::Frame_FrameRadius );
+                p.drawRoundedRect( QRect( 0, shadow_size , rect.width() + shadow_size + 1, rect.height() ), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
                 
                 // shadow
                 QRect target( QRect(rect.topLeft() - QPoint(shadow_size, shadow_size), QSize( rect.width()+shadow_size*2, rect.height()+shadow_size*2 ) )  );
-                QPixmap shadow = _helper->renderRectShadow( mask, rect, color.darker(200), shadow_size, 2, 4, 0, 0, Metrics::Frame_FrameRadius );
+                QPixmap shadow = _helper->renderRectShadow( mask, rect, color.darker(200), shadow_size, 2, 4, 0, 0, StyleConfigData::cornerRadius() );
                 
                 painter->drawPixmap( target, shadow );
                 painter->restore();
@@ -6430,7 +6541,7 @@ namespace Lightly
             }
             else {
                 _helper->renderTabBarTab( painter, rect, _helper->alphaColor( palette.color( QPalette::Shadow ), 0.2 ), QColor(), b );
-                _helper->renderRectShadow( painter, option->rect, color.darker(200), 7, 2, 4, 0, 0, Metrics::Frame_FrameRadius);
+                _helper->renderRectShadow( painter, option->rect, color.darker(200), 7, 2, 4, 0, 0, StyleConfigData::cornerRadius());
             }
             
             QRegion oldRegion( painter->clipRegion() );

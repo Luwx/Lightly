@@ -34,6 +34,13 @@
     <entry name="OutlineCloseButton" type = "Bool">
         <default>true</default>
     </entry>
+    
+    <!-- corner radius -->
+    <entry name="CornerRadius" type = "Int">
+       <default>6</default>
+       <min>1</min>
+       <max>8</max>
+    </entry>
 
   </group>
 

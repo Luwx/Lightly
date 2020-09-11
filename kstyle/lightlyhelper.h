@@ -22,6 +22,7 @@
 
 
 #include "lightly.h"
+#include "lightlystyleconfigdata.h"
 #include "lightlyanimationdata.h"
 #include "config-lightly.h"
 
@@ -167,7 +168,10 @@ namespace Lightly
         QPixmap renderRectShadow( const QPixmap& mask, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
         
         //* shadow for ellipses
-        void renderEllipseShadow(QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;
+        void renderEllipseShadow( QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;
+        
+        //* top outline highlight in dark themes
+        void topHighlight( QPainter*, const QRectF&, const int radius, const QColor& color = QColor(255, 255, 255, 20) ) const;
         
         //* button frame
         void renderButtonFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const bool focus, const bool sunken, const bool mouseOver, const bool enabled ) const;
@@ -251,7 +255,7 @@ namespace Lightly
         void renderDecorationButton( QPainter*, const QRect&, const QColor&, ButtonType, bool inverted ) const;
 
         //* generic shadow for rounded rectangles
-        void renderRoundedRectShadow ( QPainter*, const QRectF&, const QColor&, qreal radius = Metrics::Frame_FrameRadius - 0.5 ) const;
+        void renderRoundedRectShadow ( QPainter*, const QRectF&, const QColor&, qreal radius = StyleConfigData::cornerRadius() - 0.5 ) const;
         
         //* generic shadow for ellipses
         void renderEllipseShadow( QPainter*, const QRectF&, const QColor& ) const;
@@ -287,8 +291,8 @@ namespace Lightly
         virtual qreal devicePixelRatio( const QPixmap& ) const;
 
         //* frame radius
-        constexpr qreal frameRadius( const int penWidth = PenWidth::NoPen, const qreal bias = 0 ) const
-        { return qMax( Metrics::Frame_FrameRadius - (0.5 * penWidth) + bias, 0.0 ); }
+        qreal frameRadius( const int penWidth = PenWidth::NoPen, const qreal bias = 0 ) const
+        { return qMax( StyleConfigData::cornerRadius() - (0.5 * penWidth) + bias, 0.0 ); }
         
         //* frame radius with new pen width
         constexpr qreal frameRadiusForNewPenWidth( const qreal oldRadius, const int penWidth ) const
