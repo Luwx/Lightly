@@ -3417,13 +3417,13 @@ namespace Lightly
             const auto outline( _helper->sidePanelOutlineColor( palette, hasFocus, opacity, mode ) );
             const bool reverseLayout( option->direction == Qt::RightToLeft );
             const Side side( reverseLayout ? SideRight : SideLeft );
-            if( StyleConfigData::roundBottomCorners() ) 
+            if( StyleConfigData::roundBottomCorners() && (widget->window()->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog ) 
             {
                 
                 painter->setRenderHint( QPainter::Antialiasing );
                 QColor background( palette.color( QPalette::Base ) );
                 
-                if( StyleConfigData::dolphinSidebarOpacity() < 100 ) {
+                /*if( StyleConfigData::dolphinSidebarOpacity() < 100 ) {
                     // erase the alpha
                     painter->setBrush( Qt::black );
                     painter->setPen( Qt::NoPen );
@@ -3432,7 +3432,7 @@ namespace Lightly
                     painter->setCompositionMode( QPainter::CompositionMode_SourceOver );
                     
                     background.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
-                }
+                }*/
                 
                 QRectF backgroundRect ( rect );
                 QPainterPath path = _helper->roundedPath( backgroundRect, reverseLayout ? CornerBottomRight : CornerBottomLeft, StyleConfigData::cornerRadius() );
@@ -4212,10 +4212,13 @@ namespace Lightly
             } 
             else 
             {
-                if( StyleConfigData::cornerRadius() > 1 ) {
-                    _helper->renderSelection( painter, rect.adjusted(4, 2, -4, -2), color, true );
-                    return true;
+                _helper->renderSelection( painter, rect, color );
+                if( _helper->isDarkTheme( palette ) ) {
+                    painter->setPen( QColor(255, 255, 255, 30) );
+                    painter->drawLine(rect.topLeft(), rect.bottomLeft());
                 }
+                return true;
+
             }
         }
 

@@ -288,7 +288,7 @@ namespace Lightly
                         }
                     }
 
-                    if( (widget->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog )
+                    /*if( (widget->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog )
                     {
                         QList<QWidget *> dialogWidgets = widget->findChildren<QWidget *>( QString(), Qt::FindDirectChildrenOnly );
                         for( auto w : dialogWidgets ) 
@@ -304,7 +304,7 @@ namespace Lightly
                                 }
                             }
                         }
-                    }
+                    }*/
                     
                 }
                     
