@@ -231,10 +231,15 @@ namespace Lightly
                 || appName == "kded4") // this is for the infamous appmenu
             _isPlasma = true;
 
-        if ( StyleConfigData::opaqueApps().contains(appName, Qt::CaseInsensitive) || StyleConfigData::forceOpaque().contains(appName, Qt::CaseInsensitive))
+        if( StyleConfigData::opaqueApps().contains(appName, Qt::CaseInsensitive) || StyleConfigData::forceOpaque().contains(appName, Qt::CaseInsensitive) )
             _isOpaque = true;
-
-        if (_translucentWidgets.size() > 0) _translucentWidgets.clear();
+        
+        const qreal dpr = qApp->devicePixelRatio();
+        bool nonIntegerScale = (dpr > static_cast<qreal>(1) && static_cast<qreal>(qRound(dpr)) != dpr);
+        if( nonIntegerScale ) 
+            _isOpaque = true;
+        
+        if(_translucentWidgets.size() > 0) _translucentWidgets.clear();
 
         // base class polishing
         ParentStyleClass::polish( app );
