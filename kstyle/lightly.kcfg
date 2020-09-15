@@ -122,11 +122,6 @@
     <entry name="WidgetDrawShadow" type="Bool">
       <default>true</default>
     </entry>
-    
-    <!-- window -->
-    <entry name="RoundBottomCorners" type="Bool">
-      <default>true</default>
-    </entry>
 
     <!-- tree views -->
     <entry name="ViewDrawTreeBranchLines" type="Bool">

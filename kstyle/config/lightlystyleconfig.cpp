@@ -64,7 +64,6 @@ namespace Lightly
         connect( _sidebarOpacity, &QAbstractSlider::valueChanged, this, &StyleConfig::updateChanged );
         connect( _kTextEditDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _widgetDrawShadow, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
-        connect( _roundBottomCorners, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _transparentDolphinView, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _cornerRadius, SIGNAL(valueChanged(int)), SLOT(updateChanged()) );
 
@@ -92,7 +91,6 @@ namespace Lightly
         StyleConfigData::setDolphinSidebarOpacity( _sidebarOpacity->value() );
         StyleConfigData::setKTextEditDrawFrame( _kTextEditDrawFrame->isChecked() );
         StyleConfigData::setWidgetDrawShadow( _widgetDrawShadow->isChecked() );
-        StyleConfigData::setRoundBottomCorners( _roundBottomCorners->isChecked() );
         StyleConfigData::setTransparentDolphinView( _transparentDolphinView->isChecked() );
         StyleConfigData::setCornerRadius( _cornerRadius->value() );
 
@@ -146,7 +144,6 @@ namespace Lightly
         else if( _sidebarOpacity->value() != StyleConfigData::dolphinSidebarOpacity() ) modified = true;
         else if( _kTextEditDrawFrame->isChecked() != StyleConfigData::kTextEditDrawFrame() ) modified = true;
         else if( _widgetDrawShadow->isChecked() != StyleConfigData::widgetDrawShadow() ) modified = true;
-        else if( _roundBottomCorners->isChecked() != StyleConfigData::roundBottomCorners() ) modified = true;
         else if( _transparentDolphinView->isChecked() != StyleConfigData::transparentDolphinView() ) modified = true;
         else if( _cornerRadius->value() != StyleConfigData::cornerRadius() ) modified = true;
         
@@ -178,7 +175,6 @@ namespace Lightly
         _sidebarOpacity->setValue( StyleConfigData::dolphinSidebarOpacity() );
         _kTextEditDrawFrame->setChecked( StyleConfigData::kTextEditDrawFrame() );
         _widgetDrawShadow->setChecked( StyleConfigData::widgetDrawShadow() );
-        _roundBottomCorners->setChecked( StyleConfigData::roundBottomCorners() );
         _transparentDolphinView->setChecked( StyleConfigData::transparentDolphinView() );
         _cornerRadius->setValue( StyleConfigData::cornerRadius() );
 

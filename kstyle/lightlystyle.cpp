@@ -1181,26 +1181,7 @@ namespace Lightly
                         if ( !_translucentWidgets.contains( widget ) ) break;
                         QPainter p( widget );
                         p.setClipRegion(static_cast<QPaintEvent*>( event )->region());
-                        p.setRenderHint( QPainter::Antialiasing, true );
-                        
-                        if( StyleConfigData::roundBottomCorners() ) {
-
-                            p.setBrush( widget->palette().color( QPalette::Window ) );
-                            p.setPen( Qt::NoPen );
-                            QPainterPath path = _helper->roundedPath( widget->rect(), CornersBottom, StyleConfigData::cornerRadius() );
-                            p.drawPath( path );
-                            if( _helper->isDarkTheme( widget->palette() ) ) {
-                                p.setBrush( Qt::NoBrush );
-                                p.setPen( QColor(255, 255, 255, 30) );
-                                QRectF rect = widget->rect().adjusted(0, -2, 0, 0);
-                                path = _helper->roundedPath( rect.adjusted(0.5, 0.5, -0.5, -0.5), CornersBottom, StyleConfigData::cornerRadius() );
-                                p.drawPath( path );
-                            }
-                        } else {
-                            p.fillRect( widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
-                        }
-                        
-                        p.setRenderHint( QPainter::Antialiasing, false );
+                        p.fillRect( widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
                         
                         // separator between the window and decoration
                         if( _helper->titleBarColor( true ).alphaF()*100.0 < 100 )
@@ -1476,42 +1457,7 @@ namespace Lightly
                     
                     bool darkTheme = _helper->isDarkTheme( palette );
                     
-                    if( StyleConfigData::roundBottomCorners() )
-                    {
-                        painter.setRenderHints( QPainter::Antialiasing, true );
-                        Corners corners;
-                        if( dockWidget->x() == 0 ) corners = CornerBottomLeft;
-                        if( dockWidget->x() + dockWidget->width() == dockWidget->window()->width() ) corners |= CornerBottomRight;
-                        QPainterPath path = _helper->roundedPath( rect, corners, StyleConfigData::cornerRadius() );
-                        
-                        painter.setPen( Qt::NoPen );
-                        painter.drawPath( path );
-                        painter.setRenderHints( QPainter::Antialiasing, false );
-                    }
-                    else painter.fillRect( rect, backgroundColor );
-                    
-                    // outline
-                    if( darkTheme )
-                    {
-                        painter.setRenderHints( QPainter::Antialiasing, true );
-                        Corners corners;
-                        QRectF outlineRect ( rect );
-                        outlineRect.adjust(0.5, 0.5, -0.5, -0.5);
-                        
-                        if( dockWidget->x() == 0 ) {
-                            corners = CornerBottomLeft;
-                            outlineRect.adjust(0, -1, 1, 0);
-                        }
-                        if( dockWidget->x() + dockWidget->width() == dockWidget->window()->width() ){ 
-                            corners |= CornerBottomRight;
-                            outlineRect.adjust(-1, -1, 0, 0);
-                        }
-                        QPainterPath path = _helper->roundedPath( outlineRect, corners, StyleConfigData::cornerRadius() );
-                        
-                        painter.setPen( QColor(255, 255, 255, 30) );
-                        painter.drawPath( path );
-                        painter.setRenderHints( QPainter::Antialiasing, false );
-                    }
+                    painter.fillRect( rect, backgroundColor );
                     
                     
                     // top shadow
@@ -1525,10 +1471,10 @@ namespace Lightly
                         painter.drawLine( rect.topLeft() + QPoint(0, 1), rect.topRight() + QPoint(0, 1) );
                         
                         painter.setPen( QColor(0, 0, 0, darkTheme ? 6 : 3) );
-                        painter.drawLine( rect.topLeft() + QPoint(0, 3), rect.topRight() + QPoint(0, 3) );
+                        painter.drawLine( rect.topLeft() + QPoint(0, 2), rect.topRight() + QPoint(0, 2) );
                         
                         painter.setPen( QColor(0, 0, 0, darkTheme ? 2 : 1) );
-                        painter.drawLine( rect.topLeft() + QPoint(0, 4), rect.topRight() + QPoint(0, 4) );
+                        painter.drawLine( rect.topLeft() + QPoint(0, 3), rect.topRight() + QPoint(0, 3) );
                     }
                     
                     // side shadow
@@ -3422,10 +3368,9 @@ namespace Lightly
             const auto outline( _helper->sidePanelOutlineColor( palette, hasFocus, opacity, mode ) );
             const bool reverseLayout( option->direction == Qt::RightToLeft );
             const Side side( reverseLayout ? SideRight : SideLeft );
-            if( StyleConfigData::roundBottomCorners() && (widget->window()->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog ) 
+            if( (widget->window()->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog ) 
             {
                 
-                painter->setRenderHint( QPainter::Antialiasing );
                 QColor background( palette.color( QPalette::Base ) );
                 
                 /*if( StyleConfigData::dolphinSidebarOpacity() < 100 ) {
@@ -3439,28 +3384,13 @@ namespace Lightly
                     background.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
                 }*/
                 
-                QRectF backgroundRect ( rect );
-                QPainterPath path = _helper->roundedPath( backgroundRect, reverseLayout ? CornerBottomRight : CornerBottomLeft, StyleConfigData::cornerRadius() );
-                painter->setPen( Qt::NoPen );
-                painter->setBrush( background );
-                painter->drawPath( path );
+                painter->fillRect( rect, background );
                 
                 if( _helper->titleBarColor(true).alpha() != palette.color( QPalette::Window ).alpha() ) {
                     painter->setRenderHint( QPainter::Antialiasing, false );
                     painter->setPen( QColor(0,0,0,30) );
-                    painter->drawLine( backgroundRect.topLeft(), backgroundRect.topRight() );
+                    painter->drawLine( rect.topLeft(), rect.topRight() );
                     painter->setRenderHint( QPainter::Antialiasing );
-                }
-                
-                if( _helper->isDarkTheme( palette ) ) {
-                    backgroundRect.adjust( 0.5, 0.5, -0.5, -0.5 );
-                    if( reverseLayout ) backgroundRect.adjust( -1, -1, 0, 0 );
-                    else backgroundRect.adjust( 0, -1, 1, 0 );
-                    path = _helper->roundedPath( backgroundRect, reverseLayout ? CornerBottomRight : CornerBottomLeft, StyleConfigData::cornerRadius() );
-                    painter->setBrush( Qt::NoBrush );
-                    painter->setPen( QColor( 255, 255, 255, 30 ) );
-                    painter->drawPath( path );
-                    
                 }
             }
             _helper->renderSidePanelFrame( painter, rect, outline, side );
@@ -4215,16 +4145,6 @@ namespace Lightly
                     return true;
                 }
             } 
-            else 
-            {
-                _helper->renderSelection( painter, rect, color );
-                if( _helper->isDarkTheme( palette ) ) {
-                    painter->setPen( QColor(255, 255, 255, 30) );
-                    painter->drawLine(rect.topLeft(), rect.bottomLeft());
-                }
-                return true;
-
-            }
         }
 
         // render
@@ -5065,12 +4985,6 @@ namespace Lightly
                 painter->drawLine( rect.bottomLeft() - QPoint(0, 2), rect.bottomRight() - QPoint(0, 2) );
         }
         
-        if( _helper->isDarkTheme( palette ) )
-        {
-            painter->setPen( QColor(255, 255, 255, 30) );
-            painter->drawLine( rect.topRight(), rect.bottomRight() );
-        }
-        
         return true;
     }
 
@@ -5168,13 +5082,6 @@ namespace Lightly
                 painter->setPen( QPen(gradient, 1) );
                 painter->drawLine( shadowRect.bottomLeft() - QPoint(0, 2), shadowRect.bottomRight() - QPoint(0, 2) );*/
             }
-            
-            if( _helper->isDarkTheme( palette ) )
-            {
-                painter->setPen( QColor(255, 255, 255, 30) );
-                painter->drawLine( widget->rect().topLeft(), widget->rect().bottomLeft() );
-            }
-            
         }
 
         // store state
@@ -5615,10 +5522,6 @@ namespace Lightly
                     _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 8, 0.7, 5, 0, 0, 1 );
                     _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 3, 4, 1, 0, 0, 1 );
                     _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 2, 20, 1, 0, 0, 1 );
-                    
-                    painter->setPen( QColor(255, 255, 255, 30) );
-                    painter->drawLine( rect.topRight(), rect.bottomRight() );
-                    painter->drawLine( rect.topLeft(), rect.bottomLeft() );
                 }
                 
             }

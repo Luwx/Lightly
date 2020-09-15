@@ -1825,7 +1825,6 @@ namespace Lightly
     { 
         if( _activeTitleBarColor.alphaF() < 1.0
             || ( StyleConfigData::dolphinSidebarOpacity() < 100 && isDolphin )
-            || StyleConfigData::roundBottomCorners()
             || palette.color( QPalette::Window ).alpha() < 255 )
         {
             return true;

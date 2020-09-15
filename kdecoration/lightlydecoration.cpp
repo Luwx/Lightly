@@ -625,14 +625,7 @@ namespace Lightly
                 p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
                 p.drawRoundedRect(copy.adjusted(0, 1, 0, 0), m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
                 
-                painter->drawPixmap(copy.adjusted(1, 0, -1, 0), pix);
-                
-                painter->setPen(QColor(255, 255, 255, 30));
-                painter->setBrush(Qt::NoBrush);
-                
-                QRectF copyF (copy);
-                painter->drawRoundedRect(copyF.adjusted(0.5, 0.5, -0.5, -0.5), m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
-                
+                painter->drawPixmap(copy, pix);
             }
 
         }
@@ -784,22 +777,13 @@ namespace Lightly
             QRect boxRect(QPoint(0, 0), boxSize);
             boxRect.moveCenter(outerRect.center());
 
-            // Mask out inner rect.
             const QMargins padding = QMargins(
                 boxRect.left() - outerRect.left() - Metrics::Shadow_Overlap - params.offset.x(),
                 boxRect.top() - outerRect.top() - Metrics::Shadow_Overlap - params.offset.y(),
                 outerRect.right() - boxRect.right() - Metrics::Shadow_Overlap + params.offset.x(),
                 outerRect.bottom() - boxRect.bottom() - Metrics::Shadow_Overlap + params.offset.y());
             const QRect innerRect = outerRect - padding;
-
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(Qt::black);
-            painter.setCompositionMode(QPainter::CompositionMode_DestinationOut);
-            painter.drawRoundedRect(
-                innerRect,
-                m_internalSettings->cornerRadius() + 0.5,
-                m_internalSettings->cornerRadius() + 0.5);
-
+            
             // Draw outline.
             painter.setPen(withOpacity(g_shadowColor, 0.4 * strength));
             painter.setBrush(Qt::NoBrush);
@@ -808,6 +792,16 @@ namespace Lightly
                 innerRect,
                 m_internalSettings->cornerRadius() - 0.5,
                 m_internalSettings->cornerRadius() - 0.5);
+
+            // Mask out inner rect.
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(Qt::black);
+            painter.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+            painter.drawRoundedRect(
+                innerRect,
+                m_internalSettings->cornerRadius() + 0.5,
+                m_internalSettings->cornerRadius() + 0.5);
+
 
             painter.end();
 
