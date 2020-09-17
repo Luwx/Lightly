@@ -190,9 +190,6 @@ namespace Lightly
 
         //* separator
         void renderSeparator( QPainter*, const QRect&, const QColor&, bool vertical = false ) const;
-
-        //* checkbox
-        void renderCheckBoxBackground( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
         
         //* line edit
         void renderLineEdit( QPainter*, const QRect&, const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, const bool enabled ) const;
@@ -201,13 +198,10 @@ namespace Lightly
         void renderGroupBox( QPainter*, const QRect&, const QColor& color, const bool mouseOver ) const;
 
         //* checkbox
-        void renderCheckBox( QPainter*, const QRect&, const QColor& color, const QColor& background, const QColor& shadow, bool sunken, const bool mouseOver, CheckBoxState state, qreal animation = AnimationData::OpacityInvalid ) const;
+        void renderCheckBox( QPainter*, const QRect&, const QColor& color, const QColor& background, const QColor& shadow, bool sunken, const bool mouseOver, CheckBoxState state,  bool darkTheme, qreal animation = AnimationData::OpacityInvalid ) const;
 
         //* radio button
-        void renderRadioButtonBackground( QPainter*, const QRect&, const QColor& color, bool sunken ) const;
-
-        //* radio button
-        void renderRadioButton( QPainter*, const QRect&, const QColor& color, const QColor& background, const bool mouseOver, bool sunken, RadioButtonState state, qreal animation = AnimationData::OpacityInvalid ) const;
+        void renderRadioButton( QPainter*, const QRect&, const QColor& color, const QColor& background, const bool mouseOver, bool sunken, RadioButtonState state, bool darkTheme, qreal animation = AnimationData::OpacityInvalid ) const;
 
         //* slider groove
         void renderSliderGroove( QPainter*, const QRect&, const QColor& ) const;

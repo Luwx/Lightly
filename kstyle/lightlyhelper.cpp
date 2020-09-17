@@ -763,15 +763,16 @@ namespace Lightly
 
             frameRect.translate( 0, 1 );
 
-        } else if (enabled) {
+        } else if ( enabled ) {
             
             const qreal shadowRadius = qMax( radius, qreal( 0.0 ) );
             
-            if (mouseOver){
-                frameRect.translate( 0, -1 );
-                renderRectShadow( painter, frameRect, color.darker(200), 5, 5, 9, 0, 1, shadowRadius );
+            if ( mouseOver || hasFocus ){
+                //frameRect.translate( 0, -1 ); feels cheap without animations
+                
+                renderRectShadow( painter, frameRect, hasFocus ? color.darker(220) : QColor(Qt::black), 5, 5, (mouseOver && hasFocus) ? 5 : 9, 0, 1, shadowRadius );
             } else {
-                renderRectShadow(painter, frameRect, QColor(Qt::black), 3, 8, 6, 0, 1, shadowRadius);
+                renderRectShadow( painter, frameRect, QColor(Qt::black), 3, 8, 6, 0, 1, shadowRadius );
             }
         }
 
@@ -1010,39 +1011,15 @@ namespace Lightly
     }
 
     //______________________________________________________________________________
-    void Helper::renderCheckBoxBackground(
-        QPainter* painter, const QRect& rect,
-        const QColor& color, bool sunken ) const
-    {
-
-        // setup painter
-        painter->setRenderHint( QPainter::Antialiasing, true );
-
-        // copy rect and radius
-        QRectF frameRect( rect );
-        frameRect.adjust( 3, 3, -3, -3 );
-
-        if( sunken ) frameRect.translate(1, 1);
-
-        painter->setPen( Qt::NoPen );
-        painter->setBrush( color );
-        painter->drawRect( frameRect );
-
-    }
-
-    //______________________________________________________________________________
     void Helper::renderCheckBox(
         QPainter* painter, const QRect& rect,
         const QColor& color, const QColor& background,  const QColor& shadow,
-        bool sunken, const bool mouseOver, CheckBoxState state, qreal animation ) const
+        bool sunken, const bool mouseOver, CheckBoxState state, bool darkTheme, qreal animation ) const
     {
 
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
         painter->setPen( Qt::NoPen );
-        
-        // check if the colorscheme is somewhat dark
-        const bool darkTheme( qGray(background.rgb()) < 140 ? true : false );
 
         // copy rect and radius
         QRectF frameRect( rect );
@@ -1056,18 +1033,18 @@ namespace Lightly
         if( state == CheckOff)
         {
             // small shadow
-            renderRectShadow(painter, frameRect, QColor( Qt::black ), 2, 12, 3, 1, 1, radius, true, 15);
+            renderRectShadow(painter, frameRect, QColor( Qt::black ), 2, 12, 3, 0, 1, radius, true, 15);
             painter->setBrush( background );
             painter->drawRoundedRect( frameRect, radius, radius );
             
         } else if( state == CheckOn ) { //mark
             
-            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? background.darker(140) : background.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
-            else renderRectShadow(painter, frameRect, background.darker(220), 4, 4, 6, 1, 1, radius, true, 8);
-            painter->setBrush( background );
+            if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? background.darker(140) : background.darker(200), 4, 8, 5, 0, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, background.darker(220), 4, 4, 6, 0, 1, radius, true, 8);
+            painter->setBrush( mouseOver ? background.lighter(110) : background );
             painter->drawRoundedRect( frameRect, radius, radius );
             
-            //draw check icon
+            //draw check mark
             int x = frameRect.x();
             int y = frameRect.y();
             
@@ -1120,8 +1097,8 @@ namespace Lightly
 
         } else if( state == CheckAnimated ) {
 
-            if ( darkTheme ) renderRectShadow(painter, frameRect, color.darker(200), 4, 8, 5, 1, 1, radius, true, 15);
-            else renderRectShadow(painter, frameRect, color.darker(200), 4, 4, 6, 1, 1, radius, true, 8);
+            if ( darkTheme ) renderRectShadow(painter, frameRect, color.darker(200), 4, 8, 5, 0, 1, radius, true, 15);
+            else renderRectShadow(painter, frameRect, color.darker(200), 4, 4, 6, 0, 1, radius, true, 8);
             const QRectF markerRect( frameRect.adjusted( 3, 3, -3, -3 ) );
             QPainterPath path;
             path.moveTo( markerRect.topRight() );
@@ -1141,35 +1118,14 @@ namespace Lightly
     }
 
     //______________________________________________________________________________
-    void Helper::renderRadioButtonBackground( QPainter* painter, const QRect& rect, const QColor& color, bool sunken ) const
-    {
-
-        // setup painter
-        painter->setRenderHint( QPainter::Antialiasing, true );
-
-        // copy rect
-        QRectF frameRect( rect );
-        frameRect.adjust( 3, 3, -3, -3 );
-        if( sunken ) frameRect.translate(1, 1);
-
-        painter->setPen( Qt::NoPen );
-        painter->setBrush( color );
-        painter->drawEllipse( frameRect );
-
-    }
-
-    //______________________________________________________________________________
     void Helper::renderRadioButton(
         QPainter* painter, const QRect& rect,
         const QColor& color, const QColor& background, const bool mouseOver,
-        bool sunken, RadioButtonState state, qreal animation ) const
+        bool sunken, RadioButtonState state, bool darkTheme, qreal animation ) const
     {
 
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
-        
-        // check if the colorscheme is somewhat dark
-        const bool darkTheme( qGray(background.rgb()) < 140 ? true : false );
 
         // copy rect
         QRectF frameRect( rect );
@@ -1184,16 +1140,16 @@ namespace Lightly
         {
             
             // strong shadows don't look good with light themes
-            if ( darkTheme ) renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 8, 5, 1, 1, true, 15);
-            else renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 4, 6, 1, 1, true, 8);
+            if ( darkTheme ) renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 8, 5, 0, 1, true, 15);
+            else renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 4, 6, 0, 1, true, 8);
 
-            painter->setBrush( background );
+            painter->setBrush( mouseOver ? background.lighter(110) : background );
             painter->drawEllipse( frameRect );
 
             // inner ellipse
             const QRectF markerRect( frameRect.adjusted( 4, 4, -4, -4 ) );
             //renderEllipseShadow(painter, markerRect, 3, 10, 4, 1, 1, true, 15);
-            renderEllipseShadow(painter, markerRect, QColor(0,0,0), 0, 1, 4, 1, 1, true, 15);
+            renderEllipseShadow(painter, markerRect, QColor(0,0,0), 0, 1, 4, 0, 1, true, 15);
             painter->setBrush( darkTheme ? color.darker(120) : color.lighter(115) );
             painter->drawEllipse( markerRect );
             
@@ -1203,7 +1159,7 @@ namespace Lightly
         } else if ( state == RadioOff ) 
         {
             
-            renderEllipseShadow(painter, frameRect, QColor(0,0,0), 2, 12, 3, 1, 1, true, 15);
+            renderEllipseShadow(painter, frameRect, QColor(0,0,0), 2, 12, 3, 0, 1, true, 15);
             painter->setBrush( background );
             painter->drawEllipse( frameRect );
             
@@ -1639,63 +1595,6 @@ namespace Lightly
 
         painter->restore();
 
-    }
-    
-    //______________________________________________________________________________
-    void Helper::renderRoundedRectShadow( QPainter* painter, const QRectF& rect, const QColor& color, qreal radius ) const
-    {
-        if( !color.isValid() ) return;
-        
-        painter->save();
-        
-        qreal translation = 0.5 * PenWidth::Shadow; // Translate for the pen
-        
-        /* Clipping prevents shadows from being visible inside checkboxes.
-         * Clipping away unneeded parts here also improves performance by 40-60%
-         * versus using just an outline of a rectangle.
-         * Tested by looking at the paint analyser in GammaRay.
-         */
-        // Right side
-        QRegion clip( rect.right() - std::ceil( radius ), rect.top(), 
-                      std::ceil( radius ) + PenWidth::Shadow, rect.height() );
-        // Bottom side
-        clip = clip.united( QRegion( rect.left(), rect.bottom() - std::ceil( radius ), 
-                                     rect.width(), std::ceil( radius ) + PenWidth::Shadow ) );
-
-        painter->setClipRegion( clip );
-        painter->setPen( color );
-        painter->setBrush( Qt::NoBrush );
-        painter->drawRoundedRect( rect.translated( translation, translation ), radius, radius );
-        
-        painter->restore();
-    }
-    
-    //______________________________________________________________________________
-    void Helper::renderEllipseShadow( QPainter* painter, const QRectF& rect, const QColor& color ) const
-    {
-        if( !color.isValid() ) return;
-        
-        painter->save();
-
-        // Clipping does not improve performance here
-
-        qreal adjustment = 0.5 * PenWidth::Shadow; // Adjust for the pen
-
-        qreal radius = rect.width() / 2 - adjustment;
-        
-        /* The right side is offset by +0.5 for the visible part of the shadow.
-         * The other sides are offset by +0.5 or -0.5 because of the pen.
-         */
-        QRectF shadowRect = rect.adjusted( adjustment, adjustment, adjustment, -adjustment );
-        
-        painter->translate( rect.center() );
-        painter->rotate( 45 );
-        painter->translate( -rect.center() );
-        painter->setPen( color );
-        painter->setBrush( Qt::NoBrush );
-        painter->drawRoundedRect( shadowRect, radius, radius );
-        
-        painter->restore();
     }
     
     //______________________________________________________________________________

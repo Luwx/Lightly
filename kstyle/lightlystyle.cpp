@@ -600,7 +600,7 @@ namespace Lightly
 
             // frame width
             case PM_DefaultFrameWidth:
-            if( qobject_cast<const QMenu*>( widget ) ) return 4;
+            if( qobject_cast<const QMenu*>( widget ) ) return StyleConfigData::cornerRadius() > 1 ? 4 : 0;
             if( qobject_cast<const QLineEdit*>( widget ) ) return Metrics::LineEdit_FrameWidth;
             else if( isQtQuickControl( option, widget ) )
             {
@@ -4194,7 +4194,7 @@ namespace Lightly
 
         // render
         //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
-        _helper->renderCheckBox( painter, rect, palette.color( QPalette::HighlightedText ), background, shadow, sunken, mouseOver, checkBoxState, animation );
+        _helper->renderCheckBox( painter, rect, palette.color( QPalette::HighlightedText ), background, shadow, sunken, mouseOver, checkBoxState, _helper->isDarkTheme( palette ), animation );
         return true;
 
     }
@@ -4233,7 +4233,7 @@ namespace Lightly
 
         // render
         //_helper->renderRadioButtonBackground( painter, rect, background, sunken );
-        _helper->renderRadioButton( painter, rect, color, background, mouseOver, sunken, radioButtonState, animation );
+        _helper->renderRadioButton( painter, rect, color, background, mouseOver, sunken, radioButtonState, _helper->isDarkTheme( palette ), animation );
 
         return true;
 
@@ -4566,7 +4566,7 @@ namespace Lightly
         // contents
         auto contentsRect( rect );
         if( sunken && !flat ) contentsRect.translate( 0, 1 );
-        else if ( mouseOver && !flat ) contentsRect.translate(0, -1);
+        //else if ( mouseOver && !flat ) contentsRect.translate(0, -1);
 
         // color role
         QPalette::ColorRole textRole;
@@ -5275,7 +5275,7 @@ namespace Lightly
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             const auto background( state == CheckOn ? _helper->focusColor( palette ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state );
+            _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state, _helper->isDarkTheme( palette ) );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -5285,7 +5285,7 @@ namespace Lightly
             //const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), active ? _helper->focusColor( palette ).lighter(115) : palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff );
+            _helper->renderRadioButton( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), active ? _helper->focusColor( palette ).lighter(115) : palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff, _helper->isDarkTheme( palette ) );
 
         }
 
