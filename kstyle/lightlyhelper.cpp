@@ -71,8 +71,8 @@ namespace Lightly
     QColor Helper::frameOutlineColor( const QPalette& palette, bool mouseOver, bool hasFocus, qreal opacity, AnimationMode mode ) const
     {
 
-        //QColor outline( KColorUtils::mix( palette.color( QPalette::Window ), palette.color( QPalette::WindowText ), 0.25 ) );
-        QColor outline( palette.color( QPalette::QPalette::AlternateBase ) );
+        QColor outline( KColorUtils::mix( palette.color( QPalette::Window ), palette.color( QPalette::WindowText ), 0.25 ) );
+        //QColor outline( palette.color( QPalette::QPalette::AlternateBase ) );
 
         // focus takes precedence over hover
         if( mode == AnimationFocus )
