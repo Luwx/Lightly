@@ -879,8 +879,12 @@ namespace Lightly
 
         painter->setRenderHint( QPainter::Antialiasing );
 
-        QRectF frameRect( rect.adjusted( 1, 1, -1, -1 ) );
+        //QRectF frameRect( rect.adjusted( 1, 1, -1, -1 ) );
+        QRectF frameRect( rect.adjusted( 1 + Metrics::Frame_FrameWidth, 1 + Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth ) );
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) + 2 );
+        
+        //shadow
+        renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 3, 6, 0, 1, radius);
 
         // set pen
         if( outline.isValid() )
@@ -1451,7 +1455,7 @@ namespace Lightly
     }
 
     //______________________________________________________________________________
-    void Helper::renderTabBarTab( QPainter* painter, const QRect& rect, const QColor& color, const QColor& outline, Corners corners ) const
+    void Helper::renderTabBarTab( QPainter* painter, const QRect& rect, const QColor& color, const QColor& outline, Corners corners, const bool selected ) const
     {
 
         // setup painter
@@ -1476,7 +1480,9 @@ namespace Lightly
         else painter->setBrush( Qt::NoBrush );
 
         // render
-        QPainterPath path( roundedPath( frameRect, corners, radius ) );
+        QPainterPath path;
+        if( selected ) path = tabPath( frameRect, radius+3 );
+        else path = roundedPath( frameRect, corners, radius+3);
         painter->drawPath( path );
 
     }
@@ -1698,6 +1704,35 @@ namespace Lightly
         path.closeSubpath();
         return path;
 
+    }
+    
+    //________________________________________________________________________________________________________
+    QPainterPath Helper::tabPath( const QRectF& rect, qreal radius ) const
+    {
+        QPainterPath path;
+
+        const QSizeF cornerSize( 2*radius, 2*radius );
+
+        // bottom left corner
+        path.moveTo( rect.bottomLeft() );
+        path.arcTo( QRectF( rect.bottomLeft() - QPointF( radius, 2*radius ), cornerSize ), 270, 90 );
+
+
+        // top left corner
+        path.lineTo( rect.topLeft() + QPointF( radius, radius ) );
+        path.arcTo( QRectF( rect.topLeft() + QPointF( radius, 0 ), cornerSize ), 180, -90 );
+
+        // top right corner
+        path.lineTo( rect.topRight() - QPointF( 2*radius, 0 ) );
+        path.arcTo( QRectF( rect.topRight() - QPointF( 3*radius, 0 ), cornerSize ), 90, -90 );
+
+        // bottom right corner
+        path.lineTo( rect.bottomRight() - QPointF( radius, radius ) );
+        path.arcTo( QRectF( rect.bottomRight() - QPointF( radius, 2*radius ), cornerSize ), 180, 90 );
+
+
+        path.closeSubpath();
+        return path;
     }
     
 

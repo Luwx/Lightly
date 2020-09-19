@@ -240,7 +240,7 @@ namespace Lightly
         void renderScrollBarBorder( QPainter*, const QRect&, const QColor& ) const;
 
         //* tabbar tab
-        void renderTabBarTab( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners ) const;
+        void renderTabBarTab( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners, const bool selected ) const;
 
         //* generic arrow
         void renderArrow( QPainter*, const QRect&, const QColor&, ArrowOrientation ) const;
@@ -305,6 +305,8 @@ namespace Lightly
 
         //* return rounded path in a given rect, with only selected corners rounded, and for a given radius
         QPainterPath roundedPath( const QRectF&, Corners, qreal ) const;
+        
+        QPainterPath tabPath( const QRectF&, qreal ) const;
 
         private:
 
