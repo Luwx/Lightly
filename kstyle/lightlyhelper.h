@@ -38,12 +38,14 @@ namespace Lightly
 
     //* lightly style helper class.
     /** contains utility functions used at multiple places in both lightly style and lightly window decoration */
-    class Helper
+    class Helper : public QObject
     {
+        Q_OBJECT
+        
         public:
 
         //* constructor
-        explicit Helper( KSharedConfig::Ptr );
+        explicit Helper( KSharedConfig::Ptr, QObject *parent = nullptr );
 
         //* destructor
         virtual ~Helper()

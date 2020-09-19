@@ -43,9 +43,25 @@ namespace Lightly
     static const qreal arrowShade = 0.15;
 
     //____________________________________________________________________
-    Helper::Helper( KSharedConfig::Ptr config ):
+    Helper::Helper( KSharedConfig::Ptr config, QObject *parent ):
         _config( std::move( config ) )
-    {}
+    {
+        
+        if ( qApp ) {
+            connect(qApp, &QApplication::paletteChanged, this, [=]() {
+                if (qApp->property("KDE_COLOR_SCHEME_PATH").isValid()) {
+                    const auto path = qApp->property("KDE_COLOR_SCHEME_PATH").toString();
+                    KConfig config(path, KConfig::SimpleConfig);
+                    KConfigGroup group( config.group("WM") );
+                    const QPalette palette( QApplication::palette() );
+                    _activeTitleBarColor = group.readEntry( "activeBackground", palette.color( QPalette::Active, QPalette::Highlight ) );
+                    _activeTitleBarTextColor = group.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) );
+                    _inactiveTitleBarColor = group.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) );
+                    _inactiveTitleBarTextColor = group.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) );
+                }
+            });
+        }
+    }
 
     //____________________________________________________________________
     KSharedConfig::Ptr Helper::config() const
@@ -59,11 +75,14 @@ namespace Lightly
         _viewNegativeTextBrush = KStatefulBrush( KColorScheme::View, KColorScheme::NegativeText );
 
         const QPalette palette( QApplication::palette() );
-        const KConfigGroup group( _config->group( "WM" ) );
-        _activeTitleBarColor = group.readEntry( "activeBackground", palette.color( QPalette::Active, QPalette::Highlight ) );
-        _activeTitleBarTextColor = group.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) );
-        _inactiveTitleBarColor = group.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) );
-        _inactiveTitleBarTextColor = group.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) );
+        		
+        KConfig config(qApp->property("KDE_COLOR_SCHEME_PATH").toString(), KConfig::SimpleConfig);
+        KConfigGroup appGroup( config.group("WM") );
+        KConfigGroup globalGroup( _config->group("WM") );
+        _activeTitleBarColor = appGroup.readEntry( "activeBackground", globalGroup.readEntry( "activeBackground", palette.color( QPalette::Active, QPalette::Highlight ) ) );
+        _activeTitleBarTextColor = appGroup.readEntry( "activeForeground", globalGroup.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) ) );
+        _inactiveTitleBarColor = appGroup.readEntry( "inactiveBackground", globalGroup.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) ) );
+        _inactiveTitleBarTextColor = appGroup.readEntry( "inactiveForeground", globalGroup.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) ) );
         
     }
 
