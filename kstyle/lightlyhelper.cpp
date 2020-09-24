@@ -966,14 +966,15 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderSelection(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const bool rounded ) const
+        const QColor& color, Corners corners ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
         painter->setPen( Qt::NoPen );
         painter->setBrush( color );
-        if ( rounded ) painter->drawRoundedRect( rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
-        else painter->drawRect( rect );
+        
+        QPainterPath path( roundedPath( rect, corners, StyleConfigData::cornerRadius() ) );
+        painter->drawPath( path );
 
     }
 

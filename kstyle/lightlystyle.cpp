@@ -4146,23 +4146,24 @@ namespace Lightly
                     || qobject_cast<const QListView *>(widget)
                 ) ) 
                 {
-                    /*Sides sides = SideTop|SideBottom;
+                    Corners corners;
                     if( !viewItemOption->rect.isNull() )
                     {
                         if( viewItemOption->viewItemPosition == QStyleOptionViewItem::Beginning 
-                            || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideLeft;
+                            || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) corners |= CornersLeft;
                         if( viewItemOption->viewItemPosition == QStyleOptionViewItem::End 
-                            || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) sides |= SideRight;
-                    }*/
+                            || viewItemOption->viewItemPosition == QStyleOptionViewItem::OnlyOne ) corners |= CornersRight;
+                    }
 
-                    _helper->renderSelection( painter, rect, color, true );
+                    _helper->renderSelection( painter, rect, color, corners );
                     return true;
                 }
             } 
         }
 
         // render
-        _helper->renderSelection( painter, rect, color );
+        Corners noCorner;
+        _helper->renderSelection( painter, rect, color, noCorner );
 
         return true;
     }

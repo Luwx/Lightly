@@ -189,10 +189,10 @@ namespace Lightly
         void renderToolBoxFrame( QPainter*, const QRect&, int tabWidth, const QColor& color ) const;
 
         //* tab widget frame
-        void renderTabWidgetFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners ) const;
+        void renderTabWidgetFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners corners ) const;
 
         //* selection frame
-        void renderSelection( QPainter*, const QRect&, const QColor&, const bool rounded = false ) const;
+        void renderSelection( QPainter*, const QRect&, const QColor&, Corners ) const;
 
         //* separator
         void renderSeparator( QPainter*, const QRect&, const QColor&, bool vertical = false ) const;
