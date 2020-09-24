@@ -74,6 +74,10 @@ namespace Lightly
         //* negative text color (used for close button)
         QColor negativeText( const QPalette& palette ) const
         { return _viewNegativeTextBrush.brush( palette ).color(); }
+        
+        //* alternate window background
+        QColor windowAlternateBackground( const QPalette& palette ) const
+        { return _windowAlternateBackgroundBrush.brush( palette ).color(); }
 
         //* shadow
         QColor shadowColor( const QPalette& palette ) const
@@ -249,12 +253,9 @@ namespace Lightly
 
         //* generic button (for mdi decorations, tabs and dock widgets)
         void renderDecorationButton( QPainter*, const QRect&, const QColor&, ButtonType, bool inverted ) const;
-
-        //* generic shadow for rounded rectangles
-        void renderRoundedRectShadow ( QPainter*, const QRectF&, const QColor&, qreal radius = StyleConfigData::cornerRadius() - 0.5 ) const;
         
-        //* generic shadow for ellipses
-        void renderEllipseShadow( QPainter*, const QRectF&, const QColor& ) const;
+        //* erase the alpha
+        void renderTransparentArea( QPainter*, const QRect& ) const;
         
         //@}
 
@@ -303,12 +304,12 @@ namespace Lightly
         QPixmap coloredIcon(const QIcon &icon, const QPalette& palette, const QSize &size,
                             QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off);
 
-        //protected:
+        protected:
 
         //* return rounded path in a given rect, with only selected corners rounded, and for a given radius
         QPainterPath roundedPath( const QRectF&, Corners, qreal ) const;
         
-        QPainterPath tabPath( const QRectF&, qreal ) const;
+        QPainterPath tabPath(const QRectF& rect, const Corners corners, qreal radius) const;
 
         private:
 
@@ -320,6 +321,7 @@ namespace Lightly
         KStatefulBrush _viewFocusBrush;
         KStatefulBrush _viewHoverBrush;
         KStatefulBrush _viewNegativeTextBrush;
+        KStatefulBrush _windowAlternateBackgroundBrush;
         //@}
 
         //*@name windeco colors

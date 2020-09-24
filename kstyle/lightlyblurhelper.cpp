@@ -273,8 +273,21 @@ namespace Lightly
                 {
                     if( _isDolphin  )
                     {
+                        
+                        // sidetoolbar 
+                        if( !_translucentTitlebar )
+                        {
+                            QToolBar *toolbar = widget->window()->findChild<QToolBar *>( QString(), Qt::FindDirectChildrenOnly );
+                            if( toolbar ) {
+                                if( toolbar->orientation() == Qt::Vertical) {
+                                   if( toolbar->x() == 0 ) region += roundedRegion( QRect( toolbar->pos(), toolbar->rect().size() ), StyleConfigData::cornerRadius(),  false, false, true, false );
+                                   else region += roundedRegion( QRect( toolbar->pos(), toolbar->rect().size() ), StyleConfigData::cornerRadius(),  false, false, false, true );
+                                }
+                            }
+                        }
+                        
+                        // sidepanels
                         QList<QWidget *> sidebars = widget->findChildren<QWidget *>( QRegularExpression("^(places|terminal|info|folders)Dock$"), Qt::FindDirectChildrenOnly );
-
                         for ( auto sb : sidebars )
                         {
                             if ( sb && sb->isVisible() )
@@ -286,6 +299,26 @@ namespace Lightly
                                 else region += QRect( sb->pos(), sb->rect().size() );
                             }
                         }
+                        
+                        // settings page
+                        if( (widget->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog )
+                        {
+                            QList<QWidget *> dialogWidgets = widget->findChildren<QWidget *>( QString(), Qt::FindDirectChildrenOnly );
+                            for( auto w : dialogWidgets ) 
+                            {
+                                if( w->inherits( "KPageWidget" ) )
+                                {
+                                    QList<QWidget *> KPageWidgets = w->findChildren<QWidget *>( QString(), Qt::FindDirectChildrenOnly );
+                                    for ( auto wid : KPageWidgets ){
+                                        if( wid->property( PropertyNames::sidePanelView ).toBool() ) {
+                                            region += roundedRegion( QRect( wid->pos(), wid->rect().size() ), StyleConfigData::cornerRadius(),  false, false, true, false );
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
                     }
 
                     /*if( (widget->windowFlags() & Qt::WindowType_Mask) == Qt::Dialog )

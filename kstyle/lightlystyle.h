@@ -479,6 +479,9 @@ namespace Lightly
         //* Is this a toolbar that should be styled? 
         bool isStylableToolbar(const QWidget* w, bool allowInvisible = false) const;
         
+        //* Compute the textRect and the pixmapRect from the opt rect
+        void tabLayout(const QStyleOptionTab *opt, const QWidget *widget, QRect *textRect, QRect *iconRect) const;
+        
         //* get widget parent 
         QWidget* getParent(const QWidget *widget, int level) const;
 

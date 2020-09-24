@@ -73,6 +73,7 @@ namespace Lightly
         _viewFocusBrush = KStatefulBrush( KColorScheme::View, KColorScheme::FocusColor );
         _viewHoverBrush = KStatefulBrush( KColorScheme::View, KColorScheme::HoverColor );
         _viewNegativeTextBrush = KStatefulBrush( KColorScheme::View, KColorScheme::NegativeText );
+        _windowAlternateBackgroundBrush = KStatefulBrush( KColorScheme::Window, KColorScheme::AlternateBackground );
 
         const QPalette palette( QApplication::palette() );
         		
@@ -903,7 +904,43 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) + 2 );
         
         //shadow
-        renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 3, 6, 0, 1, radius);
+        painter->setClipping(true);
+        if( corners != 0 && corners != AllCorners )
+        {
+            
+            constexpr int shadowSize( Metrics::Frame_FrameWidth );
+            constexpr int overlap( Metrics::TabBar_BaseOverlap - 1 );
+            
+            if( !(corners & CornerTopLeft) ) {
+
+                
+                QPoint shadowTopLeft ( frameRect.x() - shadowSize, frameRect.y() - shadowSize );
+                QRect topLeftShadowRect ( shadowTopLeft, QSize( radius + overlap, radius + overlap ) );
+                
+                painter->setClipRegion( QRegion(rect) - topLeftShadowRect );
+                renderRectShadow( painter, frameRect, QColor( Qt::black ), shadowSize, 3, 6, 0, 1, radius );
+                
+                // paint corner shadow
+                painter->setClipRegion( QRect( shadowTopLeft + QPoint(0, overlap), QSize(radius + overlap, radius) ) );
+                renderRectShadow( painter, QRectF( frameRect.topLeft(), QSize( radius + overlap, radius + overlap ) ), QColor( Qt::black ), shadowSize, 3, 6, 0, 1, 0 );
+                
+            } else if( !(corners & CornerTopRight) ) {
+                
+                QPoint shadowTopRight ( frameRect.topRight().x(), frameRect.topRight().y() - shadowSize );
+                QRect topRightShadowRect ( shadowTopRight, QSize( radius, radius + overlap ) );
+                
+                painter->setClipRegion( QRegion(rect) - topRightShadowRect );
+                renderRectShadow( painter, frameRect, QColor( Qt::black ), shadowSize, 3, 6, 0, 1, radius );
+                
+                // paint corner shadow
+                painter->setClipRegion( QRect( shadowTopRight + QPoint(0, overlap), QSize(radius + overlap, radius ) ) );
+                renderRectShadow( painter, QRectF( frameRect.topLeft(), QSize( radius + overlap, radius + overlap ) ), QColor( Qt::black ), shadowSize, 3, 6, 0, 1, 0 );
+                
+            } else renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 3, 6, 0, 1, radius);
+            
+        } else renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 3, 6, 0, 1, radius);
+
+        painter->setClipping( false );
 
         // set pen
         if( outline.isValid() )
@@ -986,7 +1023,11 @@ namespace Lightly
             // draw shadow
             if( hasFocus && outline.isValid() ) renderRectShadow(painter, frameRect, outline.darker(120), 6, 3, 4, 0, 1, radius);
             if ( mouseOver && !hasFocus ) renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 4, 4, 0, 1, radius);
-            else renderRectShadow(painter, frameRect, QColor( Qt::black ), 2, 15, 1.6, 0, 1, radius, true, 6);
+            else {
+                renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 0.5, 2, 0, 1, radius, true, 6);
+                //renderRectShadow(painter, frameRect, QColor( Qt::black ), 2, 15, 1.6, 0, 1, radius, true, 6);
+                
+            }
         }
         
         if ( hasFocus && outline.isValid() )
@@ -1500,7 +1541,16 @@ namespace Lightly
 
         // render
         QPainterPath path;
-        if( selected ) path = tabPath( frameRect, radius+3 );
+        if( selected ) {
+            
+            //frameRect.adjust( -radius-3, 0, radius+3, 0 );
+            renderRectShadow(painter, frameRect.adjusted( radius + 3, 0, - radius - 3, radius+3 ), QColor( Qt::black ), 5, 3, 6, 0, 1, radius + 3 );
+            path = tabPath( frameRect, corners, radius+3 );
+            
+            if( color.isValid() ) painter->setBrush( color );
+            else painter->setBrush( Qt::NoBrush );
+            
+        }
         else path = roundedPath( frameRect, corners, radius+3);
         painter->drawPath( path );
 
@@ -1623,6 +1673,14 @@ namespace Lightly
     }
     
     //______________________________________________________________________________
+    void Helper::renderTransparentArea( QPainter* painter, const QRect& rect ) const
+    {
+        painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
+        painter->fillRect( rect, Qt::black );
+        painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
+    }
+    
+    //______________________________________________________________________________
     bool Helper::isX11()
     {
         #if LIGHTLY_HAVE_X11
@@ -1726,29 +1784,44 @@ namespace Lightly
     }
     
     //________________________________________________________________________________________________________
-    QPainterPath Helper::tabPath( const QRectF& rect, qreal radius ) const
+    QPainterPath Helper::tabPath( const QRectF& rect, const Corners corners, qreal radius ) const
     {
         QPainterPath path;
 
         const QSizeF cornerSize( 2*radius, 2*radius );
 
         // bottom left corner
-        path.moveTo( rect.bottomLeft() );
-        path.arcTo( QRectF( rect.bottomLeft() - QPointF( radius, 2*radius ), cornerSize ), 270, 90 );
-
+        if( corners & CornerBottomLeft )
+        {
+            
+            path.moveTo( rect.bottomLeft() );
+            path.arcTo( QRectF( rect.bottomLeft() - QPointF( radius, 2*radius ), cornerSize ), 270, 90 );  //qDebug() << "this1";
+        
+        } else path.moveTo( rect.bottomLeft() + QPointF( radius, 0) );
 
         // top left corner
-        path.lineTo( rect.topLeft() + QPointF( radius, radius ) );
-        path.arcTo( QRectF( rect.topLeft() + QPointF( radius, 0 ), cornerSize ), 180, -90 );
+        if( corners & CornerTopLeft ) 
+        {
+            path.lineTo( rect.topLeft() + QPointF( radius, radius ) );
+            path.arcTo( QRectF( rect.topLeft() + QPointF( radius, 0 ), cornerSize ), 180, -90 );  //qDebug() << "this2";
+            
+        } else path.lineTo( rect.topLeft() + QPointF( radius, 0 ) );
 
         // top right corner
-        path.lineTo( rect.topRight() - QPointF( 2*radius, 0 ) );
-        path.arcTo( QRectF( rect.topRight() - QPointF( 3*radius, 0 ), cornerSize ), 90, -90 );
-
+        if( corners & CornerTopRight )
+        {
+            path.lineTo( rect.topRight() - QPointF( 2*radius, 0 ) );
+            path.arcTo( QRectF( rect.topRight() - QPointF( 3*radius, 0 ), cornerSize ), 90, -90 );  //qDebug() << "this3";
+            
+        } else path.lineTo( rect.topRight() - QPointF( -radius, 0 ) );
+        
         // bottom right corner
-        path.lineTo( rect.bottomRight() - QPointF( radius, radius ) );
-        path.arcTo( QRectF( rect.bottomRight() - QPointF( radius, 2*radius ), cornerSize ), 180, 90 );
-
+        if( corners & CornerBottomRight )
+        {
+            path.lineTo( rect.bottomRight() - QPointF( radius, radius ) );
+            path.arcTo( QRectF( rect.bottomRight() - QPointF( radius, 2*radius ), cornerSize ), 180, 90 ); //qDebug() << "this4";
+            
+        } else path.lineTo( rect.bottomRight() - QPointF( -radius, 0 ) );
 
         path.closeSubpath();
         return path;

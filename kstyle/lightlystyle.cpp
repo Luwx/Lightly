@@ -367,8 +367,6 @@ namespace Lightly
         {
             if( widget->autoFillBackground() )  widget->setAutoFillBackground( false );
         }
-        
-        if( _isDolphin && widget->inherits("DolphinTabBar") ) {widget->move(0,0);qDebug() << "moving";}
 
         // scrollarea polishing is somewhat complex. It is moved to a dedicated method
         polishScrollArea( qobject_cast<QAbstractScrollArea*>( widget ) );
@@ -453,7 +451,7 @@ namespace Lightly
 
             setTranslucentBackground( widget );
 
-            if ( _helper->hasAlphaChannel( widget ) && StyleConfigData::menuOpacity() < 100 ) {
+            if ( widget->testAttribute( Qt::WA_TranslucentBackground ) && StyleConfigData::menuOpacity() < 100 ) {
                 _blurHelper->registerWidget( widget->window(), _isDolphin );
             }
 
@@ -1193,7 +1191,7 @@ namespace Lightly
                         p.fillRect( widget->rect(), QColor( widget->palette().color( QPalette::Window ) ) );
                         
                         // separator between the window and decoration
-                        if( _helper->titleBarColor( true ).alphaF()*100.0 < 100 )
+                        if( _helper->titleBarColor( true ).alphaF()*100.0 < 100 && !_isKonsole)
                         {
                             p.setBrush( Qt::NoBrush );
                             p.setPen( QColor( 0,0,0,40 ) );
@@ -1453,11 +1451,8 @@ namespace Lightly
                 if( _isDolphin && dockWidget->inherits("DolphinDockWidget") && _translucentWidgets.contains( dockWidget->window() ) )
                 {
                     painter.setRenderHints( QPainter::Antialiasing, false );
-                    // erase the alpha
-                    painter.setBrush( Qt::black );
-                    painter.setCompositionMode( QPainter::CompositionMode_DestinationOut );
-                    painter.drawRect( rect );
-                    painter.setCompositionMode( QPainter::CompositionMode_SourceOver ); 
+                   
+                    _helper->renderTransparentArea( &painter, rect );
                     
                     // draw background
                     QColor backgroundColor = palette.color( QPalette::Window );
@@ -2103,9 +2098,9 @@ namespace Lightly
             const auto rightButtonRect( visualRect( option, subElementRect( SE_TabWidgetRightCorner, option, widget ) ) );
 
             // document mode doesn't have frames and shadows!
-            const bool documentMode( tabOption->lineWidth == 0 );
+            //const bool documentMode( tabOption->lineWidth == 0 );
             
-            rect.setLeft( leftButtonRect.width() + ( documentMode ? 0 : Metrics::Frame_FrameWidth + StyleConfigData::cornerRadius() + 2 ) );
+            rect.setLeft( leftButtonRect.width() /*+ ( documentMode ? 0 : Metrics::Frame_FrameWidth )*/ );
             rect.setRight( rightButtonRect.left() - 1 );
 
             tabBarRect.setWidth( qMin( tabBarRect.width(), rect.width() - 2 ) );
@@ -3239,7 +3234,7 @@ namespace Lightly
         if( hasText && hasIcon ) widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasLeftButton && ( hasText || hasIcon ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasRightButton && ( hasText || hasIcon || hasLeftButton ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
-        widthIncrement += (StyleConfigData::cornerRadius() + 3)*2;
+        if( !tabOption->documentMode ) widthIncrement += (StyleConfigData::cornerRadius() + 2)*2; 
 
         // add margins
         QSize size( contentsSize );
@@ -3385,16 +3380,12 @@ namespace Lightly
                 
                 QColor background( palette.color( QPalette::Base ) );
                 
-                /*if( StyleConfigData::dolphinSidebarOpacity() < 100 ) {
-                    // erase the alpha
-                    painter->setBrush( Qt::black );
-                    painter->setPen( Qt::NoPen );
-                    painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
-                    painter->drawRect( rect );
-                    painter->setCompositionMode( QPainter::CompositionMode_SourceOver );
+                if( StyleConfigData::dolphinSidebarOpacity() < 100 && _isDolphin ) {
+                    
+                    _helper->renderTransparentArea( painter, rect );
                     
                     background.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 );
-                }*/
+                }
                 
                 painter->fillRect( rect, background );
                 
@@ -3588,6 +3579,17 @@ namespace Lightly
         const auto tabBarRect( tabOption->tabBarRect );
         const QSize tabBarSize( tabOption->tabBarSize );
         Corners corners = AllCorners;
+        
+        Qt::Alignment tabBarAlignment( styleHint( SH_TabBar_Alignment, option, widget ) );
+        
+        bool isFirstSelected = false;
+        const QTabWidget *tw = qobject_cast<const QTabWidget*>(widget);
+        if( tw )
+        {
+            if (QTabBar *tb = tw->tabBar()) {
+                if( tw->currentIndex() == 0 ) isFirstSelected = true;
+            }
+        }
 
         // adjust corners to deal with oversized tabbars
         switch( tabOption->shape )
@@ -3596,7 +3598,7 @@ namespace Lightly
             case QTabBar::TriangularNorth:
             if( isQtQuickControl ) rect.adjust( -1, -1, 1, 0 );
             if( tabBarSize.width() >= rect.width() - 2*StyleConfigData::cornerRadius() ) corners &= ~CornersTop;
-            if( tabBarRect.left() < rect.left() + StyleConfigData::cornerRadius() ) corners &= ~CornerTopLeft;
+            if( tabBarRect.left() + StyleConfigData::cornerRadius() < rect.left() + StyleConfigData::cornerRadius() || (isFirstSelected && tabBarAlignment == Qt::AlignLeft) ) corners &= ~CornerTopLeft;
             if( tabBarRect.right() > rect.right() - StyleConfigData::cornerRadius() ) corners &= ~CornerTopRight;
             break;
 
@@ -3629,6 +3631,7 @@ namespace Lightly
 
         //qDebug() << "rect: " << rect;
         //qDebug() << "tab rect: " << tabBarRect;
+        
         
         // define colors
         const auto& palette( option->palette );
@@ -4195,7 +4198,7 @@ namespace Lightly
         const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
         const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
         //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
-        const auto background( checkBoxState == CheckOn ? _helper->focusColor( palette ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
+        const auto background( checkBoxState == CheckOn ? palette.color( QPalette::Highlight ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
         //QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && active, opacity, mode  );
 
         // render
@@ -4234,7 +4237,7 @@ namespace Lightly
         const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
         const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
         //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
-        const auto background( checked ? _helper->focusColor( palette ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
+        const auto background( checked ? palette.color( QPalette::Highlight ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
         const QColor color( palette.color( QPalette::HighlightedText ) );
 
         // render
@@ -4947,12 +4950,7 @@ namespace Lightly
         const auto& rect( option->rect );
         const auto& palette( option->palette );
         
-        // erase the alpha
-        painter->setBrush( Qt::black );
-        painter->setPen( Qt::NoPen );
-        painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
-        painter->drawRect( rect );
-        painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
+        _helper->renderTransparentArea( painter, rect );
         
         // draw background
         int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
@@ -5014,12 +5012,7 @@ namespace Lightly
         if ( widget && _helper->titleBarColor( true ).alphaF()*100.0 < 100 && _translucentWidgets.contains( widget->window() ) && StyleConfigData::widgetDrawShadow() )
         {
             
-            // erase the alpha
-            painter->setBrush( Qt::black );
-            painter->setPen( Qt::NoPen );
-            painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
-            painter->drawRect( rect );
-            painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
+            _helper->renderTransparentArea( painter, rect );
 
             // draw background
             int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
@@ -5029,7 +5022,7 @@ namespace Lightly
             int shadow_xoffset = 0;
             if ( LightlyPrivate::possibleTranslucentToolBars.isEmpty() ) shouldDrawShadow = true;
             
-            if ( LightlyPrivate::possibleTranslucentToolBars.size() == 1 )
+            else if ( LightlyPrivate::possibleTranslucentToolBars.size() == 1 )
             {
                 QSet<const QWidget *>::const_iterator i = LightlyPrivate::possibleTranslucentToolBars.constBegin();
                 const QToolBar *tb = qobject_cast<const QToolBar*>( *i );
@@ -5279,7 +5272,7 @@ namespace Lightly
             const bool active( menuItemOption->checked );
             const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
-            const auto background( state == CheckOn ? _helper->focusColor( palette ) : palette.color( QPalette::Button ) );
+            const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
             _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state, _helper->isDarkTheme( palette ) );
 
@@ -5291,7 +5284,7 @@ namespace Lightly
             //const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), active ? _helper->focusColor( palette ).lighter(115) : palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff, _helper->isDarkTheme( palette ) );
+            _helper->renderRadioButton( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), active ? palette.color( QPalette::Highlight ).lighter(115) : palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff, _helper->isDarkTheme( palette ) );
 
         }
 
@@ -5419,14 +5412,22 @@ namespace Lightly
         
         painter->setRenderHint( QPainter::Antialiasing, false );
         
+        bool sideToolbarDolphin = false;
+
+        if( _isDolphin && StyleConfigData::dolphinSidebarOpacity() < 100 && !(option->state & State_Horizontal) )
+        {
+            sideToolbarDolphin = true;
+
+        }
+        
         // do nothing more if widget is opaque or should not be transparent
-        if( (_helper->titleBarColor( true ).alphaF()*100.0 == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
+        else if( ( _helper->titleBarColor( true ).alphaF()*100.0 == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
             || !_translucentWidgets.contains( widget->window() ) )
         {
             return true;
         }
 
-        if( !isStylableToolbar( widget ) )
+        else if( !isStylableToolbar( widget ) )
         {
             return true;
         }
@@ -5436,17 +5437,42 @@ namespace Lightly
         
         painter->setPen( Qt::NoPen );
 
-        // erase the alpha
-        painter->setBrush( Qt::black );
-        painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
-        painter->drawRect( rect );
-        painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
+        _helper->renderTransparentArea( painter, rect );
     
         // paint background
         QColor backgroundColor = palette.color( QPalette::Window );
-        backgroundColor.setAlphaF(opacity/100.0);
-        painter->setBrush( backgroundColor );   
-        painter->drawRect( rect );
+        if( sideToolbarDolphin  )
+        {
+            backgroundColor.setAlphaF( StyleConfigData::dolphinSidebarOpacity()/100.0 - 0.15 );
+            painter->fillRect( rect, backgroundColor );
+            
+            bool darkTheme ( _helper->isDarkTheme( palette ) );
+            
+            // top shadow
+            painter->setBrush( Qt::NoBrush );
+            painter->setPen( QColor(0, 0, 0, darkTheme ? 80 : 40) );
+            painter->drawLine( rect.topLeft(), rect.topRight() );
+            
+            painter->drawLine( rect.topRight(), rect.bottomRight() );
+
+            painter->setPen( QColor(0, 0, 0, darkTheme ? 28 : 16) );
+            painter->drawLine( rect.topLeft() + QPoint(0, 1), rect.topRight() + QPoint(0, 1) );
+
+            painter->setPen( QColor(0, 0, 0, darkTheme ? 6 : 3) );
+            painter->drawLine( rect.topLeft() + QPoint(0, 2), rect.topRight() + QPoint(0, 2) );
+
+            painter->setPen( QColor(0, 0, 0, darkTheme ? 2 : 1) );
+            painter->drawLine( rect.topLeft() + QPoint(0, 3), rect.topRight() + QPoint(0, 3) );
+            
+            
+            
+            return true;
+        }
+        else
+        {
+            backgroundColor.setAlphaF(opacity/100.0);  
+            painter->fillRect( rect, backgroundColor );
+        }
         
         if( StyleConfigData::toolBarDrawSeparator() && !_isDolphin )
         {
@@ -6174,8 +6200,61 @@ namespace Lightly
     bool Style::drawTabBarTabLabelControl( const QStyleOption* option, QPainter* painter, const QWidget* widget ) const
     {
 
-        // call parent style method
-        ParentStyleClass::drawControl( CE_TabBarTabLabel, option, painter, widget );
+        // code is copied from QCommonStyle
+        // cast option and check
+        const auto tabOption( qstyleoption_cast<const QStyleOptionTab*>(option) );
+        
+        if( tabOption ) {
+            
+            // call parent style method
+            if( tabOption->documentMode ) ParentStyleClass::drawControl( CE_TabBarTabLabel, option, painter, widget );
+            
+            // overwrite parent style behaviour and add horizontal padding
+            else {
+                QRect tr = tabOption->rect;
+                bool verticalTabs = tabOption->shape == QTabBar::RoundedEast
+                                    || tabOption->shape == QTabBar::RoundedWest
+                                    || tabOption->shape == QTabBar::TriangularEast
+                                    || tabOption->shape == QTabBar::TriangularWest;
+
+                int alignment = Qt::AlignCenter | Qt::TextShowMnemonic;
+                if ( styleHint( SH_UnderlineShortcut, option, widget )  )
+                    alignment |= Qt::TextHideMnemonic;
+
+                if (verticalTabs) {
+                    painter->save();
+                    int newX, newY, newRot;
+                    if (tabOption->shape == QTabBar::RoundedEast || tabOption->shape == QTabBar::TriangularEast) {
+                        newX = tr.width() + tr.x();
+                        newY = tr.y();
+                        newRot = 90;
+                    } else {
+                        newX = tr.x();
+                        newY = tr.y() + tr.height();
+                        newRot = -90;
+                    }
+                    QTransform m = QTransform::fromTranslate(newX, newY);
+                    m.rotate(newRot);
+                    painter->setTransform(m, true);
+                }
+                QRect iconRect;
+                tabLayout(tabOption, widget, &tr, &iconRect);
+                tr = subElementRect(SE_TabBarTabText, option, widget); //we compute tr twice because the style may override subElementRect
+
+                if (!tabOption->icon.isNull()) {
+                    QPixmap tabIcon = tabOption->icon.pixmap( tabOption->iconSize,
+                                                        (tabOption->state & State_Enabled) ? QIcon::Normal
+                                                                                    : QIcon::Disabled,
+                                                        (tabOption->state & State_Selected) ? QIcon::On
+                                                                                        : QIcon::Off);
+                    painter->drawPixmap(iconRect.x(), iconRect.y(), tabIcon);
+                }
+
+                proxy()->drawItemText(painter, tr, alignment, tabOption->palette, tabOption->state & State_Enabled, tabOption->text, QPalette::WindowText);
+                if (verticalTabs)
+                    painter->restore();
+            }
+        }
 
         // store rect and palette
         const auto& rect( option->rect );
@@ -6193,10 +6272,6 @@ namespace Lightly
         const qreal opacity( _animations->tabBarEngine().opacity( widget, rect.topLeft(), AnimationFocus ) );
 
         if( !( hasFocus || animated ) ) return true;
-
-        // code is copied from QCommonStyle, but adds focus
-        // cast option and check
-        const auto tabOption( qstyleoption_cast<const QStyleOptionTab*>(option) );
         if( !tabOption || tabOption->text.isEmpty() ) return true;
 
         // tab option rect
@@ -6318,16 +6393,22 @@ namespace Lightly
                 
             if ( selected ) {
                 
-                corners = CornerTopLeft|CornerTopRight;
+                corners = CornerTopLeft|CornerTopRight|CornerBottomRight;
+                if( !isFirst ) corners |= CornerBottomLeft;
+                else rect.adjust(-StyleConfigData::cornerRadius() - 2, 0, 0, 0);
+                //if( isLast && !tabOption->documentMode ) rect.adjust( 0, 0, -StyleConfigData::cornerRadius() - 2, 0 );
                 //if( !tabOption->documentMode ) rect.adjust(0, 0, 0, 1);
                 
             } else {
             
                 //rect.adjust( 0, 0, 0, -1 ); 
-                if( isFirst ) corners |= CornerTopLeft;
+                if( isFirst ) {
+                    corners |= CornerTopLeft;
+                    rect.adjust( Metrics::Frame_FrameWidth, 0, 0, 0);
+                }
                 if( isLast ) corners |= CornerTopRight;
-                //if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius(), 0, 0, 0 );
-                //if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius(), 0 );
+                if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius()*2, 0, 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius()*2, 0 );
                 else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
             }
             break;
@@ -6423,13 +6504,14 @@ namespace Lightly
 
         // render
         
-        if( _isKonsole )
+        /*if( _isKonsole )
         {
             painter->setBrush( Qt::black );
             painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
             painter->drawRect( rect );
             painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
-        }
+            painter->fillRect( rect, _helper->alphaColor( palette.color( QPalette::Window ), _helper->titleBarColor( true ).alphaF() ) );
+        }*/
         
         if( selected )
         {
@@ -6438,14 +6520,17 @@ namespace Lightly
             
             if( tabOption->documentMode ) {
                 _helper->renderRectShadow(painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), QColor( Qt::black ), 5, 3, 6, 0, 1, 1);
+                _helper->renderTabBarTab( painter, rect.adjusted(-StyleConfigData::cornerRadius() - 2, 0, StyleConfigData::cornerRadius() + 2, 0), color, QColor(), corners, selected );
             }
+            else _helper->renderTabBarTab( painter, rect.adjusted( isFirst ? Metrics::Frame_FrameWidth : 0, 2, 0, 0), color, QColor(), corners, selected );
             
-            Corners c;
-            if( isFirst ) c |= CornerTopLeft;
-            if( isLast ) c |= CornerTopRight;
-            _helper->renderTabBarTab( painter, rect, _helper->alphaColor( palette.color( QPalette::Shadow ), 0.2 ), QColor(), c, false );
-            _helper->renderRectShadow(painter, rect.adjusted(StyleConfigData::cornerRadius() + 2, 2, -StyleConfigData::cornerRadius() - 2, 0), QColor( Qt::black ), 5, 3, 6, 0, 1, StyleConfigData::cornerRadius() + 2);
-            _helper->renderTabBarTab( painter, rect.adjusted(0, 2, 0, 0), color, QColor(), corners, selected );
+            //background
+            //Corners c;
+            //if( isFirst ) c |= CornerTopLeft;
+            //if( isLast ) c |= CornerTopRight;
+            //_helper->renderTabBarTab( painter, rect.adjusted( isFirst ? Metrics::Frame_FrameWidth : 0, tabOption->documentMode ? 0 : 2, 0, 0 ), _helper->alphaColor( palette.color( QPalette::Shadow ), 0.2 ), QColor(), c, false );
+            
+            //if( _helper->isDarkTheme( palette ) ) _helper->topHighlight( painter, rect.adjusted(StyleConfigData::cornerRadius() + 2, 2, -StyleConfigData::cornerRadius() - 2, 0), StyleConfigData::cornerRadius() + 2, QColor(255, 255, 255, 30) );
             //painter->setClipRegion( oldRegion );
 
         } else {
@@ -6453,7 +6538,7 @@ namespace Lightly
             if( tabOption->documentMode ) {
                 _helper->renderRectShadow(painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), QColor( Qt::black ), 5, 3, 6, 0, 1, 1);
             }
-            _helper->renderTabBarTab( painter, rect, color, outline, corners, selected );
+            _helper->renderTabBarTab( painter, rect.adjusted( 0, tabOption->documentMode ? 0 : 2, 0, 0 ), color, outline, corners, selected );
 
         }
 
@@ -8122,6 +8207,70 @@ namespace Lightly
             }
         }
         return false;
+    }
+    
+    //____________________________________________________________________
+    void Style::tabLayout(const QStyleOptionTab *opt, const QWidget *widget, QRect *textRect, QRect *iconRect) const
+    {
+        Q_ASSERT(textRect);
+        Q_ASSERT(iconRect);
+        QRect tr = opt->rect;
+        bool verticalTabs = opt->shape == QTabBar::RoundedEast
+                            || opt->shape == QTabBar::RoundedWest
+                            || opt->shape == QTabBar::TriangularEast
+                            || opt->shape == QTabBar::TriangularWest;
+        if (verticalTabs)
+            tr.setRect(0, 0, tr.height(), tr.width()); // 0, 0 as we will have a translate transform
+
+        int verticalShift = pixelMetric(QStyle::PM_TabBarTabShiftVertical, opt, widget);
+        int horizontalShift = pixelMetric(QStyle::PM_TabBarTabShiftHorizontal, opt, widget);
+        int hpadding = (pixelMetric(QStyle::PM_TabBarTabHSpace, opt, widget) / 2) + StyleConfigData::cornerRadius()+2;
+        int vpadding = pixelMetric(QStyle::PM_TabBarTabVSpace, opt, widget) / 2;
+        if (opt->shape == QTabBar::RoundedSouth || opt->shape == QTabBar::TriangularSouth)
+            verticalShift = -verticalShift;
+        tr.adjust(hpadding, verticalShift - vpadding, horizontalShift - hpadding, vpadding);
+        bool selected = opt->state & QStyle::State_Selected;
+        if (selected) {
+            tr.setTop(tr.top() - verticalShift);
+            tr.setRight(tr.right() - horizontalShift);
+        }
+
+        // left widget
+        if (!opt->leftButtonSize.isEmpty()) {
+            tr.setLeft(tr.left() + 4 +
+                (verticalTabs ? opt->leftButtonSize.height() : opt->leftButtonSize.width()));
+        }
+        // right widget
+        if (!opt->rightButtonSize.isEmpty()) {
+            tr.setRight(tr.right() - 4 -
+                (verticalTabs ? opt->rightButtonSize.height() : opt->rightButtonSize.width()));
+        }
+
+        // icon
+        if (!opt->icon.isNull()) {
+            QSize iconSize = opt->iconSize;
+            if (!iconSize.isValid()) {
+                int iconExtent = pixelMetric(QStyle::PM_SmallIconSize, opt);
+                iconSize = QSize(iconExtent, iconExtent);
+            }
+            QSize tabIconSize = opt->icon.actualSize(iconSize,
+                            (opt->state & QStyle::State_Enabled) ? QIcon::Normal : QIcon::Disabled,
+                            (opt->state & QStyle::State_Selected) ? QIcon::On : QIcon::Off);
+            // High-dpi icons do not need adjustment; make sure tabIconSize is not larger than iconSize
+            tabIconSize = QSize(qMin(tabIconSize.width(), iconSize.width()), qMin(tabIconSize.height(), iconSize.height()));
+
+            const int offsetX = (iconSize.width() - tabIconSize.width()) / 2;
+            *iconRect = QRect(tr.left() + offsetX, tr.center().y() - tabIconSize.height() / 2,
+                            tabIconSize.width(), tabIconSize.height());
+            if (!verticalTabs)
+                *iconRect = QStyle::visualRect(opt->direction, opt->rect, *iconRect);
+            tr.setLeft(tr.left() + tabIconSize.width() + 4);
+        }
+
+        if (!verticalTabs)
+            tr = QStyle::visualRect(opt->direction, opt->rect, tr);
+
+        *textRect = tr;
     }
     
     //____________________________________________________________________
