@@ -134,7 +134,7 @@
 
     <!-- tab bars -->
     <entry name="TabBarDrawCenteredTabs" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
 
     <!-- frames -->
