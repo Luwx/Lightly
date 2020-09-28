@@ -57,7 +57,7 @@ namespace Lightly
         setIconSize(QSize( height, height ));
 
         // connections
-        connect(decoration->client().data(), SIGNAL(iconChanged(QIcon)), this, SLOT(update()));
+        connect(decoration->client().toStrongRef().data(), SIGNAL(iconChanged(QIcon)), this, SLOT(update()));
         connect(decoration->settings().data(), &KDecoration2::DecorationSettings::reconfigured, this, &Button::reconfigure);
         connect( this, &KDecoration2::DecorationButton::hoveredChanged, this, &Button::updateAnimationState );
 
@@ -85,32 +85,32 @@ namespace Lightly
             {
 
                 case DecorationButtonType::Close:
-                b->setVisible( d->client().data()->isCloseable() );
-                QObject::connect(d->client().data(), &KDecoration2::DecoratedClient::closeableChanged, b, &Lightly::Button::setVisible );
+                b->setVisible( d->client().toStrongRef().data()->isCloseable() );
+                QObject::connect(d->client().toStrongRef().data(), &KDecoration2::DecoratedClient::closeableChanged, b, &Lightly::Button::setVisible );
                 break;
 
                 case DecorationButtonType::Maximize:
-                b->setVisible( d->client().data()->isMaximizeable() );
-                QObject::connect(d->client().data(), &KDecoration2::DecoratedClient::maximizeableChanged, b, &Lightly::Button::setVisible );
+                b->setVisible( d->client().toStrongRef().data()->isMaximizeable() );
+                QObject::connect(d->client().toStrongRef().data(), &KDecoration2::DecoratedClient::maximizeableChanged, b, &Lightly::Button::setVisible );
                 break;
 
                 case DecorationButtonType::Minimize:
-                b->setVisible( d->client().data()->isMinimizeable() );
-                QObject::connect(d->client().data(), &KDecoration2::DecoratedClient::minimizeableChanged, b, &Lightly::Button::setVisible );
+                b->setVisible( d->client().toStrongRef().data()->isMinimizeable() );
+                QObject::connect(d->client().toStrongRef().data(), &KDecoration2::DecoratedClient::minimizeableChanged, b, &Lightly::Button::setVisible );
                 break;
 
                 case DecorationButtonType::ContextHelp:
-                b->setVisible( d->client().data()->providesContextHelp() );
-                QObject::connect(d->client().data(), &KDecoration2::DecoratedClient::providesContextHelpChanged, b, &Lightly::Button::setVisible );
+                b->setVisible( d->client().toStrongRef().data()->providesContextHelp() );
+                QObject::connect(d->client().toStrongRef().data(), &KDecoration2::DecoratedClient::providesContextHelpChanged, b, &Lightly::Button::setVisible );
                 break;
 
                 case DecorationButtonType::Shade:
-                b->setVisible( d->client().data()->isShadeable() );
-                QObject::connect(d->client().data(), &KDecoration2::DecoratedClient::shadeableChanged, b, &Lightly::Button::setVisible );
+                b->setVisible( d->client().toStrongRef().data()->isShadeable() );
+                QObject::connect(d->client().toStrongRef().data(), &KDecoration2::DecoratedClient::shadeableChanged, b, &Lightly::Button::setVisible );
                 break;
 
                 case DecorationButtonType::Menu:
-                QObject::connect(d->client().data(), &KDecoration2::DecoratedClient::iconChanged, b, [b]() { b->update(); });
+                QObject::connect(d->client().toStrongRef().data(), &KDecoration2::DecoratedClient::iconChanged, b, [b]() { b->update(); });
                 break;
 
                 default: break;
@@ -146,17 +146,17 @@ namespace Lightly
             const QRectF iconRect( geometry().topLeft(), m_iconSize );
             if (auto deco =  qobject_cast<Decoration*>(decoration())) {
                 const QPalette activePalette = KIconLoader::global()->customPalette();
-                QPalette palette = decoration()->client().data()->palette();
+                QPalette palette = decoration()->client().toStrongRef().data()->palette();
                 palette.setColor(QPalette::Foreground, deco->fontColor());
                 KIconLoader::global()->setCustomPalette(palette);
-                decoration()->client().data()->icon().paint(painter, iconRect.toRect());
+                decoration()->client().toStrongRef().data()->icon().paint(painter, iconRect.toRect());
                 if (activePalette == QPalette()) {
                     KIconLoader::global()->resetPalette();
                 }    else {
                     KIconLoader::global()->setCustomPalette(palette);
                 }
             } else {
-                decoration()->client().data()->icon().paint(painter, iconRect.toRect());
+                decoration()->client().toStrongRef().data()->icon().paint(painter, iconRect.toRect());
             }
 
         } else {
@@ -418,7 +418,7 @@ namespace Lightly
 
         }
 
-        auto c = d->client().data();
+        auto c = d->client().toStrongRef().data();
         if( isPressed() ) {
 
             if( type() == DecorationButtonType::Close ) return c->color( ColorGroup::Warning, ColorRole::Foreground );

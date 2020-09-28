@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -24,6 +33,48 @@
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
+       <item row="9" column="0" colspan="3">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>B&amp;utton size:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>buttonSize</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
@@ -37,16 +88,17 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_4">
+       <item row="7" column="0" colspan="3">
+        <widget class="QCheckBox" name="drawTitleBarSeparator">
          <property name="text">
-          <string>B&amp;utton size:</string>
+          <string>Draw separator under active window's titlebar</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buddy">
-          <cstring>buttonSize</cstring>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="3">
+        <widget class="QCheckBox" name="drawBorderOnMaximizedWindows">
+         <property name="text">
+          <string>Allow resizing maximized windows from window edges</string>
          </property>
         </widget>
        </item>
@@ -79,6 +131,27 @@
          </item>
         </widget>
        </item>
+       <item row="6" column="0" colspan="3">
+        <widget class="QCheckBox" name="drawSizeGrip">
+         <property name="text">
+          <string>Add handle to resize windows with no border</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="3">
+        <widget class="QCheckBox" name="outlineCloseButton">
+         <property name="text">
+          <string>Draw a circle around close button</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="3">
+        <widget class="QCheckBox" name="drawBackgroundGradient">
+         <property name="text">
+          <string>Draw titlebar background gradient</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="titleAlignment">
          <item>
@@ -103,64 +176,13 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="2">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="8" column="0">
+        <widget class="QCheckBox" name="disableBlur">
+         <property name="statusTip">
+          <string>Check this to remove semi translucent top corner egdes above dark backgrounds</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="7" column="0" colspan="3">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="5" column="0" colspan="3">
-        <widget class="QCheckBox" name="drawSizeGrip">
          <property name="text">
-          <string>Add handle to resize windows with no border</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0" colspan="3">
-        <widget class="QCheckBox" name="drawTitleBarSeparator">
-         <property name="text">
-          <string>Draw separator under active window's titlebar</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="3">
-        <widget class="QCheckBox" name="drawBorderOnMaximizedWindows">
-         <property name="text">
-          <string>Allow resizing maximized windows from window edges</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="3">
-        <widget class="QCheckBox" name="outlineCloseButton">
-         <property name="text">
-          <string>Draw a circle around close button</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="3">
-        <widget class="QCheckBox" name="drawBackgroundGradient">
-         <property name="text">
-          <string>Draw titlebar background gradient</string>
+          <string>Disable titlebar blur</string>
          </property>
         </widget>
        </item>

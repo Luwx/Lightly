@@ -93,7 +93,7 @@
         ]
     },
     "org.kde.kdecoration2": {
-        "blur": true,
+        "blur": false,
         "kcmodule": true,
         "recommendedBorderSize": "None"
     }

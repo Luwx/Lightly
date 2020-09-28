@@ -53,6 +53,7 @@ namespace Lightly
         connect( m_ui.drawSizeGrip, &QAbstractButton::clicked, this, &ConfigWidget::updateChanged );
         connect( m_ui.drawBackgroundGradient, &QAbstractButton::clicked, this, &ConfigWidget::updateChanged );
         connect( m_ui.drawTitleBarSeparator, &QAbstractButton::clicked, this, &ConfigWidget::updateChanged );
+        connect( m_ui.disableBlur, &QAbstractButton::clicked, this, &ConfigWidget::updateChanged );
 
         // track animations changes
         connect( m_ui.animationsEnabled, &QAbstractButton::clicked, this, &ConfigWidget::updateChanged );
@@ -86,6 +87,7 @@ namespace Lightly
         m_ui.animationsEnabled->setChecked( m_internalSettings->animationsEnabled() );
         m_ui.animationsDuration->setValue( m_internalSettings->animationsDuration() );
         m_ui.drawTitleBarSeparator->setChecked( m_internalSettings->drawTitleBarSeparator() );
+        m_ui.disableBlur->setChecked( m_internalSettings->disableBlur() );
 
         // load shadows
         if( m_internalSettings->shadowSize() <= InternalSettings::ShadowVeryLarge ) m_ui.shadowSize->setCurrentIndex( m_internalSettings->shadowSize() );
@@ -124,6 +126,7 @@ namespace Lightly
         m_internalSettings->setShadowSize( m_ui.shadowSize->currentIndex() );
         m_internalSettings->setShadowStrength( qRound( qreal(m_ui.shadowStrength->value()*255)/100 ) );
         m_internalSettings->setShadowColor( m_ui.shadowColor->color() );
+        m_internalSettings->setDisableBlur( m_ui.disableBlur->isChecked() );
 
         // save configuration
         m_internalSettings->save();
@@ -168,6 +171,7 @@ namespace Lightly
         m_ui.animationsEnabled->setChecked( m_internalSettings->animationsEnabled() );
         m_ui.animationsDuration->setValue( m_internalSettings->animationsDuration() );
         m_ui.drawTitleBarSeparator->setChecked( m_internalSettings->drawTitleBarSeparator() );
+        m_ui.disableBlur->setChecked( m_internalSettings->disableBlur());
 
         m_ui.shadowSize->setCurrentIndex( m_internalSettings->shadowSize() );
         m_ui.shadowStrength->setValue( qRound(qreal(m_internalSettings->shadowStrength()*100)/255 ) );
@@ -192,6 +196,7 @@ namespace Lightly
         else if( m_ui.drawBorderOnMaximizedWindows->isChecked() !=  m_internalSettings->drawBorderOnMaximizedWindows() ) modified = true;
         else if( m_ui.drawSizeGrip->isChecked() !=  m_internalSettings->drawSizeGrip() ) modified = true;
         else if( m_ui.drawBackgroundGradient->isChecked() !=  m_internalSettings->drawBackgroundGradient() ) modified = true;
+        else if( m_ui.disableBlur->isChecked() != m_internalSettings->disableBlur() ) modified = true;
 
         // animations
         else if( m_ui.animationsEnabled->isChecked() !=  m_internalSettings->animationsEnabled() ) modified = true;
