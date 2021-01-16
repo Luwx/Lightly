@@ -71,7 +71,7 @@
 #include <QQuickWindow>
 #endif
 
-#include <QDebug>
+//#include <QDebug>
 
 namespace LightlyPrivate
 {
@@ -218,6 +218,7 @@ namespace Lightly
     void Style::polish(QApplication *app)
     {
         const QString appName = app->applicationName();
+        //qDebug() << appName;
         if (appName == "Qt-subapplication")
             _subApp = true;
         else if (appName == "soffice.bin")
@@ -240,7 +241,6 @@ namespace Lightly
         bool nonIntegerScale = (dpr > static_cast<qreal>(1) && static_cast<qreal>(qRound(dpr)) != dpr);
         if( nonIntegerScale ) 
             _isOpaque = true;
-        
         if(_translucentWidgets.size() > 0) _translucentWidgets.clear();
 
         // base class polishing
