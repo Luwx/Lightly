@@ -1514,14 +1514,13 @@ namespace Lightly
                         }
                         
                         if( darkTheme ){
-                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 1, 5, 0, 0, 1 );
-                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 3, 2, 0, 0, 1 );
-                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 1, 24, 1, 0, 0, 1 );
+                            _helper->renderBoxShadow( &painter, shadowRect.adjusted(0,0,0,5), CustomShadowParams(QPoint(0,0), 8, QColor(0,0,0,160)), 2 );
+                            _helper->renderBoxShadow( &painter, shadowRect.adjusted(0,0,0,5), CustomShadowParams(QPoint(0,0), 3, QColor(0,0,0,160)), 2 );
                         }
                         else {
-                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 8, 0.04, 10, 0, 3, 2 );
-                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 3, 0.5, 2, 0, 3, 1 );
-                            _helper->renderRectShadow( &painter, shadowRect, QColor( Qt::black ), 1, 12, 2, 0, 3, 1 );
+                            int shadowSize = 5;
+                            shadowRect.adjust(1,-shadowSize, 0, 0);
+                            _helper->renderBoxShadow( &painter, shadowRect, CustomShadowParams(QPoint(0,0), shadowSize, QColor(0,0,0,120)), 2 );
                         }
                     }
                 }
@@ -5509,7 +5508,7 @@ namespace Lightly
             {
                 QRect copy ( rect );
                 
-                // adjust shadow rect if there is no widget "above" the toolbar
+                // adjust shadow rect if there is no widget "above" (z) the toolbar
                 if( _isDolphin && StyleConfigData::dolphinSidebarOpacity() < 100 )
                 {
                     QList<QWidget *> sidebars = widget->window()->findChildren<QWidget *>( QRegularExpression("^(places|terminal|info|folders)Dock$"), Qt::FindDirectChildrenOnly );
@@ -5530,36 +5529,17 @@ namespace Lightly
                 
                 if ( !darkTheme )
                 {
-                    painter->setBrush( Qt::NoBrush );
-                    QLinearGradient gradient( copy.bottomLeft(), copy.bottomRight() );
-                    gradient.setColorAt( 0, QColor(0,0,0,0) );
-                    gradient.setColorAt( 0.02, QColor(0,0,0,40) );
-                    gradient.setColorAt( 0.98, QColor(0,0,0,40) );
-                    gradient.setColorAt( 1, QColor(0,0,0,40/2) );
-                    painter->setPen( QPen(gradient, 1) );
-                    painter->drawLine( copy.bottomLeft(), copy.bottomRight() );
-                    
-                    //gradient.setColorAt( 0, QColor(0,0,0,0) );
-                    gradient.setColorAt( 0.02, QColor(0,0,0,12) );
-                    gradient.setColorAt( 0.98, QColor(0,0,0,2) );
-                    gradient.setColorAt( 1, QColor(0,0,0,12/2) );
-                    painter->setPen( QPen(gradient, 1) );
-                    painter->drawLine( copy.bottomLeft() - QPoint(0, 1), copy.bottomRight() - QPoint(0, 1) );
-                    
-                    //gradient.setColorAt( 0, QColor(0,0,0,0) );
-                    gradient.setColorAt( 0.02, QColor(0,0,0,3) );
-                    gradient.setColorAt( 0.98, QColor(0,0,0,3) );
-                    gradient.setColorAt( 1, QColor(0,0,0,3/2) );
-                    painter->setPen( QPen(gradient, 1) );
-                    painter->drawLine( copy.bottomLeft() - QPoint(0, 2), copy.bottomRight() - QPoint(0, 2) );
+                    int shadowSize = 4;
+                    QRect shadowRect = QRect( copy.bottomLeft() - QPoint(shadowSize, -1), QSize(copy.width() + shadowSize*2, shadowSize) );
+                    _helper->renderBoxShadow( painter, shadowRect, CustomShadowParams(QPoint(0,0), shadowSize, QColor(0,0,0,160)), 2 );
                 }
                 
                 else
                 {
                     QRect shadowRect( copy.bottomLeft() + QPoint(-1, 1), QSize(copy.width(), 50) );
-                    _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 8, 0.7, 5, 0, 0, 1 );
-                    _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 3, 4, 1, 0, 0, 1 );
-                    _helper->renderRectShadow( painter, shadowRect, QColor( Qt::black ), 2, 20, 1, 0, 0, 1 );
+                    _helper->renderBoxShadow( painter, shadowRect, CustomShadowParams(QPoint(0,0), 8, QColor(0,0,0,160)), 2 );
+                    _helper->renderBoxShadow( painter, shadowRect, CustomShadowParams(QPoint(0,0), 3, QColor(0,0,0,160)), 2 );
+                    
                 }
                 
             }
@@ -6520,7 +6500,7 @@ namespace Lightly
             //painter->setClipRect( option->rect, Qt::IntersectClip );
             
             if( tabOption->documentMode ) {
-                _helper->renderRectShadow(painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), QColor( Qt::black ), 5, 3, 6, 0, 1, 1);
+                _helper->renderBoxShadow( painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0, 0, 0, 215 ) ), 1 );
                 _helper->renderTabBarTab( painter, rect.adjusted(-StyleConfigData::cornerRadius() - 2, 0, StyleConfigData::cornerRadius() + 2, 0), color, QColor(), corners, selected );
             }
             else _helper->renderTabBarTab( painter, rect.adjusted( isFirst ? Metrics::Frame_FrameWidth : 0, 2, 0, 0), color, QColor(), corners, selected );
@@ -6537,7 +6517,7 @@ namespace Lightly
         } else {
 
             if( tabOption->documentMode ) {
-                _helper->renderRectShadow(painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), QColor( Qt::black ), 5, 3, 6, 0, 1, 1);
+                _helper->renderBoxShadow( painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0, 0, 0, 215 ) ), 1 );
             }
             _helper->renderTabBarTab( painter, rect.adjusted( 0, tabOption->documentMode ? 0 : 2, 0, 0 ), color, outline, corners, selected );
 

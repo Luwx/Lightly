@@ -26,6 +26,8 @@
 #include "lightlyanimationdata.h"
 #include "config-lightly.h"
 
+#include "lightlyshadowhelper.h"
+
 #include <KColorScheme>
 #include <KSharedConfig>
 
@@ -168,10 +170,17 @@ namespace Lightly
         //* menu frame
         void renderMenuFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, bool roundCorners = true ) const;
         
-        //* shadow for rounded (or not) rectangles
-        void renderRectShadow(QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
+        //* outline for widgets
+        void renderOutline(QPainter* painter, const QRectF& rect, const int radius, const int outlineStrength ) const;
         
-        QPixmap renderRectShadow( const QPixmap& mask, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const int radius, const bool outline = false, const int outlineStrength = 0 ) const;
+        //* shadow for widgets
+        void renderBoxShadow(QPainter*, const QRect&, CustomShadowParams params, const int cornerRadius, TileSet::Tiles = TileSet::Ring ) const;
+        
+        void renderBoxShadow(QPainter* painter, const QRectF& rect, CustomShadowParams params, const int cornerRadius, TileSet::Tiles tiles = TileSet::Ring ) const
+        { 
+            QRect copy = QRect( rect.x(), rect.y(), rect.width(), rect.height() );
+            renderBoxShadow( painter, copy, params, cornerRadius, tiles );
+        }
         
         //* shadow for ellipses
         void renderEllipseShadow( QPainter*, const QRectF&, QColor color, const int size, const float param1, const float param2, const int xOffset, const int yOffset, const bool outline = false, const int outlineStrength = 0 ) const;

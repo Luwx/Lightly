@@ -51,6 +51,21 @@ namespace Lightly
         int radius = 0;
         qreal opacity = 0;
     };
+    
+    struct CustomShadowParams
+    {
+        CustomShadowParams() = default;
+
+        CustomShadowParams(const QPoint &offset, int radius, QColor color):
+            offset(offset),
+            radius(radius),
+            color(color)
+        {}
+
+        QPoint offset;
+        int radius = 0;
+        QColor color;
+    };
 
     struct CompositeShadowParams
     {
@@ -107,6 +122,7 @@ namespace Lightly
         //* shadow tiles
         /** is public because it is also needed for mdi windows */
         TileSet shadowTiles();
+        static TileSet shadowTiles( const int frameRadius, CustomShadowParams shadow1, CustomShadowParams shadow2 = CustomShadowParams() );
 
         protected Q_SLOTS:
 

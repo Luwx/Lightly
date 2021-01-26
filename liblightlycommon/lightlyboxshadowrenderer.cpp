@@ -24,7 +24,7 @@
 // Qt
 #include <QPainter>
 #include <QtMath>
-
+#include <QDebug>
 namespace Lightly
 {
 
@@ -258,13 +258,15 @@ static void renderShadow(QPainter *painter, const QRect &rect, qreal borderRadiu
 
     const qreal xRadius = 2.0 * borderRadius / boxRect.width();
     const qreal yRadius = 2.0 * borderRadius / boxRect.height();
-
+    //qDebug() << " radius: " << radius;
     QPainter shadowPainter;
     shadowPainter.begin(&shadow);
     shadowPainter.setRenderHint(QPainter::Antialiasing);
     shadowPainter.setPen(Qt::NoPen);
     shadowPainter.setBrush(Qt::black);
-    shadowPainter.drawRoundedRect(boxRect, xRadius, yRadius);
+    // For some reason, if radius is <=3, the shadow edge becomes too sharp, so we work around this. FIXME
+    //shadowPainter.drawRoundedRect(boxRect, xRadius, yRadius);
+    shadowPainter.drawRoundedRect(boxRect, radius > 3 ? xRadius : borderRadius, radius > 3 ? yRadius : borderRadius );
     shadowPainter.end();
 
     // Because the shadow texture is symmetrical, that's enough to blur

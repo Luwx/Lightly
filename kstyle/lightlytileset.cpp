@@ -98,15 +98,15 @@ namespace Lightly
         int h = h2;
 
         // initialise pixmap array
-        initPixmap( _pixmaps, source, _w1, _h1, QRect(0, 0, _w1, _h1) );
-        initPixmap( _pixmaps, source, w, _h1, QRect(_w1, 0, w2, _h1) );
-        initPixmap( _pixmaps, source, _w3, _h1, QRect(_w1+w2, 0, _w3, _h1) );
-        initPixmap( _pixmaps, source, _w1, h, QRect(0, _h1, _w1, h2) );
-        initPixmap( _pixmaps, source, w, h, QRect(_w1, _h1, w2, h2) );
-        initPixmap( _pixmaps, source, _w3, h, QRect(_w1+w2, _h1, _w3, h2) );
-        initPixmap( _pixmaps, source, _w1, _h3, QRect(0, _h1+h2, _w1, _h3) );
-        initPixmap( _pixmaps, source, w, _h3, QRect(_w1, _h1+h2, w2, _h3) );
-        initPixmap( _pixmaps, source, _w3, _h3, QRect(_w1+w2, _h1+h2, _w3, _h3) );
+        initPixmap( _pixmaps, source, _w1, _h1, QRect(0, 0, _w1, _h1) );            // Top left
+        initPixmap( _pixmaps, source, w, _h1, QRect(_w1, 0, w2, _h1) );             // Top
+        initPixmap( _pixmaps, source, _w3, _h1, QRect(_w1+w2, 0, _w3, _h1) );       // Top Right
+        initPixmap( _pixmaps, source, _w1, h, QRect(0, _h1, _w1, h2) );             // Left
+        initPixmap( _pixmaps, source, w, h, QRect(_w1, _h1, w2, h2) );              // Center
+        initPixmap( _pixmaps, source, _w3, h, QRect(_w1+w2, _h1, _w3, h2) );        // Right
+        initPixmap( _pixmaps, source, _w1, _h3, QRect(0, _h1+h2, _w1, _h3) );       // Bottom left
+        initPixmap( _pixmaps, source, w, _h3, QRect(_w1, _h1+h2, w2, _h3) );        // Bottom
+        initPixmap( _pixmaps, source, _w3, _h3, QRect(_w1+w2, _h1+h2, _w3, _h3) );  // Bottom right
     }
 
     //___________________________________________________________

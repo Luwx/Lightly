@@ -284,6 +284,84 @@ namespace Lightly
 
         return _shadowTiles;
     }
+    
+    //_______________________________________________________
+    TileSet ShadowHelper::shadowTiles( const int frameRadius, CustomShadowParams shadow1, CustomShadowParams shadow2 )
+    {
+
+        if (shadow1.radius == 0) {
+            return TileSet();
+        } 
+
+        auto withOpacity = [](const QColor &color, qreal opacity) -> QColor {
+            QColor c(color);
+            c.setAlphaF(opacity);
+            return c;
+        };
+
+        //const QColor color = StyleConfigData::shadowColor();
+        //const qreal strength = static_cast<qreal>(StyleConfigData::shadowStrength()) / 255.0;
+
+        const QSize boxSize = BoxShadowRenderer::calculateMinimumBoxSize(shadow1.radius)
+            .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(shadow2.radius));
+
+        const qreal dpr = qApp->devicePixelRatio();
+
+        BoxShadowRenderer shadowRenderer;
+        shadowRenderer.setBorderRadius(frameRadius);
+        shadowRenderer.setBoxSize(boxSize);
+        shadowRenderer.setDevicePixelRatio(dpr);
+
+        shadowRenderer.addShadow(shadow1.offset, shadow1.radius, shadow1.color);
+        if (shadow2.radius > 0) 
+            shadowRenderer.addShadow(shadow2.offset, shadow2.radius, shadow2.color);
+
+        QImage shadowTexture = shadowRenderer.render();
+
+        const QRect outerRect(QPoint(0, 0), shadowTexture.size() / dpr);
+
+        QRect boxRect(QPoint(0, 0), boxSize);
+        boxRect.moveCenter(outerRect.center());
+
+        // Mask out inner rect.
+        /*QPainter painter(&shadowTexture);
+        painter.setRenderHint(QPainter::Antialiasing);
+
+        const QMargins margins = QMargins(
+            boxRect.left() - outerRect.left() - Metrics::Shadow_Overlap,
+            boxRect.top() - outerRect.top() - Metrics::Shadow_Overlap,
+            outerRect.right() - boxRect.right() - Metrics::Shadow_Overlap,
+            outerRect.bottom() - boxRect.bottom() - Metrics::Shadow_Overlap);
+
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::black);
+        painter.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+        painter.drawRoundedRect(
+            outerRect - margins,
+            frameRadius,
+            frameRadius);*/
+        
+        // Draw outline.
+        /*painter.setPen(withOpacity(Qt::black, 0.3));
+        painter.setBrush(Qt::NoBrush);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawRoundedRect(
+            outerRect - margins,
+            frameRadius-1,
+            frameRadius-1);*/
+
+        // We're done.
+        //painter.end();
+
+        const QPoint innerRectTopLeft = outerRect.center();
+        TileSet shadowTiles = TileSet(
+            QPixmap::fromImage(shadowTexture),
+            innerRectTopLeft.x(),
+            innerRectTopLeft.y(),
+            1, 1);
+
+        return shadowTiles;
+    }
 
 
     //_______________________________________________________
