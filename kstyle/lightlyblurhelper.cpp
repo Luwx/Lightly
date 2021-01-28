@@ -168,7 +168,7 @@ namespace Lightly
             && !widget->testAttribute(Qt::WA_X11NetWmWindowTypeMenu)) // not a detached menu
             || widget->inherits("QComboBoxPrivateContainer"))
         {
-            return roundedRegion(rect, StyleConfigData::cornerRadius(), true, true, true, true);
+            return roundedRegion(rect, StyleConfigData::cornerRadius()+1, true, true, true, true);
         } 
         else 
             {

@@ -579,7 +579,7 @@ namespace Lightly
                 painter->setPen( outline );
                 painter->setBrush( Qt::NoBrush );
                 frameRect = strokedRect( frameRect );
-                radius = frameRadiusForNewPenWidth( radius, PenWidth::Frame );
+                radius += 0.5;  // enhance pixel aligment
                 
                 painter->drawRoundedRect( frameRect, radius, radius );
             }
