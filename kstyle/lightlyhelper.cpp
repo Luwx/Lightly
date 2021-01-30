@@ -827,50 +827,12 @@ namespace Lightly
 
         painter->setRenderHint( QPainter::Antialiasing );
 
-        //QRectF frameRect( rect.adjusted( 1, 1, -1, -1 ) );
-        QRectF frameRect( rect.adjusted( 1 + Metrics::Frame_FrameWidth, 1 + Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth ) );
+        QRectF frameRect( rect.adjusted( 1, 1, -1, -1 ) );
+        //QRectF frameRect( rect.adjusted( 1 + Metrics::Frame_FrameWidth, 1 + Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth ) );
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) + 2 );
         
         //shadow
-        painter->setClipping(true);
-        if( corners != 0 && corners != AllCorners )
-        {
-            
-            constexpr int shadowSize( Metrics::Frame_FrameWidth );
-            constexpr int overlap( Metrics::TabBar_BaseOverlap - 1 );
-            
-            if( !(corners & CornerTopLeft) ) {
-
-                
-                QPoint shadowTopLeft ( frameRect.x() - shadowSize, frameRect.y() - shadowSize );
-                QRect topLeftShadowRect ( shadowTopLeft, QSize( radius + overlap, radius + overlap ) );
-                
-                painter->setClipRegion( QRegion(rect) - topLeftShadowRect );
-                renderBoxShadow(painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), shadowSize, QColor(0,0,0,215) ), radius);
-                
-                // paint corner shadow
-                painter->setClipRegion( QRect( shadowTopLeft + QPoint(0, overlap), QSize(radius + overlap, radius) ) );
-                renderBoxShadow(painter, QRectF( frameRect.topLeft(), QSize( radius + overlap, radius + overlap ) ), CustomShadowParams( QPoint( 0, 1 ), shadowSize, QColor(0,0,0,215) ), radius);
-
-                
-            } else if( !(corners & CornerTopRight) ) {
-                
-                QPoint shadowTopRight ( frameRect.topRight().x(), frameRect.topRight().y() - shadowSize );
-                QRect topRightShadowRect ( shadowTopRight, QSize( radius, radius + overlap ) );
-                
-                painter->setClipRegion( QRegion(rect) - topRightShadowRect );
-                renderBoxShadow(painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), shadowSize, QColor(0,0,0,215) ), radius);
-                
-                
-                // paint corner shadow
-                painter->setClipRegion( QRect( shadowTopRight + QPoint(0, overlap), QSize(radius + overlap, radius ) ) );
-                renderBoxShadow(painter, QRectF( frameRect.topLeft(), QSize( radius + overlap, radius + overlap ) ), CustomShadowParams( QPoint( 0, 1 ), shadowSize, QColor(0,0,0,215) ), radius);
-                
-            } else renderBoxShadow(painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,215) ), radius);
-            
-        } else renderBoxShadow(painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,215) ), radius);
-
-        painter->setClipping( false );
+        renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, outline.darker(215) ), radius ); 
 
         // set pen
         if( outline.isValid() )
@@ -991,11 +953,11 @@ namespace Lightly
         QPainter* painter, const QRect& rect,
         const QColor& color, const bool mouseOver ) const
     {
-
+        Q_UNUSED(mouseOver)
         painter->setRenderHint( QPainter::Antialiasing, true );
         painter->setPen( Qt::NoPen );
         
-
+        
         QRectF frameRect( rect.adjusted( Metrics::Frame_FrameWidth, Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth, -Metrics::Frame_FrameWidth ) );
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
 
@@ -1470,7 +1432,7 @@ namespace Lightly
     }
 
     //______________________________________________________________________________
-    void Helper::renderTabBarTab( QPainter* painter, const QRect& rect, const QColor& color, const QColor& outline, Corners corners, const bool selected ) const
+    void Helper::renderTabBarTab( QPainter* painter, const QRect& rect, const QColor& color, const QColor& outline, Corners corners) const
     {
 
         // setup painter
@@ -1495,19 +1457,7 @@ namespace Lightly
         else painter->setBrush( Qt::NoBrush );
 
         // render
-        QPainterPath path;
-        if( selected ) {
-            
-            //frameRect.adjust( -radius-3, 0, radius+3, 0 );
-            renderBoxShadow(painter, frameRect.adjusted( radius + 3, 0, - radius - 3, radius+3 ),  CustomShadowParams( QPoint( 0, 1 ), 5, QColor(Qt::black) ), radius + 3 );
-            
-            path = tabPath( frameRect, corners, radius+3 );
-            
-            if( color.isValid() ) painter->setBrush( color );
-            else painter->setBrush( Qt::NoBrush );
-            
-        }
-        else path = roundedPath( frameRect, corners, radius+3);
+        QPainterPath path( roundedPath( frameRect, corners, radius ) );
         painter->drawPath( path );
 
     }
@@ -1738,51 +1688,6 @@ namespace Lightly
         return path;
 
     }
-    
-    //________________________________________________________________________________________________________
-    QPainterPath Helper::tabPath( const QRectF& rect, const Corners corners, qreal radius ) const
-    {
-        QPainterPath path;
-
-        const QSizeF cornerSize( 2*radius, 2*radius );
-
-        // bottom left corner
-        if( corners & CornerBottomLeft )
-        {
-            
-            path.moveTo( rect.bottomLeft() );
-            path.arcTo( QRectF( rect.bottomLeft() - QPointF( radius, 2*radius ), cornerSize ), 270, 90 );  //qDebug() << "this1";
-        
-        } else path.moveTo( rect.bottomLeft() + QPointF( radius, 0) );
-
-        // top left corner
-        if( corners & CornerTopLeft ) 
-        {
-            path.lineTo( rect.topLeft() + QPointF( radius, radius ) );
-            path.arcTo( QRectF( rect.topLeft() + QPointF( radius, 0 ), cornerSize ), 180, -90 );  //qDebug() << "this2";
-            
-        } else path.lineTo( rect.topLeft() + QPointF( radius, 0 ) );
-
-        // top right corner
-        if( corners & CornerTopRight )
-        {
-            path.lineTo( rect.topRight() - QPointF( 2*radius, 0 ) );
-            path.arcTo( QRectF( rect.topRight() - QPointF( 3*radius, 0 ), cornerSize ), 90, -90 );  //qDebug() << "this3";
-            
-        } else path.lineTo( rect.topRight() - QPointF( -radius, 0 ) );
-        
-        // bottom right corner
-        if( corners & CornerBottomRight )
-        {
-            path.lineTo( rect.bottomRight() - QPointF( radius, radius ) );
-            path.arcTo( QRectF( rect.bottomRight() - QPointF( radius, 2*radius ), cornerSize ), 180, 90 ); //qDebug() << "this4";
-            
-        } else path.lineTo( rect.bottomRight() - QPointF( -radius, 0 ) );
-
-        path.closeSubpath();
-        return path;
-    }
-    
 
     //________________________________________________________________________________________________________
     bool Helper::compositingActive() const

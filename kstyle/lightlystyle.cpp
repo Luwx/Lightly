@@ -2163,30 +2163,31 @@ namespace Lightly
             {
                 case QTabBar::RoundedNorth:
                 case QTabBar::TriangularNorth:
-                return rect.adjusted( 0, Metrics::TabWidget_MarginWidth + Metrics::Frame_FrameWidth, 0, 0 );
+                return rect.adjusted( 0, Metrics::TabWidget_MarginWidth /*+ Metrics::Frame_FrameWidth*/, 0, 0 );
 
                 case QTabBar::RoundedSouth:
                 case QTabBar::TriangularSouth:
-                return rect.adjusted( 0, 0, 0, -Metrics::TabWidget_MarginWidth - Metrics::Frame_FrameWidth );
+                return rect.adjusted( 0, 0, 0, -Metrics::TabWidget_MarginWidth /*- Metrics::Frame_FrameWidth*/ );
 
                 case QTabBar::RoundedWest:
                 case QTabBar::TriangularWest:
-                return rect.adjusted( Metrics::TabWidget_MarginWidth + Metrics::Frame_FrameWidth, 0, 0, 0 );
+                return rect.adjusted( Metrics::TabWidget_MarginWidth /*+ Metrics::Frame_FrameWidth*/, 0, 0, 0 );
 
                 case QTabBar::RoundedEast:
                 case QTabBar::TriangularEast:
-                return rect.adjusted( 0, 0, -Metrics::TabWidget_MarginWidth - Metrics::Frame_FrameWidth, 0 );
+                return rect.adjusted( 0, 0, -Metrics::TabWidget_MarginWidth /*- Metrics::Frame_FrameWidth*/, 0 );
 
                 default: return rect;
             }
 
-        } else return insideMargin( rect, Metrics::TabWidget_MarginWidth + Metrics::Frame_FrameWidth);
+        } else return insideMargin( rect, Metrics::TabWidget_MarginWidth /*+ Metrics::Frame_FrameWidth*/);
     }
 
     //____________________________________________________________________
     QRect Style::tabWidgetTabPaneRect( const QStyleOption* option, const QWidget* widget) const
     {
-
+        
+        Q_UNUSED(widget)
         const auto tabOption = qstyleoption_cast<const QStyleOptionTabWidgetFrame*>( option );
         if( !tabOption || tabOption->tabBarSize.isEmpty() ) return option->rect;
 
@@ -3212,7 +3213,7 @@ namespace Lightly
             const int tabBarWidth = tabBar->minimumSizeHint().width();
             const int stackWidth = stack->minimumSizeHint().width();
             if( contentsSize.width() == tabBarWidth && tabBarWidth + 2*(Metrics::Frame_FrameWidth - 1) >= stackWidth + 2*Metrics::TabWidget_MarginWidth) return QSize( contentsSize.width() + 2*(Metrics::Frame_FrameWidth - 1), contentsSize.height() + 2*Metrics::TabWidget_MarginWidth );
-            else return expandSize( contentsSize, Metrics::TabWidget_MarginWidth + 12 );
+            else return expandSize( contentsSize, Metrics::TabWidget_MarginWidth );
 
         }
 
@@ -3233,7 +3234,6 @@ namespace Lightly
         if( hasText && hasIcon ) widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasLeftButton && ( hasText || hasIcon ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasRightButton && ( hasText || hasIcon || hasLeftButton ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
-        if( !tabOption->documentMode ) widthIncrement += (StyleConfigData::cornerRadius() + 2)*2; 
 
         // add margins
         QSize size( contentsSize );
@@ -3635,8 +3635,8 @@ namespace Lightly
         // define colors
         const auto& palette( option->palette );
         const auto background( _helper->frameBackgroundColor( palette ) );
-        //const auto outline( _helper->frameOutlineColor( palette ) );
-        _helper->renderTabWidgetFrame( painter, rect, background, QColor(), corners );
+        const auto outline( _helper->frameOutlineColor( palette ) );
+        _helper->renderTabWidgetFrame( painter, rect, background, outline, corners );
 
         return true;
     }
@@ -6366,7 +6366,7 @@ namespace Lightly
 
         // adjust rect and define corners based on tabbar orientation
         Corners corners;
-        //Corners backgroundCorners;
+
         switch( tabOption->shape )
         {
             case QTabBar::RoundedNorth:
@@ -6374,22 +6374,16 @@ namespace Lightly
                 
             if ( selected ) {
                 
-                corners = CornerTopLeft|CornerTopRight|CornerBottomRight;
-                if( !isFirst ) corners |= CornerBottomLeft;
-                else rect.adjust(-StyleConfigData::cornerRadius() - 2, 0, 0, 0);
-                //if( isLast && !tabOption->documentMode ) rect.adjust( 0, 0, -StyleConfigData::cornerRadius() - 2, 0 );
-                //if( !tabOption->documentMode ) rect.adjust(0, 0, 0, 1);
+                corners = CornerTopLeft|CornerTopRight;
+                rect.adjust(0, 0, 0, 1);
                 
             } else {
             
-                //rect.adjust( 0, 0, 0, -1 ); 
-                if( isFirst ) {
-                    corners |= CornerTopLeft;
-                    rect.adjust( Metrics::Frame_FrameWidth, 0, 0, 0);
-                }
+                rect.adjust( 0, 0, 0, -1 ); 
+                if( isFirst ) corners |= CornerTopLeft;
                 if( isLast ) corners |= CornerTopRight;
-                if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius()*2, 0, 0, 0 );
-                if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius()*2, 0 );
+                if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius(), 0, 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius(), 0 );
                 else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
             }
             break;
@@ -6407,8 +6401,8 @@ namespace Lightly
                 rect.adjust( 0, 1, 0, 0 );
                 if( isFirst ) corners |= CornerBottomLeft;
                 if( isLast ) corners |= CornerBottomRight;
-                //if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius(), 0, 0, 0 );
-                //if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius(), 0 );
+                if( isRightOfSelected ) rect.adjust( -StyleConfigData::cornerRadius(), 0, 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, StyleConfigData::cornerRadius(), 0 );
                 else if( !isLast ) rect.adjust( 0, 0, overlap, 0 );
 
             }
@@ -6419,15 +6413,15 @@ namespace Lightly
             if( selected )
             {
                 corners = CornerTopLeft|CornerBottomLeft;
-                if( !tabOption->documentMode ) rect.adjust( 0, 0, 1, 0 );
+                rect.adjust( 0, 0, 1, 0 );
 
             } else {
 
                 rect.adjust( 0, 0, -1, 0 );
                 if( isFirst ) corners |= CornerTopLeft;
                 if( isLast ) corners |= CornerBottomLeft;
-               // if( isRightOfSelected ) rect.adjust( 0, -StyleConfigData::cornerRadius(), 0, 0 );
-               // if( isLeftOfSelected ) rect.adjust( 0, 0, 0, StyleConfigData::cornerRadius() );
+                if( isRightOfSelected ) rect.adjust( 0, -StyleConfigData::cornerRadius(), 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, 0, StyleConfigData::cornerRadius() );
                 else if( !isLast ) rect.adjust( 0, 0, 0, overlap );
 
             }
@@ -6439,15 +6433,15 @@ namespace Lightly
             {
 
                 corners = CornerTopRight|CornerBottomRight;
-                if( !tabOption->documentMode ) rect.adjust( -1, 0, 0, 0 );
+                rect.adjust( -1, 0, 0, 0 );
 
             } else {
 
                 rect.adjust( 1, 0, 0, 0 );
                 if( isFirst ) corners |= CornerTopRight;
                 if( isLast ) corners |= CornerBottomRight;
-                //if( isRightOfSelected ) rect.adjust( 0, -StyleConfigData::cornerRadius(), 0, 0 );
-                //if( isLeftOfSelected ) rect.adjust( 0, 0, 0, StyleConfigData::cornerRadius() );
+                if( isRightOfSelected ) rect.adjust( 0, -StyleConfigData::cornerRadius(), 0, 0 );
+                if( isLeftOfSelected ) rect.adjust( 0, 0, 0, StyleConfigData::cornerRadius() );
                 else if( !isLast ) rect.adjust( 0, 0, 0, overlap );
 
             }
@@ -6485,42 +6479,16 @@ namespace Lightly
 
         // render
         
-        /*if( _isKonsole )
-        {
-            painter->setBrush( Qt::black );
-            painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
-            painter->drawRect( rect );
-            painter->setCompositionMode( QPainter::CompositionMode_SourceOver ); 
-            painter->fillRect( rect, _helper->alphaColor( palette.color( QPalette::Window ), _helper->titleBarColor( true ).alphaF() ) );
-        }*/
-        
         if( selected )
         {
-            //QRegion oldRegion( painter->clipRegion() );
-            //painter->setClipRect( option->rect, Qt::IntersectClip );
-            
-            if( tabOption->documentMode ) {
-                _helper->renderBoxShadow( painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0, 0, 0, 215 ) ), 1 );
-                _helper->renderTabBarTab( painter, rect.adjusted(-StyleConfigData::cornerRadius() - 2, 0, StyleConfigData::cornerRadius() + 2, 0), color, QColor(), corners, selected );
-            }
-            else _helper->renderTabBarTab( painter, rect.adjusted( isFirst ? Metrics::Frame_FrameWidth : 0, 2, 0, 0), color, QColor(), corners, selected );
-            
-            //background
-            //Corners c;
-            //if( isFirst ) c |= CornerTopLeft;
-            //if( isLast ) c |= CornerTopRight;
-            //_helper->renderTabBarTab( painter, rect.adjusted( isFirst ? Metrics::Frame_FrameWidth : 0, tabOption->documentMode ? 0 : 2, 0, 0 ), _helper->alphaColor( palette.color( QPalette::Shadow ), 0.2 ), QColor(), c, false );
-            
-            //if( _helper->isDarkTheme( palette ) ) _helper->topHighlight( painter, rect.adjusted(StyleConfigData::cornerRadius() + 2, 2, -StyleConfigData::cornerRadius() - 2, 0), StyleConfigData::cornerRadius() + 2, QColor(255, 255, 255, 30) );
-            //painter->setClipRegion( oldRegion );
+            QRegion oldRegion( painter->clipRegion() );
+            painter->setClipRect( option->rect, Qt::IntersectClip );
+            _helper->renderTabBarTab( painter, rect, color, outline, corners );
+            painter->setClipRegion( oldRegion );
 
         } else {
 
-            if( tabOption->documentMode ) {
-                _helper->renderBoxShadow( painter, QRect( rect.bottomLeft() + QPoint(0, 1), QSize( rect.width()-2, 20 ) ), CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0, 0, 0, 215 ) ), 1 );
-            }
-            _helper->renderTabBarTab( painter, rect.adjusted( 0, tabOption->documentMode ? 0 : 2, 0, 0 ), color, outline, corners, selected );
-
+             _helper->renderTabBarTab( painter, rect, color, outline, corners );
         }
 
         return true;
