@@ -39,38 +39,7 @@
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="1" colspan="4">
-        <widget class="QCheckBox" name="_toolBarDrawItemSeparator">
-         <property name="text">
-          <string>Draw toolbar item separators</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="_cornerRadiusLabel">
-         <property name="text">
-          <string>Corner radius:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="4">
-        <widget class="QCheckBox" name="_splitterProxyEnabled">
-         <property name="text">
-          <string>Enable extended resize handles</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="_widgetDrawShadow">
-         <property name="text">
-          <string>Draw widget shadow</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
+       <item row="6" column="1">
         <widget class="QLabel" name="_windowDragLabel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -89,39 +58,34 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="2" colspan="2">
-        <widget class="QComboBox" name="_windowDragMode">
-         <item>
-          <property name="text">
-           <string>Drag windows from titlebar only</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Drag windows from titlebar, menubar and toolbars</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Drag windows from all empty areas</string>
-          </property>
-         </item>
+       <item row="2" column="1" colspan="4">
+        <widget class="QCheckBox" name="_viewDrawFocusIndicator">
+         <property name="text">
+          <string>Draw focus indicator in lists</string>
+         </property>
         </widget>
        </item>
-       <item row="6" column="4">
-        <spacer name="horizontalSpacer_3">
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="_widgetDrawShadow">
+         <property name="text">
+          <string>Draw widget shadow</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" colspan="3">
+        <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>65</width>
-           <height>20</height>
+           <width>20</width>
+           <height>49</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item row="6" column="2" colspan="2">
+       <item row="5" column="2" colspan="2">
         <widget class="QComboBox" name="_mnemonicsMode">
          <item>
           <property name="text">
@@ -140,47 +104,14 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="1" colspan="4">
-        <widget class="QCheckBox" name="_tabBarDrawCenteredTabs">
+       <item row="1" column="1" colspan="4">
+        <widget class="QCheckBox" name="_toolBarDrawItemSeparator">
          <property name="text">
-          <string>Center tabbar tabs</string>
+          <string>Draw toolbar item separators</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
-        <widget class="QLabel" name="_mnemonicsLabel">
-         <property name="text">
-          <string>&amp;Keyboard accelerators visibility:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buddy">
-          <cstring>_mnemonicsMode</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="4">
-        <widget class="QCheckBox" name="_viewDrawFocusIndicator">
-         <property name="text">
-          <string>Draw focus indicator in lists</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1" colspan="3">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>49</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="5" column="2">
+       <item row="4" column="2">
         <widget class="QSpinBox" name="_cornerRadius">
          <property name="suffix">
           <string> px</string>
@@ -193,6 +124,68 @@
          </property>
          <property name="value">
           <number>6</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="_cornerRadiusLabel">
+         <property name="text">
+          <string>Corner radius:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2" colspan="2">
+        <widget class="QComboBox" name="_windowDragMode">
+         <item>
+          <property name="text">
+           <string>Drag windows from titlebar only</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Drag windows from titlebar, menubar and toolbars</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Drag windows from all empty areas</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="_mnemonicsLabel">
+         <property name="text">
+          <string>&amp;Keyboard accelerators visibility:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>_mnemonicsMode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>65</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1" colspan="4">
+        <widget class="QCheckBox" name="_tabBarDrawCenteredTabs">
+         <property name="text">
+          <string>Center tabbar tabs</string>
          </property>
         </widget>
        </item>
@@ -609,7 +602,6 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>_tabBarDrawCenteredTabs</tabstop>
   <tabstop>_toolBarDrawItemSeparator</tabstop>
-  <tabstop>_splitterProxyEnabled</tabstop>
   <tabstop>_mnemonicsMode</tabstop>
   <tabstop>_windowDragMode</tabstop>
   <tabstop>_animationsEnabled</tabstop>
