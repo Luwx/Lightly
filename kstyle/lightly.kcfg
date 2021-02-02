@@ -112,11 +112,6 @@
     <entry name="TransparentDolphinView" type="Bool">
       <default>true</default>
     </entry>
-
-    <!-- sliders -->
-    <entry name="SliderDrawTickMarks" type="Bool">
-      <default>true</default>
-    </entry>
     
     <!-- shadows on widgets -->
     <entry name="WidgetDrawShadow" type="Bool">

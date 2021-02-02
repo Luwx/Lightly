@@ -2941,7 +2941,6 @@ namespace Lightly
         // store tick position and orientation
         const QSlider::TickPosition& tickPosition( sliderOption->tickPosition );
         const bool horizontal( sliderOption->orientation == Qt::Horizontal );
-        const bool disableTicks( !StyleConfigData::sliderDrawTickMarks() );
 
         // do nothing if no ticks are requested
         if( tickPosition == QSlider::NoTicks ) return contentsSize;
@@ -2950,9 +2949,8 @@ namespace Lightly
          * Qt adds its own tick length directly inside QSlider.
          * Take it out and replace by ours, if needed
          */
-        const int tickLength( disableTicks ? 0 : (
-            Metrics::Slider_TickLength + Metrics::Slider_TickMarginWidth +
-            (Metrics::Slider_GrooveThickness - Metrics::Slider_ControlThickness)/2 ) );
+        const int tickLength( Metrics::Slider_TickLength + Metrics::Slider_TickMarginWidth +
+            (Metrics::Slider_GrooveThickness - Metrics::Slider_ControlThickness)/2 ) ;
 
         const int builtInTickLength( 5 );
 
@@ -7119,7 +7117,7 @@ namespace Lightly
         const bool horizontal( sliderOption->orientation == Qt::Horizontal );
 
         // tickmarks
-        if( StyleConfigData::sliderDrawTickMarks() && ( sliderOption->subControls & SC_SliderTickmarks ) )
+        if( sliderOption->subControls & SC_SliderTickmarks )
         {
             const bool upsideDown( sliderOption->upsideDown );
             const int tickPosition( sliderOption->tickPosition );

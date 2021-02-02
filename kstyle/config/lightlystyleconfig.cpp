@@ -52,7 +52,6 @@ namespace Lightly
         connect( _titleWidgetDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _sidePanelDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _menuItemDrawThinFocus, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
-        connect( _sliderDrawTickMarks, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _splitterProxyEnabled, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _mnemonicsMode, SIGNAL(currentIndexChanged(int)), SLOT(updateChanged()) );
         connect( _animationsEnabled, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
@@ -79,7 +78,6 @@ namespace Lightly
         StyleConfigData::setTitleWidgetDrawFrame( _titleWidgetDrawFrame->isChecked() );
         StyleConfigData::setSidePanelDrawFrame( _sidePanelDrawFrame->isChecked() );
         StyleConfigData::setMenuItemDrawStrongFocus( !_menuItemDrawThinFocus->isChecked() );
-        StyleConfigData::setSliderDrawTickMarks( _sliderDrawTickMarks->isChecked() );
         StyleConfigData::setSplitterProxyEnabled( _splitterProxyEnabled->isChecked() );
         StyleConfigData::setMnemonicsMode( _mnemonicsMode->currentIndex() );
         StyleConfigData::setScrollBarAddLineButtons( _scrollBarAddLineButtons->currentIndex() );
@@ -132,7 +130,6 @@ namespace Lightly
         else if( _titleWidgetDrawFrame->isChecked() != StyleConfigData::titleWidgetDrawFrame() ) modified = true;
         else if( _sidePanelDrawFrame->isChecked() != StyleConfigData::sidePanelDrawFrame() ) modified = true;
         else if( _menuItemDrawThinFocus->isChecked() == StyleConfigData::menuItemDrawStrongFocus() ) modified = true;
-        else if( _sliderDrawTickMarks->isChecked() != StyleConfigData::sliderDrawTickMarks() ) modified = true;
         else if( _mnemonicsMode->currentIndex() != StyleConfigData::mnemonicsMode() ) modified = true;
         else if( _scrollBarAddLineButtons->currentIndex() != StyleConfigData::scrollBarAddLineButtons() ) modified = true;
         else if( _scrollBarSubLineButtons->currentIndex() != StyleConfigData::scrollBarSubLineButtons() ) modified = true;
@@ -163,7 +160,6 @@ namespace Lightly
         _titleWidgetDrawFrame->setChecked( StyleConfigData::titleWidgetDrawFrame() );
         _sidePanelDrawFrame->setChecked( StyleConfigData::sidePanelDrawFrame() );
         _menuItemDrawThinFocus->setChecked( !StyleConfigData::menuItemDrawStrongFocus() );
-        _sliderDrawTickMarks->setChecked( StyleConfigData::sliderDrawTickMarks() );
         _mnemonicsMode->setCurrentIndex( StyleConfigData::mnemonicsMode() );
         _splitterProxyEnabled->setChecked( StyleConfigData::splitterProxyEnabled() );
         _scrollBarAddLineButtons->setCurrentIndex( StyleConfigData::scrollBarAddLineButtons() );
