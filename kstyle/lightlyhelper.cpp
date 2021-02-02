@@ -1450,7 +1450,7 @@ namespace Lightly
     }
 
     //______________________________________________________________________________
-    void Helper::renderTabBarTab( QPainter* painter, const QRect& rect, const QColor& color, const QColor& outline, Corners corners) const
+    void Helper::renderTabBarTab( QPainter* painter, const QRect& rect, const QColor& color, Corners corners) const
     {
 
         // setup painter
@@ -1459,16 +1459,7 @@ namespace Lightly
         QRectF frameRect( rect );
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
 
-        // pen
-        if( outline.isValid() )
-        {
-
-            painter->setPen( outline );
-            frameRect = strokedRect( frameRect );
-            radius = frameRadiusForNewPenWidth( radius, PenWidth::Frame );
-
-        } else painter->setPen( Qt::NoPen );
-
+        painter->setPen( Qt::NoPen );
 
         // brush
         if( color.isValid() ) painter->setBrush( color );

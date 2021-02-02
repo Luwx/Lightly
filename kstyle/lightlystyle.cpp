@@ -6400,9 +6400,6 @@ namespace Lightly
             else color = normal;
         }
 
-        // outline
-        const auto outline = QColor();
-
         // adjust rect and define corners based on tabbar orientation
         Corners corners;
         Corners backgroundCorners;
@@ -6508,29 +6505,31 @@ namespace Lightly
             
             if( documentMode ) {
                 // render dark background and shadow
-                _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, QColor(), backgroundCorners);
+                _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
                 _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
 
                 // render actual tab
                 _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/, CustomShadowParams(QPoint(0, 1), 4, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
-                _helper->renderTabBarTab(painter, rect, color, QColor(), corners);
+                _helper->renderTabBarTab(painter, rect, color, corners);
                 
                 // highlight
                 if( StyleConfigData::tabDrawHighlight() ) {
                     
                     constexpr int hh = 2; //highlight height
+                    
+                    // render only whats inside the highlight rect
                     painter->setClipRect( rect.adjusted(
                         side == SideRight ? rect.width() - hh : 0, 
                         side == SideBottom ? rect.height() - hh : 0, 
                         side == SideLeft ? - rect.width() + hh : 0, 
                         side == SideTop ? -rect.height() + hh : 0), Qt::IntersectClip );
                     
-                    // when the highlight is too thin, it's not rendered properly, so we increase its size by one, it'll be not rendered anyway.
+                    // when the highlight is too thin, it's not rendered properly, so we increase its size by one, the extra part will be not rendered anyway.
                     _helper->renderTabBarTab(painter, rect.adjusted(
                         side == SideRight ? rect.width() - (hh+1) : 0, 
                         side == SideBottom ? rect.height() - (hh+1) : 0, 
                         side == SideLeft ? - rect.width() + (hh+1) : 0, 
-                        side == SideTop ? -rect.height() + (hh+1) : 0), _helper->focusColor(palette), QColor(), corners);
+                        side == SideTop ? -rect.height() + (hh+1) : 0), _helper->focusColor(palette), corners);
                 }
             
             }
@@ -6553,7 +6552,7 @@ namespace Lightly
             if(documentMode)
             {
             // render dark background and shadow
-            _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, QColor(), backgroundCorners);
+            _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
             _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
             }
             else {

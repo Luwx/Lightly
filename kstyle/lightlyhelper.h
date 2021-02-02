@@ -255,7 +255,7 @@ namespace Lightly
         void renderScrollBarBorder( QPainter*, const QRect&, const QColor& ) const;
 
         //* tabbar tab
-        void renderTabBarTab( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners ) const;
+        void renderTabBarTab( QPainter*, const QRect&, const QColor& color, Corners ) const;
 
         //* generic arrow
         void renderArrow( QPainter*, const QRect&, const QColor&, ArrowOrientation ) const;
