@@ -183,9 +183,9 @@
         </spacer>
        </item>
        <item row="0" column="1" colspan="4">
-        <widget class="QCheckBox" name="_tabBarDrawCenteredTabs">
+        <widget class="QCheckBox" name="_tabDrawHighlight">
          <property name="text">
-          <string>Center tabbar tabs</string>
+          <string>Draw highlight on active tab</string>
          </property>
         </widget>
        </item>
@@ -600,7 +600,7 @@
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>_tabBarDrawCenteredTabs</tabstop>
+  <tabstop>_tabDrawHighlight</tabstop>
   <tabstop>_toolBarDrawItemSeparator</tabstop>
   <tabstop>_mnemonicsMode</tabstop>
   <tabstop>_windowDragMode</tabstop>

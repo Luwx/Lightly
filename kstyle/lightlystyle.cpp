@@ -6507,17 +6507,31 @@ namespace Lightly
             //_helper->renderTabBarTab( painter, rect, color, outline, corners );
             
             if( documentMode ) {
-            // render dark background and shadow
-            _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, QColor(), backgroundCorners);
-            _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
+                // render dark background and shadow
+                _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, QColor(), backgroundCorners);
+                _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
 
-            // render actual tab
-            _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/, CustomShadowParams(QPoint(0, 1), 4, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
-            _helper->renderTabBarTab(painter, rect, color, QColor(), corners);
-            
-            // highlight
-            //painter->setClipRect( rect.adjusted(0, 0, 0, -rect.height()+2), Qt::IntersectClip );
-            //_helper->renderTabBarTab(painter, rect.adjusted(0, 0, 0, -rect.height()+3), _helper->focusColor(palette), QColor(), corners);
+                // render actual tab
+                _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/, CustomShadowParams(QPoint(0, 1), 4, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
+                _helper->renderTabBarTab(painter, rect, color, QColor(), corners);
+                
+                // highlight
+                if( StyleConfigData::tabDrawHighlight() ) {
+                    
+                    constexpr int hh = 2; //highlight height
+                    painter->setClipRect( rect.adjusted(
+                        side == SideRight ? rect.width() - hh : 0, 
+                        side == SideBottom ? rect.height() - hh : 0, 
+                        side == SideLeft ? - rect.width() + hh : 0, 
+                        side == SideTop ? -rect.height() + hh : 0), Qt::IntersectClip );
+                    
+                    // when the highlight is too thin, it's not rendered properly, so we increase its size by one, it'll be not rendered anyway.
+                    _helper->renderTabBarTab(painter, rect.adjusted(
+                        side == SideRight ? rect.width() - (hh+1) : 0, 
+                        side == SideBottom ? rect.height() - (hh+1) : 0, 
+                        side == SideLeft ? - rect.width() + (hh+1) : 0, 
+                        side == SideTop ? -rect.height() + (hh+1) : 0), _helper->focusColor(palette), QColor(), corners);
+                }
             
             }
             
