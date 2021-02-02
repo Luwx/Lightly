@@ -198,7 +198,7 @@ namespace Lightly
         void renderToolBoxFrame( QPainter*, const QRect&, int tabWidth, const QColor& color ) const;
 
         //* tab widget frame
-        void renderTabWidgetFrame( QPainter*, const QRect&, const QColor& color, const QColor& outline, Corners corners ) const;
+        void renderTabWidgetFrame( QPainter*, const QRect&, const QColor& color, Corners corners, Corners tabBarCorners = AllCorners, const int tabBarSize = 0 ) const;
 
         //* selection frame
         void renderSelection( QPainter*, const QRect&, const QColor&, Corners ) const;

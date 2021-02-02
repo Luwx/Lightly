@@ -126,9 +126,9 @@ namespace Lightly
         TabBar_TabMarginHeight = 4,
         TabBar_TabMarginWidth = 8,
         TabBar_TabMinWidth = 80,
-        TabBar_TabMinHeight = 28,
+        TabBar_TabMinHeight = 33,
         TabBar_TabItemSpacing = 8,
-        TabBar_TabOverlap = 1,
+        TabBar_TabOverlap = 0,
         TabBar_BaseOverlap = 2,
 
         // tab widget

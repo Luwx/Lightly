@@ -34,7 +34,7 @@
 
 #include <algorithm>
 
-#include <QDebug>
+//#include <QDebug>
 
 namespace Lightly
 {
@@ -822,27 +822,19 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderTabWidgetFrame(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const QColor& outline, Corners corners ) const
+        const QColor& color, Corners corners, Corners tabBarCorners, const int tabBarSize ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
 
-        QRectF frameRect( rect.adjusted( 1, 1, -1, -1 ) );
-        //QRectF frameRect( rect.adjusted( 1 + Metrics::Frame_FrameWidth, 1 + Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth, -1 - Metrics::Frame_FrameWidth ) );
-        qreal radius( frameRadius( PenWidth::NoPen, -1 ) + 2 );
+        //QRectF frameRect( rect.adjusted( 1, 1, -1, -1 ) );
+        QRectF frameRect( rect.adjusted( Metrics::Frame_FrameWidth, Metrics::Frame_FrameWidth, - Metrics::Frame_FrameWidth, - Metrics::Frame_FrameWidth ) );
+        qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
         
         //shadow
-        renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, outline.darker(215) ), radius ); 
+        renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,115) ), radius ); 
 
-        // set pen
-        if( outline.isValid() )
-        {
-
-            painter->setPen( outline );
-            frameRect = strokedRect( frameRect );
-            radius = frameRadiusForNewPenWidth( radius, PenWidth::Frame );
-
-        } else painter->setPen( Qt::NoPen );
+        painter->setPen( Qt::NoPen );
 
         // set brush
         if( color.isValid() ) painter->setBrush( color );
@@ -851,6 +843,32 @@ namespace Lightly
         // render
         QPainterPath path( roundedPath( frameRect, corners, radius ) );
         painter->drawPath( path );
+        
+        if( tabBarSize > 0 ) {
+            
+            // tabbar background overlap with the shadow, produces a little outline effect
+            constexpr int shadowOverlap = 1;
+            
+            if( (tabBarCorners & CornerTopLeft) && (tabBarCorners & CornerTopRight) ) {
+                
+                QRect tabBarRect = QRect( QPoint(frameRect.x() - shadowOverlap, frameRect.y() - shadowOverlap), QSize(frameRect.width()+shadowOverlap*2, tabBarSize+1) );
+                painter->setBrush(QColor(0,0,0,20));
+                QPainterPath path( roundedPath( tabBarRect, tabBarCorners, radius ) );
+                painter->drawPath( path );
+                
+            }
+            else if( (tabBarCorners & CornerBottomLeft) && (tabBarCorners & CornerBottomRight) ) {
+                
+                QRect tabBarRect = QRect( QPoint(frameRect.x() - shadowOverlap, frameRect.y() - shadowOverlap), QSize(frameRect.width()+shadowOverlap*2, tabBarSize+1) );
+                painter->setBrush(QColor(0,0,0,20));
+                QPainterPath path( roundedPath( tabBarRect, tabBarCorners, radius ) );
+                painter->drawPath( path );
+                
+            }
+            else if( (tabBarCorners & CornerTopLeft) && (tabBarCorners & CornerBottomLeft) ) {}
+            else if( (tabBarCorners & CornerTopRight) && (tabBarCorners & CornerBottomRight) ) {}
+            
+        }
 
     }
 
