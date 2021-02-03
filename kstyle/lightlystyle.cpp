@@ -4234,8 +4234,8 @@ namespace Lightly
         else if( state & State_On ) checkBoxState = CheckOn;
 
         // animation state
-        //_animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        //_animations->widgetStateEngine().updateState( widget, AnimationPressed, checkBoxState != CheckOff );
+        _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
+        _animations->widgetStateEngine().updateState( widget, AnimationPressed, checkBoxState != CheckOff );
         if( _animations->widgetStateEngine().isAnimated( widget, AnimationPressed ) ) checkBoxState = CheckAnimated;
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
@@ -4249,7 +4249,7 @@ namespace Lightly
 
         // render
         //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
-        _helper->renderCheckBox( painter, rect, palette.color( QPalette::HighlightedText ), background, shadow, sunken, mouseOver, checkBoxState, _helper->isDarkTheme( palette ), animation );
+        _helper->renderCheckBox( painter, rect, palette.color( QPalette::HighlightedText ), background, shadow, sunken, mouseOver, checkBoxState, _helper->isDarkTheme( palette ), false, animation );
         return true;
 
     }

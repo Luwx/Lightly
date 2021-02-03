@@ -1004,7 +1004,7 @@ namespace Lightly
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
         painter->setPen( Qt::NoPen );
-
+        qDebug() << animation;
         // copy rect and radius
         QRectF frameRect( rect );
         frameRect.adjust( Metrics::Frame_FrameWidth - 1, Metrics::Frame_FrameWidth - 1, - Metrics::Frame_FrameWidth + 1, -Metrics::Frame_FrameWidth + 1 );
@@ -1093,20 +1093,71 @@ namespace Lightly
 
             if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
             else renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
-            const QRectF markerRect( frameRect.adjusted( 3, 3, -3, -3 ) );
-            QPainterPath path;
-            path.moveTo( markerRect.topRight() );
-            path.lineTo( markerRect.center() + animation*( markerRect.topLeft() - markerRect.center() ) );
-            path.lineTo( markerRect.bottomLeft() );
-            path.lineTo( markerRect.center() + animation*( markerRect.bottomRight() - markerRect.center() ) );
-            path.closeSubpath();
+            
+            if( animation == 0 ) {
 
-            painter->setBrush( color );
-            painter->setPen( Qt::NoPen );
-            painter->drawPath( path );
+                    // small shadow
+                    if( mouseOver ){ 
+                        renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,120), 1, windowActive );
+                        renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,90), radius, windowActive );
+                    }
+                    else {
+                        renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,160), radius, windowActive );
+                        renderOutline( painter, frameRect, radius, 4 );
+                    }
+                    painter->setBrush( mouseOver ? background.lighter(115) : background );
+                    painter->drawRoundedRect( frameRect, radius, radius );
+                
+            }
+            else if( animation > 0 && animation < 1) {
+                
+                    frameRect.translate(-1*animation, -1*animation);
+                    if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, mouseOver ? background.darker(140):background.darker(200), radius, windowActive );
+                    else {
+                        renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
+                        renderOutline( painter, frameRect, radius, 4 );
+                    }
+                    //painter->setBrush( mouseOver ? background.lighter(110) : background );
+                    painter->setBrush(background);
+                    painter->drawRoundedRect( frameRect, radius, radius );
+                    
+                    painter->setBrush(QColor(65, 98, 148, animation*255));
+                    painter->drawRoundedRect( frameRect, radius, radius );
+                            
+                    //draw check mark
+                    int x = frameRect.x();
+                    int y = frameRect.y();
+                    
+                    QPen pen = QPen();
+                    pen.setWidth(2);
+                    pen.setCapStyle( Qt::RoundCap );
+                    pen.setColor( QColor( 0, 0, 0, 100 ) );
+                    
+                    painter->setPen( pen );
+                    painter->setBrush( Qt::NoBrush );
+                    
+                    QPainterPath checkShadow;
+                    checkShadow.moveTo(animation*4.01+x, 10.95+y);
+                    checkShadow.cubicTo(animation*4.67+x, 11.64+y, animation*5.31+x, 12.29+y, animation*5.95+x, 13.12+y);
+                    checkShadow.cubicTo(animation*6.58+x, 13.95+y, animation*7.23+x, 14.99+y, animation*7.78+x, 14.87+y);
+                    checkShadow.cubicTo(animation*8.33+x, 14.76+y, animation*9.3+x, 13.34+y, animation*10.52+x, 11.55+y);
+                    checkShadow.cubicTo(animation*11.75+x, 9.76+y, animation*13.38+x, 7.38+y, animation*15.0+x, 5.0+y);
 
-        }
-        
+                    painter->drawPath( checkShadow );
+
+                    QPainterPath check;
+                    pen.setColor( color ); // TODO: use HighlightedText
+                    painter->setPen( pen );
+                    check.moveTo(animation*4.01+x, 9.95+y);
+                    check.cubicTo(animation*4.67+x, 10.64+y, animation*5.31+x, 11.29+y, animation*5.95+x, 12.12+y);
+                    check.cubicTo(animation*6.58+x, 12.95+y, animation*7.23+x, 13.99+y, animation*7.78+x, 13.87+y);
+                    check.cubicTo(animation*8.33+x, 13.76+y, animation*9.3+x, 12.34+y, animation*10.52+x, 10.55+y);
+                    check.cubicTo(animation*11.75+x, 8.76+y, animation*13.38+x, 6.38+y, animation*15.0+x, 4.0+y);
+
+                    painter->drawPath( check );
+                } 
+            }
+
         if( darkTheme ) topHighlight( painter, frameRect, radius );
 
     }

@@ -40,7 +40,10 @@ namespace Lightly
         //* constructor
         Animation( int duration, QObject* parent ):
             QPropertyAnimation( parent )
-        { setDuration( duration ); }
+        { 
+            setDuration( duration );
+            setEasingCurve(QEasingCurve::InQuint);
+        }
 
         //* true if running
         bool isRunning() const

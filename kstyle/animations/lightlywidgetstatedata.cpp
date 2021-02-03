@@ -40,6 +40,7 @@ namespace Lightly
 
             _state = value;
             animation().data()->setDirection( _state ? Animation::Forward : Animation::Backward );
+            animation().data()->setEasingCurve( _state ? QEasingCurve::OutQuint : QEasingCurve::InQuint );
             if( !animation().data()->isRunning() ) animation().data()->start();
             return true;
 
