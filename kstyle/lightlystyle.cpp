@@ -267,7 +267,6 @@ namespace Lightly
             || qobject_cast<QCheckBox*>( widget )
             || qobject_cast<QComboBox*>( widget )
             || qobject_cast<QDial*>( widget )
-            //|| qobject_cast<QGroupBox*>( widget ) 
             || qobject_cast<QLineEdit*>( widget )
             || qobject_cast<QPushButton*>( widget )
             || qobject_cast<QRadioButton*>( widget )
@@ -280,11 +279,12 @@ namespace Lightly
             || widget->inherits( "KTextEditor::View" )
             )
         { widget->setAttribute( Qt::WA_Hover ); }
-        if( widget && qobject_cast<const QGroupBox*>( widget ) ) {
-            qDebug() << "groupbox polish";
+        
+        /*if( widget && qobject_cast<const QGroupBox*>( widget ) ) {
             addEventFilter( widget );
             widget->setProperty( "HOVER", false );
-        }
+        }*/
+        
         // enforce translucency for drag and drop window
         if( widget->testAttribute( Qt::WA_X11NetWmWindowTypeDND ) && _helper->compositingActive() )
         {
@@ -1244,7 +1244,7 @@ namespace Lightly
         }
         
         
-        if( widget && qobject_cast<const QGroupBox*>( widget ) ) { 
+        /*if( widget && qobject_cast<const QGroupBox*>( widget ) ) { 
             //qDebug() << "groupbox event filter" << event;
             if( event->type() == QEvent::Enter ) {
                 
@@ -1261,7 +1261,7 @@ namespace Lightly
                     widget->setProperty("HOVER", false);
                 }
             }
-        }
+        }*/
 
         // fallback
         return ParentStyleClass::eventFilter( object, event );
@@ -1456,6 +1456,9 @@ namespace Lightly
             QPaintEvent *paintEvent = static_cast<QPaintEvent*>( event );
             painter.setClipRegion( paintEvent->region() );
 
+            // store window state
+            const bool windowActive( dockWidget->isActiveWindow() );
+            
             // store palette and set colors
             const auto& palette( dockWidget->palette() );
             const auto background( _helper->frameBackgroundColor( palette ) );
@@ -1471,7 +1474,7 @@ namespace Lightly
 
             } else if( StyleConfigData::dockWidgetDrawFrame() || (dockWidget->features()&QDockWidget::AllDockWidgetFeatures) ) {
     
-                _helper->renderFrame( &painter, rect, background, palette, outline );
+                _helper->renderFrame( &painter, rect, background, palette, windowActive );
 
             } else {
                 
@@ -1541,13 +1544,13 @@ namespace Lightly
                         }
                         
                         if( darkTheme ){
-                            _helper->renderBoxShadow( &painter, shadowRect.adjusted(0,0,0,5), CustomShadowParams(QPoint(0,0), 8, QColor(0,0,0,160)), 2 );
-                            _helper->renderBoxShadow( &painter, shadowRect.adjusted(0,0,0,5), CustomShadowParams(QPoint(0,0), 3, QColor(0,0,0,160)), 2 );
+                            _helper->renderBoxShadow( &painter, shadowRect.adjusted(0,0,0,5), 0, 0, 8, QColor(0,0,0,160), 2, true );
+                            _helper->renderBoxShadow( &painter, shadowRect.adjusted(0,0,0,5), 0, 0, 3, QColor(0,0,0,160), 2, true );
                         }
                         else {
                             int shadowSize = 5;
                             shadowRect.adjust(1,-shadowSize, 0, 0);
-                            _helper->renderBoxShadow( &painter, shadowRect, CustomShadowParams(QPoint(0,0), shadowSize, QColor(0,0,0,120)), 2 );
+                            _helper->renderBoxShadow( &painter, shadowRect, 0, 0, shadowSize, QColor(0,0,0,120), 2, true );
                         }
                     }
                 }
@@ -3404,6 +3407,9 @@ namespace Lightly
             widget->parent() &&
             widget->parent()->inherits( "KTitleWidget" ) );
 
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
+        
         // copy state
         const State& state( option->state );
         if( !isTitleWidget && !( state & (State_Sunken | State_Raised ) ) ) return true;
@@ -3465,8 +3471,7 @@ namespace Lightly
             }*/
 
             const auto background( isTitleWidget ? palette.color( widget->backgroundRole() ) : palette.color( QPalette::Base ) );
-            const auto outline( _helper->frameOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
-            _helper->renderFrame( painter, rect, background, palette, outline, enabled );
+            _helper->renderFrame( painter, rect, background, palette, windowActive, enabled );
 
         }
 
@@ -3480,6 +3485,9 @@ namespace Lightly
         // copy palette and rect
         const auto& palette( option->palette );
         const auto& rect( option->rect );
+        
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // make sure there is enough room to render frame
         if( rect.height() < 2*Metrics::LineEdit_FrameWidth + option->fontMetrics.height())
@@ -3511,7 +3519,7 @@ namespace Lightly
             // render
             const auto &background = palette.color( QPalette::Base );
             const auto outline( palette.color( QPalette::Highlight ) );
-            _helper->renderLineEdit( painter, rect, background, outline, hasFocus, mouseOver, enabled );
+            _helper->renderLineEdit( painter, rect, background, outline, hasFocus, mouseOver, enabled, windowActive );
 
         }
 
@@ -3623,6 +3631,9 @@ namespace Lightly
         // cast option and check
         const auto tabOption( qstyleoption_cast<const QStyleOptionTabWidgetFrame*>( option ) );
         if( !tabOption ) return true;
+        
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // do nothing if tabbar is hidden
         const bool isQtQuickControl( this->isQtQuickControl( option, widget ) );
@@ -3668,7 +3679,7 @@ namespace Lightly
         // define colors
         const auto& palette( option->palette );
         const auto background( _helper->frameBackgroundColor( palette ) );
-        _helper->renderTabWidgetFrame( painter, rect, background, AllCorners, tabBarCorners, tabBarSize );
+        _helper->renderTabWidgetFrame( painter, rect, background, AllCorners, windowActive, tabBarCorners, tabBarSize );
 
         return true;
     }
@@ -3864,6 +3875,9 @@ namespace Lightly
         // cast option and check
         const auto buttonOption( qstyleoption_cast< const QStyleOptionButton* >( option ) );
         if( !buttonOption ) return true;
+        
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // rect and palette
         const auto& rect( option->rect );
@@ -3908,7 +3922,7 @@ namespace Lightly
             const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, sunken, opacity, mode ) );
 
             // render
-            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled );
+            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive );
 
         }
 
@@ -3925,6 +3939,7 @@ namespace Lightly
         auto rect( option->rect );
 
         // store relevant flags
+        const bool windowActive( widget && widget->isActiveWindow() );
         const State& state( option->state );
         const bool autoRaise( state & State_AutoRaise );
         const bool enabled( state & State_Enabled );
@@ -3960,7 +3975,7 @@ namespace Lightly
             }
 
             // render
-            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled );
+            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive );
 
         } else {
 
@@ -4287,6 +4302,9 @@ namespace Lightly
         // cast option and check
         const auto toolButtonOption( qstyleoption_cast<const QStyleOptionToolButton*>( option ) );
         if( !toolButtonOption ) return true;
+        
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // store state
         const State& state( option->state );
@@ -4324,7 +4342,7 @@ namespace Lightly
         frameRect = visualRect( option, frameRect );
 
         // render
-        _helper->renderButtonFrame( painter, frameRect, background, palette, hasFocus, sunken, mouseOver, enabled ); //TODO: use sides?
+        _helper->renderButtonFrame( painter, frameRect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive ); //TODO: use sides?
 
         // also render separator
         auto separatorRect( rect.adjusted( 0, 2, -2, -2 ) );
@@ -5225,6 +5243,9 @@ namespace Lightly
         if( !menuItemOption ) return true;
         if( menuItemOption->menuItemType == QStyleOptionMenuItem::EmptyArea ) return true;
 
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
+        
         // copy rect and palette
         const auto& rect( option->rect );
         const auto& palette( option->palette );
@@ -5308,7 +5329,7 @@ namespace Lightly
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state, _helper->isDarkTheme( palette ) );
+            _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state, _helper->isDarkTheme( palette ), windowActive );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -5565,14 +5586,14 @@ namespace Lightly
                 {
                     int shadowSize = 4;
                     QRect shadowRect = QRect( copy.bottomLeft() - QPoint(shadowSize, -1), QSize(copy.width() + shadowSize*2, shadowSize) );
-                    _helper->renderBoxShadow( painter, shadowRect, CustomShadowParams(QPoint(0,0), shadowSize, QColor(0,0,0,160)), 2 );
+                    _helper->renderBoxShadow( painter, shadowRect, 0, 0, shadowSize, QColor(0,0,0,160), 2, true );
                 }
                 
                 else
                 {
                     QRect shadowRect( copy.bottomLeft() + QPoint(-1, 1), QSize(copy.width(), 50) );
-                    _helper->renderBoxShadow( painter, shadowRect, CustomShadowParams(QPoint(0,0), 8, QColor(0,0,0,160)), 2 );
-                    _helper->renderBoxShadow( painter, shadowRect, CustomShadowParams(QPoint(0,0), 3, QColor(0,0,0,160)), 2 );
+                    _helper->renderBoxShadow( painter, shadowRect, 0, 0, 8, QColor(0,0,0,160), 2, true );
+                    _helper->renderBoxShadow( painter, shadowRect, 0, 0, 3, QColor(0,0,0,160), 2, true );
                     
                 }
                 
@@ -6530,7 +6551,7 @@ namespace Lightly
              painter->fillRect( backgroundRect, QBrush( _helper->titleBarColor( true ) ) );
 
         }
-
+        bool changethis = true;
         // render
         if( selected )
         {
@@ -6543,10 +6564,10 @@ namespace Lightly
             if( documentMode ) {
                 // render dark background and shadow
                 if( !unifiedTabAndHeader ) _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
-                _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
+                _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), changethis);
 
                 // render actual tab
-                _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/, CustomShadowParams(QPoint(0, 1), 4, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
+                _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/,0, 1, 4, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), changethis);
                 _helper->renderTabBarTab(painter, rect, color, corners);
                 
                 // highlight
@@ -6576,7 +6597,7 @@ namespace Lightly
                 painter->setRenderHint( QPainter::Antialiasing, true );
                 painter->setPen(Qt::NoPen);
                 backgroundRect.adjust(5, 6, -5, -6);
-                _helper->renderBoxShadow(painter, backgroundRect, CustomShadowParams(QPoint(0, 1), 6, QColor(0,0,0,100)), StyleConfigData::cornerRadius());
+                _helper->renderBoxShadow(painter, backgroundRect, 0, 1, 6, QColor(0,0,0,100), StyleConfigData::cornerRadius(), changethis);
                 painter->setBrush(color);
                 painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
                 painter->setBrush( QColor(255, 255, 255, 20) );
@@ -6591,7 +6612,7 @@ namespace Lightly
             {
             // render dark background and shadow
             if( !unifiedTabAndHeader ) _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
-            _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
+            _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), changethis);
             }
             else {
                 if(!mouseOver) return true;
@@ -6973,6 +6994,9 @@ namespace Lightly
         // cast option and check
         const auto comboBoxOption( qstyleoption_cast<const QStyleOptionComboBox*>( option ) );
         if( !comboBoxOption ) return true;
+        
+        // store window state
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // rect and palette
         const auto& rect( option->rect );
@@ -7033,7 +7057,7 @@ namespace Lightly
                     const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, false, opacity, mode ) );
 
                     // render
-                    _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled );
+                    _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive );
 
                 }
 
@@ -7441,6 +7465,8 @@ namespace Lightly
         // cast option and check
         const auto titleBarOption( qstyleoption_cast<const QStyleOptionTitleBar *>( option ) );
         if( !titleBarOption ) return true;
+        
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // store palette and rect
         auto palette( option->palette );
@@ -7456,7 +7482,7 @@ namespace Lightly
             // render background
             painter->setClipRect( rect );
             const auto background( _helper->titleBarColor( active ) );
-            _helper->renderTabWidgetFrame( painter, rect.adjusted( -1, -1, 1, 3 ), background, CornersTop );
+            _helper->renderTabWidgetFrame( painter, rect.adjusted( -1, -1, 1, 3 ), background, CornersTop, windowActive );
 
             const bool useSeparator(
                 active &&

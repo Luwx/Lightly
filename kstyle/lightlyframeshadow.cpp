@@ -336,7 +336,7 @@ namespace Lightly
 
         const QColor outline( _helper.frameOutlineColor( palette(), _mouseOver, _hasFocus, _opacity, _mode ) );
         painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-        _helper.renderFrame( &painter, rect, QColor(), outline );
+        //_helper.renderFrame( &painter, rect, QColor(), outline );
 
     }
 

@@ -459,7 +459,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderFrame(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const QPalette& palette, const QColor& outline, const bool enabled ) const
+        const QColor& color, const QPalette& palette, const bool windowActive, const bool enabled ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -475,24 +475,13 @@ namespace Lightly
             /*if( isDarkTheme( palette ) )
                 renderRectShadow(painter, frameRect, QColor( Qt::black ), 6, 2, 1, 0, 1, radius-1, true, 10);
             else*/ 
-                renderBoxShadow(painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,215) ), radius);
+                renderBoxShadow(painter, frameRect, 0, 1, 5, QColor(0,0,0,215), radius, windowActive);
 
         }
         else renderOutline(painter, frameRect, radius, 10);
 
         // set pen
-        if( outline.isValid() )
-        {
-            
-            //painter->setPen( outline );
-            //frameRect.adjust( 0.5, 0.5, -0.5, -0.5 );
-            //radius = qMax( radius - 1, qreal( 0.0 ) );
-
-        } else {
-
-            painter->setPen( Qt::NoPen );
-
-        }
+        painter->setPen( Qt::NoPen );
 
         // set brush
         /*if( color.isValid() ) painter->setBrush( color );
@@ -618,13 +607,13 @@ namespace Lightly
     
     //______________________________________________________________________________
     void Helper::renderBoxShadow(
-        QPainter* painter, const QRect& rect, CustomShadowParams params, const int cornerRadius, TileSet::Tiles tiles) const
+        QPainter* painter, const QRect& rect, const int xOffset, const int yOffset, const int size, const QColor& color, const int cornerRadius, const bool active, TileSet::Tiles tiles) const
     {
         
         if( !StyleConfigData::widgetDrawShadow() ) return;
         
-        //if (true) {renderOutline(painter, rect, cornerRadius, 30);return;}
-        
+        if (!active) {renderOutline(painter, rect, cornerRadius, 30);return;}
+        CustomShadowParams params = CustomShadowParams( QPoint(xOffset, yOffset), size, color );
         TileSet shadow = ShadowHelper::shadowTiles( cornerRadius, params );
         shadow.render( rect.adjusted(-params.radius, -params.radius, params.radius + params.offset.x(), params.radius + params.offset.y() ) , painter, tiles);
         //qDebug() << "shadow on: " << rect.adjusted(-params.radius, -params.radius, params.radius, params.radius);
@@ -693,7 +682,7 @@ namespace Lightly
     void Helper::renderButtonFrame(
         QPainter* painter, const QRect& rect,
         const QColor& color, const QPalette& palette,
-        const bool hasFocus, const bool sunken, const  bool mouseOver, const bool enabled ) const
+        const bool hasFocus, const bool sunken, const  bool mouseOver, const bool enabled, const bool windowActive ) const
      {
 
         // setup painter
@@ -718,12 +707,11 @@ namespace Lightly
             if ( mouseOver || hasFocus ){
                 //frameRect.translate( 0, -1 ); feels cheap without animations
                 
-                QColor shadowColor = hasFocus ? color.darker(220) : QColor(0,0,0,170);
-                renderBoxShadow( painter, frameRect,
-                                 CustomShadowParams( QPoint( 0, 1 ), 6, shadowColor ), radius );
+                QColor shadowColor = hasFocus ? color.darker(220) : QColor( 0 ,0 ,0 ,170 );
+                renderBoxShadow( painter, frameRect, 0, 1, 6, shadowColor, radius, windowActive );
                 
             } else 
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 3, QColor ( 0, 0, 0, 120 ) ), radius );
+                renderBoxShadow( painter, frameRect, 0, 1, 3, QColor( 0, 0, 0, 120 ), radius, windowActive );
         }
 
         // content
@@ -824,7 +812,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderTabWidgetFrame(
         QPainter* painter, const QRect& rect,
-        const QColor& color, Corners corners, Corners tabBarCorners, const int tabBarSize ) const
+        const QColor& color, Corners corners, const bool windowActive, Corners tabBarCorners, const int tabBarSize ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -834,7 +822,7 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
         
         //shadow
-        renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,115) ), radius ); 
+        renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,115) , radius, windowActive ); 
 
         painter->setPen( Qt::NoPen );
 
@@ -920,7 +908,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderLineEdit(
         QPainter* painter, const QRect& rect,
-        const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, bool enabled ) const
+        const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, bool enabled, const bool windowActive ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -935,14 +923,13 @@ namespace Lightly
             // draw shadow
             if( hasFocus && outline.isValid() )
             { 
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 6, outline.darker(120) ), radius ); 
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, outline.darker(120) ), radius );
+                renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
+                renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
             }
-            if ( mouseOver && !hasFocus ) renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 6, QColor(0,0,0,160) ), radius );
+            if ( mouseOver && !hasFocus ) renderBoxShadow( painter, frameRect, 0, 1, 6, QColor(0,0,0,160), radius, windowActive );
             else {
-                //renderRectShadow(painter, frameRect, QColor( Qt::black ), 5, 0.5, 2, 0, 1, radius, true, 6);
                 
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,84) ), radius );
+                renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84), radius, windowActive );
 
                 renderOutline(painter, frameRect, radius, 6);
                 painter->setPen( Qt::NoPen );
@@ -988,7 +975,7 @@ namespace Lightly
             renderOutline( painter, frameRect, radius, 6);
         }
         else {*/
-            renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, QColor(0,0,0,70) ), radius );
+            renderBoxShadow( painter, frameRect, 0, 1, 4, QColor(0,0,0,70), radius, true );
             renderOutline( painter, frameRect, radius, 6);
         //}
         painter->setPen(Qt::NoPen);
@@ -1011,7 +998,7 @@ namespace Lightly
     void Helper::renderCheckBox(
         QPainter* painter, const QRect& rect,
         const QColor& color, const QColor& background,  const QColor& shadow,
-        bool sunken, const bool mouseOver, CheckBoxState state, bool darkTheme, qreal animation ) const
+        bool sunken, const bool mouseOver, CheckBoxState state, bool darkTheme, const bool windowActive, qreal animation ) const
     {
 
         // setup painter
@@ -1031,11 +1018,11 @@ namespace Lightly
         {
             // small shadow
             if( mouseOver ){ 
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 5, QColor(0,0,0,120) ), 1 );
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 2, QColor(0,0,0,90) ), radius );
+                renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,120), 1, windowActive );
+                renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,90), radius, windowActive );
             }
             else {
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 2, QColor(0,0,0,160) ), radius );
+                renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,160), radius, windowActive );
                 renderOutline( painter, frameRect, radius, 4 );
             }
             painter->setBrush( mouseOver ? background.lighter(115) : background );
@@ -1043,10 +1030,9 @@ namespace Lightly
             
         } else if( state == CheckOn ) { //mark
             
-            //if ( darkTheme ) renderRectShadow(painter, frameRect, mouseOver ? background.darker(140) : background.darker(200), 4, 8, 5, 0, 1, radius, true, 15);
-            if ( darkTheme ) renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, mouseOver ? background.darker(140) : background.darker(200) ), radius );
+            if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, mouseOver ? background.darker(140):background.darker(200), radius, windowActive );
             else {
-                renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, background.darker(220) ), radius );
+                renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
                 renderOutline( painter, frameRect, radius, 4 );
             }
             painter->setBrush( mouseOver ? background.lighter(110) : background );
@@ -1105,8 +1091,8 @@ namespace Lightly
 
         } else if( state == CheckAnimated ) {
 
-            if ( darkTheme ) renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, background.darker(220) ), radius );
-            else renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, background.darker(220) ), radius );
+            if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
+            else renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
             const QRectF markerRect( frameRect.adjusted( 3, 3, -3, -3 ) );
             QPainterPath path;
             path.moveTo( markerRect.topRight() );
