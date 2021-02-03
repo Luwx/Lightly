@@ -46,6 +46,7 @@ namespace Lightly
         load();
 
         connect( _tabDrawHighlight, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
+        connect( _unifiedTabBarKonsole, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _toolBarDrawItemSeparator, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _viewDrawFocusIndicator, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
         connect( _dockWidgetDrawFrame, &QAbstractButton::toggled, this, &StyleConfig::updateChanged );
@@ -71,6 +72,7 @@ namespace Lightly
     void StyleConfig::save()
     {
         StyleConfigData::setTabDrawHighlight( _tabDrawHighlight->isChecked() );
+        StyleConfigData::setUnifiedTabBarKonsole( _unifiedTabBarKonsole->isChecked() );
         StyleConfigData::setToolBarDrawItemSeparator( _toolBarDrawItemSeparator->isChecked() );
         StyleConfigData::setViewDrawFocusIndicator( _viewDrawFocusIndicator->isChecked() );
         StyleConfigData::setDockWidgetDrawFrame( _dockWidgetDrawFrame->isChecked() );
@@ -122,6 +124,7 @@ namespace Lightly
 
         // check if any value was modified
         if( _tabDrawHighlight->isChecked() != StyleConfigData::tabDrawHighlight() ) modified = true;
+        else if( _unifiedTabBarKonsole->isChecked() != StyleConfigData::unifiedTabBarKonsole() ) modified = true;
         else if( _toolBarDrawItemSeparator->isChecked() != StyleConfigData::toolBarDrawItemSeparator() ) modified = true;
         else if( _viewDrawFocusIndicator->isChecked() != StyleConfigData::viewDrawFocusIndicator() ) modified = true;
         else if( _dockWidgetDrawFrame->isChecked() != StyleConfigData::dockWidgetDrawFrame() ) modified = true;
@@ -151,6 +154,7 @@ namespace Lightly
     {
 
         _tabDrawHighlight->setChecked( StyleConfigData::tabDrawHighlight() );
+        _unifiedTabBarKonsole->setChecked( StyleConfigData::unifiedTabBarKonsole() );
         _toolBarDrawItemSeparator->setChecked( StyleConfigData::toolBarDrawItemSeparator() );
         _viewDrawFocusIndicator->setChecked( StyleConfigData::viewDrawFocusIndicator() );
         _dockWidgetDrawFrame->setChecked( StyleConfigData::dockWidgetDrawFrame() );

@@ -4956,14 +4956,12 @@ namespace Lightly
         if ( _helper->titleBarColor( true ).alphaF() == 1 || !_translucentWidgets.contains( widget->window() ) ) return true;
         
         const auto& rect( option->rect );
-        const auto& palette( option->palette );
         
         _helper->renderTransparentArea( painter, rect );
         
         // draw background
         int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
         painter->fillRect(rect, _helper->alphaColor(option->palette.color( QPalette::Window ), opacity/100.0) );
-        
         
         bool shouldDrawShadow = false;
         if ( LightlyPrivate::possibleTranslucentToolBars.isEmpty() ) shouldDrawShadow = true;
@@ -4978,6 +4976,8 @@ namespace Lightly
                 else if( tb->y() > widget->y() + rect.height() ) shouldDrawShadow = true;   // bottom toolbar
             }
         }
+        
+        if( _isKonsole && StyleConfigData::unifiedTabBarKonsole() ) shouldDrawShadow = false;
         
         if( shouldDrawShadow )
         {
@@ -5043,6 +5043,8 @@ namespace Lightly
                     else if( tb->y() > widget->y() + rect.height() ) shouldDrawShadow = true;   // bottom toolbar
                 }
             }
+            
+            if( _isKonsole && StyleConfigData::unifiedTabBarKonsole() ) shouldDrawShadow = false;
             
             if( shouldDrawShadow )
             {
@@ -6496,6 +6498,14 @@ namespace Lightly
 
             default: break;
         }
+        
+        const bool unifiedTabAndHeader = _isKonsole && StyleConfigData::unifiedTabBarKonsole();
+        if( documentMode && unifiedTabAndHeader && _helper->titleBarColor( true ).alphaF() < 1.0) {
+            
+             _helper->renderTransparentArea(painter, backgroundRect);
+             painter->fillRect( backgroundRect, QBrush( _helper->titleBarColor( true ) ) );
+
+        }
 
         // render
         if( selected )
@@ -6508,7 +6518,7 @@ namespace Lightly
             
             if( documentMode ) {
                 // render dark background and shadow
-                _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
+                if( !unifiedTabAndHeader ) _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
                 _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
 
                 // render actual tab
@@ -6527,7 +6537,8 @@ namespace Lightly
                         side == SideLeft ? - rect.width() + hh : 0, 
                         side == SideTop ? -rect.height() + hh : 0), Qt::IntersectClip );
                     
-                    // when the highlight is too thin, it's not rendered properly, so we increase its size by one, the extra part will be not rendered anyway.
+                    // when the highlight is too thin, it's not rendered properly, 
+                    // so we increase its size by one, the extra part will not be rendered anyway.
                     _helper->renderTabBarTab(painter, rect.adjusted(
                         side == SideRight ? rect.width() - (hh+1) : 0, 
                         side == SideBottom ? rect.height() - (hh+1) : 0, 
@@ -6555,15 +6566,16 @@ namespace Lightly
             if(documentMode)
             {
             // render dark background and shadow
-            _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
+            if( !unifiedTabAndHeader ) _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
             _helper->renderBoxShadow(painter, shadowRect, CustomShadowParams(QPoint(0, 1), shadowSize, QColor(0,0,0, 220)), StyleConfigData::cornerRadius());
             }
             else {
                 if(!mouseOver) return true;
-                rect.adjust(5, 6, -5, -6);
+                painter->setRenderHint( QPainter::Antialiasing, true );
                 painter->setPen(Qt::NoPen);
                 painter->setBrush( _helper->alphaColor(_helper->focusColor(palette), 0.2) );
-                painter->drawRoundedRect(rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+                backgroundRect.adjust(5, 6, -5, -6);
+                painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
                 
             }
         }
