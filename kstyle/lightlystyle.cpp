@@ -1245,7 +1245,6 @@ namespace Lightly
         
         
         /*if( widget && qobject_cast<const QGroupBox*>( widget ) ) { 
-            //qDebug() << "groupbox event filter" << event;
             if( event->type() == QEvent::Enter ) {
                 
                 if( widget->property("HOVER").toBool() == false ) {
@@ -3293,7 +3292,7 @@ namespace Lightly
         if( hasText && hasIcon ) widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasLeftButton && ( hasText || hasIcon ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasRightButton && ( hasText || hasIcon || hasLeftButton ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
-        const bool documentMode = tabOption->documentMode;
+        const bool documentMode ( tabOption && tabOption->documentMode );
         // add margins
         QSize size( contentsSize );
 
