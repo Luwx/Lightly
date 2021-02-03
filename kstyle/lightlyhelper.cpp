@@ -611,8 +611,8 @@ namespace Lightly
     {
         
         if( !StyleConfigData::widgetDrawShadow() ) return;
-        
-        if (!active) {renderOutline(painter, rect, cornerRadius, 30);return;}
+        Q_UNUSED(active)
+        //if (!active) {renderOutline(painter, rect, cornerRadius, 30);return;}
         CustomShadowParams params = CustomShadowParams( QPoint(xOffset, yOffset), size, color );
         TileSet shadow = ShadowHelper::shadowTiles( cornerRadius, params );
         shadow.render( rect.adjusted(-params.radius, -params.radius, params.radius + params.offset.x(), params.radius + params.offset.y() ) , painter, tiles);
@@ -1200,7 +1200,6 @@ namespace Lightly
                 
                 c.setHsv( color.hue() < 5 ? 0 : color.hue() - 5, color.saturation(), color.value() );
                 gradient.setColorAt(0, c);
-                //qDebug() <<
                 
                 c.setHsv(color.hue() + 5, color.saturation(), color.value() );
                 gradient.setColorAt(1, c);
