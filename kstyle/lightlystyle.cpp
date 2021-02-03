@@ -339,6 +339,8 @@ namespace Lightly
                     if( !_helper->compositingActive() ) break; //TODO: remove alpha
                     if( widget->windowFlags().testFlag( Qt::FramelessWindowHint ) ) break;
                     
+                    // konsole handle blur and translucency itself
+                    if( _isKonsole ) {_translucentWidgets.insert( widget ); break;}
 
                     // make window translucent
                     widget->setAttribute( Qt::WA_TranslucentBackground );
@@ -1175,6 +1177,7 @@ namespace Lightly
         // paint background
         if ( widget && event->type() == QEvent::Paint ) {
             if (widget->isWindow() 
+                && !_isKonsole
                 && widget->testAttribute( Qt::WA_StyledBackground )
                 && widget->testAttribute( Qt::WA_TranslucentBackground ) )
             {
@@ -1229,7 +1232,7 @@ namespace Lightly
                 {
                     if( event->type() == QEvent::Move  || event->type() == QEvent::Show || event->type() == QEvent::Hide )
                     {
-                        if( _translucentWidgets.contains( widget->window() ) )
+                        if( _translucentWidgets.contains( widget->window() ) && !_isKonsole )
                             _blurHelper->forceUpdate( widget->window() );
                     }
                 }
@@ -8066,7 +8069,7 @@ namespace Lightly
     void Style::setSurfaceFormat(QWidget *widget) const
     {
 
-        if( !widget || !_helper->compositingActive() || _subApp || _isLibreoffice)
+        if( !widget || !_helper->compositingActive() || _subApp || _isLibreoffice || _isKonsole)
             return;
         
         if( widget->testAttribute(Qt::WA_WState_Created)
