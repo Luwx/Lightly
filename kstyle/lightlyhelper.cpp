@@ -623,6 +623,8 @@ namespace Lightly
         
         if( !StyleConfigData::widgetDrawShadow() ) return;
         
+        //if (true) {renderOutline(painter, rect, cornerRadius, 30);return;}
+        
         TileSet shadow = ShadowHelper::shadowTiles( cornerRadius, params );
         shadow.render( rect.adjusted(-params.radius, -params.radius, params.radius + params.offset.x(), params.radius + params.offset.y() ) , painter, tiles);
         //qDebug() << "shadow on: " << rect.adjusted(-params.radius, -params.radius, params.radius, params.radius);
@@ -980,9 +982,15 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
 
         // draw shadow
-        /*if (mouseOver)*/ //renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 6, QColor(0,0,0,65) ) );
-        renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, QColor(0,0,0,70) ), radius );
-        renderOutline( painter, frameRect, radius, 6);
+        /*if( mouseOver ) {
+            
+            renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 7, QColor(0,0,0,125) ), radius );
+            renderOutline( painter, frameRect, radius, 6);
+        }
+        else {*/
+            renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, QColor(0,0,0,70) ), radius );
+            renderOutline( painter, frameRect, radius, 6);
+        //}
         painter->setPen(Qt::NoPen);
 
         // set brush
@@ -991,6 +999,11 @@ namespace Lightly
 
         // render
         painter->drawRoundedRect( frameRect, radius, radius );
+        
+        /*if( mouseOver ) {
+            painter->setBrush(QColor(255, 255, 255, 30));
+            painter->drawRoundedRect( frameRect, radius, radius );
+        }*/
 
     }
 

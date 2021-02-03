@@ -267,7 +267,7 @@ namespace Lightly
             || qobject_cast<QCheckBox*>( widget )
             || qobject_cast<QComboBox*>( widget )
             || qobject_cast<QDial*>( widget )
-            || qobject_cast<QGroupBox*>( widget ) /* why is it not working? */
+            //|| qobject_cast<QGroupBox*>( widget ) 
             || qobject_cast<QLineEdit*>( widget )
             || qobject_cast<QPushButton*>( widget )
             || qobject_cast<QRadioButton*>( widget )
@@ -280,7 +280,11 @@ namespace Lightly
             || widget->inherits( "KTextEditor::View" )
             )
         { widget->setAttribute( Qt::WA_Hover ); }
-
+        if( widget && qobject_cast<const QGroupBox*>( widget ) ) {
+            qDebug() << "groupbox polish";
+            addEventFilter( widget );
+            widget->setProperty( "HOVER", false );
+        }
         // enforce translucency for drag and drop window
         if( widget->testAttribute( Qt::WA_X11NetWmWindowTypeDND ) && _helper->compositingActive() )
         {
@@ -1235,6 +1239,26 @@ namespace Lightly
                         if( _translucentWidgets.contains( widget->window() ) && !_isKonsole )
                             _blurHelper->forceUpdate( widget->window() );
                     }
+                }
+            }
+        }
+        
+        
+        if( widget && qobject_cast<const QGroupBox*>( widget ) ) { 
+            //qDebug() << "groupbox event filter" << event;
+            if( event->type() == QEvent::Enter ) {
+                
+                if( widget->property("HOVER").toBool() == false ) {
+                    widget->update();
+                    widget->setProperty("HOVER", true);
+                }
+                
+            }
+            else if( event->type() == QEvent::Leave ) {
+                
+                if( widget->property("HOVER").toBool() == true ) {
+                    widget->update();
+                    widget->setProperty("HOVER", false);
                 }
             }
         }
@@ -3575,8 +3599,8 @@ namespace Lightly
         const auto background( _helper->frameBackgroundColor( palette ) );
         //const auto outline( _helper->frameOutlineColor( palette ) );
         
-        const State& state( option->state );
-        const bool mouseOver ( state & State_MouseOver );
+        //const State& state( option->state );
+        const bool mouseOver ( widget->property("HOVER").toBool() );
         
         //qDebug() << mouseOver;
 
