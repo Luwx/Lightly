@@ -1044,8 +1044,8 @@ namespace Lightly
             painter->drawRoundedRect( frameRect, radius, radius );
             
             //draw check mark
-            int x = frameRect.x();
-            int y = frameRect.y();
+            const int x = frameRect.x();
+            const int y = frameRect.y();
             
             QPen pen = QPen();
             pen.setWidth(2);
@@ -1131,13 +1131,13 @@ namespace Lightly
                     painter->drawRoundedRect( frameRect, radius, radius );
                             
                     //draw check mark
-                    int x = frameRect.x();
-                    int y = frameRect.y();
+                    const int x = frameRect.x();
+                    const int y = frameRect.y();
                     
                     QPen pen = QPen();
                     pen.setWidth(2);
                     pen.setCapStyle( Qt::RoundCap );
-                    pen.setColor( QColor( 0, 0, 0, 100 ) );
+                    pen.setColor( QColor( 0, 0, 0, 20 + 80*animation ) );
                     
                     painter->setPen( pen );
                     painter->setBrush( Qt::NoBrush );
@@ -1152,7 +1152,7 @@ namespace Lightly
                     painter->drawPath( checkShadow );
 
                     QPainterPath check;
-                    pen.setColor( color ); // TODO: use HighlightedText
+                    pen.setColor( alphaColor(color, 0.2 + 0.8*animation) ); // TODO: use HighlightedText
                     painter->setPen( pen );
                     check.moveTo(animation*4.01+x, 9.95+y);
                     check.cubicTo(animation*4.67+x, 10.64+y, animation*5.31+x, 11.29+y, animation*5.95+x, 12.12+y);

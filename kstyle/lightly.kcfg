@@ -54,11 +54,11 @@
     </entry>
 
     <entry name="AnimationSteps" type = "Int">
-       <default>10</default>
+       <default>30</default>
     </entry>
 
     <entry name="AnimationsDuration" type="Int">
-      <default>100</default>
+      <default>250</default>
     </entry>
 
    <!-- transition flags -->
@@ -137,7 +137,7 @@
     </entry>
     
     <entry name="UnifiedTabBarKonsole" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
 
     <!-- frames -->
