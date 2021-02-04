@@ -41,7 +41,7 @@
 #include <QRegularExpression>
 #include <QToolBar>
 #include <QVector>
-#include <QDebug>
+//#include <QDebug>
 namespace
 {
 	

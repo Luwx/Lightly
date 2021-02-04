@@ -22,7 +22,6 @@
 #include "lightly.h"
 #include "lightlystyleconfigdata.h"
 
-#include <QDebug>
 #include <QAbstractScrollArea>
 #include <QApplication>
 #include <QFrame>
