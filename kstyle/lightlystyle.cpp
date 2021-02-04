@@ -986,7 +986,7 @@ namespace Lightly
             
             case PE_PanelButtonCommand: fcn = &Style::drawPanelButtonCommandPrimitive; break;
             case PE_PanelButtonTool: fcn = &Style::drawPanelButtonToolPrimitive; break;
-            case PE_PanelScrollAreaCorner: break; // TODO: delete? fcn = &Style::drawPanelScrollAreaCornerPrimitive; break;
+            case PE_PanelScrollAreaCorner: fcn = &Style::drawPanelScrollAreaCornerPrimitive; break;
             case PE_PanelMenu: fcn = &Style::drawPanelMenuPrimitive; break;
             case PE_PanelMenuBar: fcn = &Style::emptyPrimitive; break;
             case PE_PanelTipLabel: fcn = &Style::drawPanelTipLabelPrimitive; break;
@@ -4045,7 +4045,7 @@ namespace Lightly
     //___________________________________________________________________________________
     bool Style::drawPanelScrollAreaCornerPrimitive( const QStyleOption* option, QPainter* painter, const QWidget* widget ) const
     {
-
+        if( _isDolphin ) return true;
         // make sure background role matches viewport
         const QAbstractScrollArea* scrollArea;
         if( ( scrollArea = qobject_cast<const QAbstractScrollArea*>( widget ) ) && scrollArea->viewport() )
