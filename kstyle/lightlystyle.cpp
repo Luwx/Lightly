@@ -4226,7 +4226,7 @@ namespace Lightly
         const bool enabled( state & State_Enabled );
         const bool mouseOver( enabled && ( state & State_MouseOver ) );
         const bool sunken( enabled && ( state & State_Sunken ) );
-        const bool active( ( state & (State_On|State_NoChange) ) );
+        //const bool active( ( state & (State_On|State_NoChange) ) );
 
         // checkbox state
         CheckBoxState checkBoxState( CheckOff );
@@ -4240,16 +4240,12 @@ namespace Lightly
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
         // colors
-        const auto shadow( _helper->shadowColor( palette ) );
-        const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
-        const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
-        //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
-        const auto background( checkBoxState == CheckOn ? palette.color( QPalette::Highlight ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
-        //QColor color = _helper->checkBoxIndicatorColor( palette, mouseOver, enabled && active, opacity, mode  );
+        //const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
+        //const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
 
         // render
         //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
-        _helper->renderCheckBox( painter, rect, palette.color( QPalette::HighlightedText ), background, shadow, sunken, mouseOver, checkBoxState, _helper->isDarkTheme( palette ), false, animation );
+        _helper->renderCheckBox( painter, rect, palette, true, sunken, mouseOver, checkBoxState, false, animation );
         return true;
 
     }
@@ -5328,7 +5324,7 @@ namespace Lightly
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), background.lighter(115), shadow, sunken, true, state, _helper->isDarkTheme( palette ), windowActive );
+            _helper->renderCheckBox( painter, checkBoxRect, palette, true, sunken, true, state, windowActive );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 

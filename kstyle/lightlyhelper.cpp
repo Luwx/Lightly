@@ -996,19 +996,24 @@ namespace Lightly
 
     //______________________________________________________________________________
     void Helper::renderCheckBox(
-        QPainter* painter, const QRect& rect,
-        const QColor& color, const QColor& background,  const QColor& shadow,
-        bool sunken, const bool mouseOver, CheckBoxState state, bool darkTheme, const bool windowActive, qreal animation ) const
+        QPainter* painter, const QRect& rect, const QPalette& palette, const bool isInMenu,
+        bool sunken, const bool mouseOver, CheckBoxState state, const bool windowActive, qreal animation ) const
     {
 
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
         painter->setPen( Qt::NoPen );
-        qDebug() << animation;
+
         // copy rect and radius
         QRectF frameRect( rect );
         frameRect.adjust( Metrics::Frame_FrameWidth - 1, Metrics::Frame_FrameWidth - 1, - Metrics::Frame_FrameWidth + 1, -Metrics::Frame_FrameWidth + 1 );
         qreal radius( qRound( frameRadius( PenWidth::NoPen, -1 )/2 ) );
+        
+        // setup colors
+        const bool darkTheme( isDarkTheme( palette ) );
+        const QColor color ( palette.color( QPalette::HighlightedText ) );
+        QColor background (state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ));
+        if( isInMenu ) background = background.lighter(115);
 
         // float and sunken effect
         if( sunken ) frameRect.translate(1, 1);
@@ -1109,8 +1114,9 @@ namespace Lightly
                     painter->drawRoundedRect( frameRect, radius, radius );
                 
             }
-            else if( animation > 0 && animation < 1) {
-                
+            else if( (animation > 0 && animation < 1) || animation == -1) {
+                    
+                    if( animation == -1 ) animation = 1.0;
                     frameRect.translate(-1*animation, -1*animation);
                     if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, mouseOver ? background.darker(140):background.darker(200), radius, windowActive );
                     else {
@@ -1121,7 +1127,7 @@ namespace Lightly
                     painter->setBrush(background);
                     painter->drawRoundedRect( frameRect, radius, radius );
                     
-                    painter->setBrush(QColor(65, 98, 148, animation*255));
+                    painter->setBrush( alphaColor(palette.color( QPalette::Highlight ), animation) );
                     painter->drawRoundedRect( frameRect, radius, radius );
                             
                     //draw check mark
