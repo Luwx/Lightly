@@ -207,7 +207,7 @@ namespace Lightly
         void renderSeparator( QPainter*, const QRect&, const QColor&, bool vertical = false ) const;
         
         //* line edit
-        void renderLineEdit( QPainter*, const QRect&, const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, const bool enabled, const bool windowActive ) const;
+        void renderLineEdit( QPainter*, const QRect&, const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, const bool enabled, const bool windowActive, const AnimationMode mode, const qreal opacity ) const;
         
         //* group box
         void renderGroupBox( QPainter*, const QRect&, const QColor& color, const bool mouseOver ) const;

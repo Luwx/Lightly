@@ -65,10 +65,11 @@ namespace Lightly
     {
 
         // animation steps
-        AnimationData::setSteps( StyleConfigData::animationSteps() );
+        AnimationData::setSteps( 1000.0/1000 * 60 );
 
         const bool animationsEnabled( StyleConfigData::animationsEnabled() );
-        const int animationsDuration( StyleConfigData::animationsDuration() );
+        //const int animationsDuration( StyleConfigData::animationsDuration() );
+        const int animationsDuration( 1000 );
 
         _widgetEnabilityEngine->setEnabled( animationsEnabled );
         _comboBoxEngine->setEnabled( animationsEnabled );

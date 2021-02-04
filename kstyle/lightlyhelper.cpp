@@ -908,7 +908,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderLineEdit(
         QPainter* painter, const QRect& rect,
-        const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, bool enabled, const bool windowActive ) const
+        const QColor& background, const QColor& outline, const bool hasFocus, const bool mouseOver, bool enabled, const bool windowActive, const AnimationMode mode, const qreal opacity ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -917,16 +917,117 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
         
         painter->setPen( Qt::NoPen );
-        
+        qDebug() << mode << opacity << hasFocus;
         if (enabled)
         {
             // draw shadow
-            if( hasFocus && outline.isValid() )
+            if( hasFocus )
             { 
-                renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
-                renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                //renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
+                //renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                if( mode == 2 && opacity > 0 && opacity < 1) {
+                    
+                    const qreal finalRadius ((frameRect.width()+Metrics::Frame_FrameWidth)*opacity);
+                    
+                    QPixmap mask = QPixmap(rect.width(), rect.height());	
+                    mask.fill( Qt::transparent );
+
+                    QPainter pmask( &mask );	
+                    pmask.setRenderHint( QPainter::Antialiasing );
+                    pmask.fillRect(rect, Qt::black);
+                    pmask.setPen( Qt::NoPen );
+                    pmask.setBrush( Qt::black );
+                    pmask.setCompositionMode(QPainter::CompositionMode_SourceOut);
+                    pmask.drawEllipse(QPointF(frameRect.x(), frameRect.y() + frameRect.height()/2), finalRadius, finalRadius);
+                    pmask.end();
+                    
+                    QPixmap pixmap = QPixmap(rect.width(), rect.height());	
+                    pixmap.fill( Qt::transparent );
+                    QPainter p( &pixmap );	
+                    p.setOpacity(0.3 + 0.7*opacity);
+                    p.setRenderHint( QPainter::Antialiasing );
+                    p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                    p.setPen(Qt::NoPen);
+                    renderBoxShadow( &p, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
+                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                    p.setBrush( alphaColor( outline, 0.6 ) ) ;
+                    QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
+                    p.drawRoundedRect( focusFrame, radius + 1, radius + 1);
+                    
+                    // mask
+                    p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+                    p.drawPixmap(rect, mask);
+                    p.end();
+                    
+                    painter->drawPixmap( rect, pixmap );
+                }
+                
+                else {
+                    renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
+                    renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                    painter->setBrush( alphaColor( outline, 0.6 ) ) ;
+                    QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
+                    painter->drawRoundedRect( focusFrame, radius + 1, radius + 1);
+                }
             }
-            if ( mouseOver && !hasFocus ) renderBoxShadow( painter, frameRect, 0, 1, 6, QColor(0,0,0,160), radius, windowActive );
+            
+            else {
+                
+                if( mode == 2 && opacity > 0 && opacity < 1) {
+                    
+                    const qreal finalRadius ((frameRect.width()+Metrics::Frame_FrameWidth)*opacity);
+                    
+                    QPixmap mask = QPixmap(rect.width(), rect.height());	
+                    mask.fill( Qt::transparent );
+
+                    QPainter pmask( &mask );
+                    pmask.setOpacity(1);
+                    pmask.setRenderHint( QPainter::Antialiasing );
+                    pmask.fillRect(rect, Qt::black);
+                    pmask.setPen( Qt::NoPen );
+                    pmask.setBrush( Qt::black );
+                    pmask.setCompositionMode(QPainter::CompositionMode_SourceOut);
+                    pmask.drawEllipse(QPointF(frameRect.x(), frameRect.y() + frameRect.height()/2), finalRadius, finalRadius);
+                    pmask.end();
+                    
+                    QPixmap pixmap = QPixmap(rect.width(), rect.height());	
+                    pixmap.fill( Qt::transparent );
+                    QPainter p( &pixmap );	
+                    //p.setOpacity(0.3 + 0.6*opacity);
+                    p.setRenderHint( QPainter::Antialiasing );
+                    p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                    p.setPen(Qt::NoPen);
+                    renderBoxShadow( &p, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
+                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                    p.setBrush( alphaColor( outline, 0.6 ) ) ;
+                    QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
+                    p.drawRoundedRect( focusFrame, radius + 1, radius + 1);
+                    
+                    // mask
+                    p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
+                    p.drawPixmap(rect, mask);
+                    p.end();
+                    
+                    painter->drawPixmap( rect, pixmap );
+                    
+                    
+                    renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84*(1-opacity)), radius, windowActive );
+                    renderOutline(painter, frameRect, radius, 6*(1-opacity));
+                    painter->setPen( Qt::NoPen );
+                    
+                }
+                
+                else {
+                    renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84), radius, windowActive );
+
+                    renderOutline(painter, frameRect, radius, 6);
+                    painter->setPen( Qt::NoPen );
+                }
+                
+            }
+        }
+            
+            /*if ( mouseOver && !hasFocus ) renderBoxShadow( painter, frameRect, 0, 1, 6, QColor(0,0,0,160), radius, windowActive );
             else {
                 
                 renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84), radius, windowActive );
@@ -935,15 +1036,15 @@ namespace Lightly
                 painter->setPen( Qt::NoPen );
                 
             }
-        }
+        }*/
         
-        if ( hasFocus && outline.isValid() )
+        /*if ( hasFocus && outline.isValid() )
         {
             painter->setBrush( alphaColor( outline, 0.6 ) ) ;
             QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
             painter->drawRoundedRect( focusFrame, radius + 1, radius + 1);
             
-        }
+        }*/
 
         // set brush
         if( background.isValid() ) painter->setBrush( background );

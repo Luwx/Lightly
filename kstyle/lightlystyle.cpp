@@ -3509,16 +3509,17 @@ namespace Lightly
 
             // focus takes precedence over mouse over
             _animations->inputWidgetEngine().updateState( widget, AnimationFocus, hasFocus );
-            _animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
+            //_animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
 
             // retrieve animation mode and opacity
-            //const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
-            //const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
+            const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
+            const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
 
+            //qDebug() << opacity << mode;
             // render
             const auto &background = palette.color( QPalette::Base );
             const auto outline( palette.color( QPalette::Highlight ) );
-            _helper->renderLineEdit( painter, rect, background, outline, hasFocus, mouseOver, enabled, windowActive );
+            _helper->renderLineEdit( painter, rect, background, outline, hasFocus, mouseOver, enabled, windowActive, mode, opacity );
 
         }
 
@@ -5467,7 +5468,6 @@ namespace Lightly
         if( _isDolphin && StyleConfigData::dolphinSidebarOpacity() < 100 && !(option->state & State_Horizontal) )
         {
             sideToolbarDolphin = true;
-
         }
         
         // do nothing more if widget is opaque or should not be transparent
