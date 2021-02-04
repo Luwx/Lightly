@@ -1127,7 +1127,8 @@ namespace Lightly
                     painter->setBrush(background);
                     painter->drawRoundedRect( frameRect, radius, radius );
                     
-                    painter->setBrush( alphaColor(palette.color( QPalette::Highlight ), animation) );
+                    background = mouseOver ? palette.color( QPalette::Highlight ).lighter(110) : palette.color( QPalette::Highlight ); 
+                    painter->setBrush( alphaColor(background, animation) );
                     painter->drawRoundedRect( frameRect, radius, radius );
                             
                     //draw check mark

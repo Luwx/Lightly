@@ -23,7 +23,7 @@
 #include "lightlystyleconfigdata.h"
 
 #include <QCoreApplication>
-#include <QDebug>
+//#include <QDebug>
 #include <QPainter>
 
 // Q_FALLTHROUGH() for Qt < 5.8
