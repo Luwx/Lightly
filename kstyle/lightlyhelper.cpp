@@ -923,10 +923,18 @@ namespace Lightly
             // draw shadow
             if( hasFocus )
             { 
-                //renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
-                //renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                // focus in animation 
                 if( mode == 2 && opacity > 0 && opacity < 1) {
                     
+                    // shadow opacity animation
+                    //old shadow
+                    //renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84*(1-opacity)), radius, windowActive );
+                    //renderOutline(painter, frameRect, radius, 6*(1-opacity));
+                    //painter->setPen( Qt::NoPen );
+                    // new shadow
+                    //renderBoxShadow( painter, frameRect, 0, 1, 6, alphaColor(outline.darker(120), opacity) , radius, windowActive ); 
+                    //renderBoxShadow( painter, frameRect, 0, 1, 4, alphaColor(outline.darker(120), opacity) , radius, windowActive );
+
                     const qreal finalRadius ((frameRect.width()+Metrics::Frame_FrameWidth)*opacity);
                     
                     QPixmap mask = QPixmap(rect.width(), rect.height());	
@@ -948,13 +956,14 @@ namespace Lightly
                     p.setRenderHint( QPainter::Antialiasing );
                     p.setCompositionMode(QPainter::CompositionMode_SourceOver);
                     p.setPen(Qt::NoPen);
-                    renderBoxShadow( &p, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
-                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                    renderBoxShadow( &p, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); // comment this out for only the outline animation
+                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive ); // comment this out for only the outline animation
                     p.setBrush( alphaColor( outline, 0.6 ) ) ;
                     QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
-                    p.drawRoundedRect( focusFrame, radius + 1, radius + 1);
+                    p.drawRoundedRect( focusFrame, radius + 1, radius + 1); // outline around lineedit
                     
                     // mask
+                    //p.setOpacity(1);  // uncomment this for only outline animation
                     p.setCompositionMode(QPainter::CompositionMode_DestinationOut);
                     p.drawPixmap(rect, mask);
                     p.end();
@@ -962,6 +971,7 @@ namespace Lightly
                     painter->drawPixmap( rect, pixmap );
                 }
                 
+                // focus animation done
                 else {
                     renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
                     renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
@@ -971,8 +981,10 @@ namespace Lightly
                 }
             }
             
+            // mouse over or normal state
             else {
                 
+                // focus out animation
                 if( mode == 2 && opacity > 0 && opacity < 1) {
                     
                     const qreal finalRadius ((frameRect.width()+Metrics::Frame_FrameWidth)*opacity);
@@ -1010,41 +1022,26 @@ namespace Lightly
                     
                     painter->drawPixmap( rect, pixmap );
                     
-                    
+                    // unfocused lineedit shadow effect
                     renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84*(1-opacity)), radius, windowActive );
                     renderOutline(painter, frameRect, radius, 6*(1-opacity));
                     painter->setPen( Qt::NoPen );
                     
                 }
                 
+                // normal or mouse over 
                 else {
-                    renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84), radius, windowActive );
-
-                    renderOutline(painter, frameRect, radius, 6);
-                    painter->setPen( Qt::NoPen );
+                    if ( mouseOver && !hasFocus ) renderBoxShadow( painter, frameRect, 0, 1, 6, QColor(0,0,0,160), radius, windowActive );
+                    else {
+                        renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84), radius, windowActive );
+                        renderOutline(painter, frameRect, radius, 6);
+                        painter->setPen( Qt::NoPen );
+                    }
                 }
                 
             }
         }
             
-            /*if ( mouseOver && !hasFocus ) renderBoxShadow( painter, frameRect, 0, 1, 6, QColor(0,0,0,160), radius, windowActive );
-            else {
-                
-                renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,84), radius, windowActive );
-
-                renderOutline(painter, frameRect, radius, 6);
-                painter->setPen( Qt::NoPen );
-                
-            }
-        }*/
-        
-        /*if ( hasFocus && outline.isValid() )
-        {
-            painter->setBrush( alphaColor( outline, 0.6 ) ) ;
-            QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
-            painter->drawRoundedRect( focusFrame, radius + 1, radius + 1);
-            
-        }*/
 
         // set brush
         if( background.isValid() ) painter->setBrush( background );
