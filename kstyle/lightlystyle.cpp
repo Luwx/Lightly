@@ -3897,7 +3897,7 @@ namespace Lightly
 
         const AnimationMode mode( _animations->widgetStateEngine().buttonAnimationMode( widget ) );
         const qreal opacity( _animations->widgetStateEngine().buttonOpacity( widget ) );
-
+        
         if( flat )
         {
 
@@ -4264,28 +4264,27 @@ namespace Lightly
         const bool enabled( state & State_Enabled );
         const bool mouseOver( enabled && ( state & State_MouseOver ) );
         const bool sunken( state & State_Sunken );
-        const bool checked( state & State_On );
+        //const bool checked( state & State_On );
 
         // radio button state
         RadioButtonState radioButtonState( state & State_On ? RadioOn:RadioOff );
 
         // animation state
-        //_animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        //_animations->widgetStateEngine().updateState( widget, AnimationPressed, radioButtonState != RadioOff );
+        _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
+        _animations->widgetStateEngine().updateState( widget, AnimationPressed, radioButtonState != RadioOff );
         if( _animations->widgetStateEngine().isAnimated( widget, AnimationPressed ) ) radioButtonState = RadioAnimated;
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
         // colors
         //const auto shadow( _helper->shadowColor( palette ) );
-        const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
-        const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
+        //const AnimationMode mode( _animations->widgetStateEngine().isAnimated( widget, AnimationHover ) ? AnimationHover:AnimationNone );
+        //const qreal opacity( _animations->widgetStateEngine().opacity( widget, AnimationHover ) );
         //QColor background = itemViewParent( widget ) ? palette.color( QPalette::Base ) : palette.color( QPalette::Window );
-        const auto background( checked ? palette.color( QPalette::Highlight ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
-        const QColor color( palette.color( QPalette::HighlightedText ) );
-
+        //const auto background( checked ? palette.color( QPalette::Highlight ) : _helper->buttonBackgroundColor( palette, mouseOver, false, sunken, opacity, mode ) );
+        //const QColor color( palette.color( QPalette::HighlightedText ) );
         // render
         //_helper->renderRadioButtonBackground( painter, rect, background, sunken );
-        _helper->renderRadioButton( painter, rect, color, background, mouseOver, sunken, radioButtonState, _helper->isDarkTheme( palette ), animation );
+        _helper->renderRadioButton( painter, rect, palette, mouseOver, sunken, radioButtonState, false, animation );
 
         return true;
 
@@ -5321,7 +5320,6 @@ namespace Lightly
 
             CheckBoxState state( menuItemOption->checked ? CheckOn : CheckOff );
             const bool active( menuItemOption->checked );
-            const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
@@ -5335,7 +5333,7 @@ namespace Lightly
             //const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, palette.color( QPalette::HighlightedText ), active ? palette.color( QPalette::Highlight ).lighter(115) : palette.color( QPalette::Button ), false, sunken, active ? RadioOn:RadioOff, _helper->isDarkTheme( palette ) );
+            _helper->renderRadioButton( painter, checkBoxRect, palette, true, sunken, active ? RadioOn:RadioOff, true );
 
         }
 

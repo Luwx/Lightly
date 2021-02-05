@@ -634,13 +634,14 @@ namespace Lightly
         }
         
         if ( size < 1 ) return;
+        if (color.alphaF() < 0.01) return;
         
         // temporaty values
         int tx = rect.left() - size + xOffset;
         int ty = rect.top() - size + yOffset;
         int tw = rect.width() + size * 2;
         int th = rect.height() + size * 2;
-        float alpha = 1;
+        float alpha = color.alphaF();
         
         while (tx <= rect.left() + qMax(xOffset, yOffset)) {
             
@@ -917,7 +918,6 @@ namespace Lightly
         qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
         
         painter->setPen( Qt::NoPen );
-        qDebug() << mode << opacity << hasFocus;
         if (enabled)
         {
             // draw shadow
@@ -1236,7 +1236,7 @@ namespace Lightly
                     QPen pen = QPen();
                     pen.setWidth(2);
                     pen.setCapStyle( Qt::RoundCap );
-                    pen.setColor( QColor( 0, 0, 0, 20 + 80*animation ) );
+                    pen.setColor( QColor( 0, 0, 0, 100*animation ) );
                     
                     painter->setPen( pen );
                     painter->setBrush( Qt::NoBrush );
@@ -1251,7 +1251,7 @@ namespace Lightly
                     painter->drawPath( checkShadow );
 
                     QPainterPath check;
-                    pen.setColor( alphaColor(color, 0.2 + 0.8*animation) ); // TODO: use HighlightedText
+                    pen.setColor( alphaColor(color, 1.0*animation) ); // TODO: use HighlightedText
                     painter->setPen( pen );
                     check.moveTo(animation*4.01+x, 9.95+y);
                     check.cubicTo(animation*4.67+x, 10.64+y, animation*5.31+x, 11.29+y, animation*5.95+x, 12.12+y);
@@ -1270,13 +1270,19 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderRadioButton(
         QPainter* painter, const QRect& rect,
-        const QColor& color, const QColor& background, const bool mouseOver,
-        bool sunken, RadioButtonState state, bool darkTheme, qreal animation ) const
+        const QPalette& palette, const bool mouseOver,
+        bool sunken, RadioButtonState state, const bool isInMenu, qreal animation ) const
     {
 
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
         painter->setPen( Qt::NoPen );
+        
+         // setup colors
+        const bool darkTheme( isDarkTheme( palette ) );
+        const QColor color ( palette.color( QPalette::HighlightedText ) );
+        QColor background (state == RadioOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ));
+        if( isInMenu ) background = background.lighter(115);
 
         // copy rect
         QRectF frameRect( rect );
@@ -1292,10 +1298,7 @@ namespace Lightly
             
             // strong shadows don't look good with light themes
             if( darkTheme ) renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 8, 5, 0, 1, true, 15);
-            //if( darkTheme ) renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4, mouseOver ? background.darker(110) : background.darker(200) ), frameRect.width()/2 );
             else renderEllipseShadow(painter, frameRect, mouseOver ? background.darker(110) : background.darker(200), 4, 4, 6, 0, 1, true, 8);
-            //else renderBoxShadow( painter, frameRect, CustomShadowParams( QPoint( 0, 1 ), 4,background.darker(200) ), frameRect.width()/2 );
-            
 
             painter->setBrush( mouseOver ? background.lighter(110) : background );
             painter->drawEllipse( frameRect );
@@ -1317,19 +1320,41 @@ namespace Lightly
             painter->drawEllipse( frameRect );
             
         } else if( state == RadioAnimated ) {
+            
+            if( animation > 0 && animation < 1 ) {
+                
+                frameRect.translate(-1*animation, -1*animation);
 
-            painter->setBrush( color );
-            QRectF markerRect( frameRect.adjusted( 3, 3, -3, -3 ) );
+                // radioOff shadow fade
+                if( mouseOver ) renderEllipseShadow(painter, frameRect.adjusted(1, 1, 1, 1), alphaColor(QColor(0,0,0), 1-animation), 5, 1, 4, 0, 1, true, 15*(1-animation));
+                else renderEllipseShadow(painter, frameRect.adjusted(1, 1, 1, 1), alphaColor(QColor(0,0,0), 1-animation), 2, 12, 3, 0, 1, true, 15*(1-animation));
+                
+                // strong shadows don't look good with light themes
+                QColor shadowColor( mouseOver ? alphaColor(background.darker(110), animation) : alphaColor(background.darker(200), animation) );
+                if( darkTheme ) renderEllipseShadow(painter, frameRect, shadowColor, 4, 8, 5, 0, 1, true, 15*animation);
+                else renderEllipseShadow(painter, frameRect, shadowColor, 4, 4, 6, 0, 1, true, 8*animation);
+                
+                painter->setBrush(palette.color( QPalette::Button ));
+                painter->drawEllipse( frameRect );
+                
+                painter->setBrush( alphaColor( (mouseOver ? palette.color( QPalette::Highlight ).lighter(110) : palette.color( QPalette::Highlight )), animation) );
+                painter->drawEllipse( frameRect );
+                
+                painter->setPen(Qt::NoPen);
 
-            painter->translate( markerRect.center() );
-            painter->rotate( 45 );
-
-            markerRect.setWidth( markerRect.width()*animation );
-            markerRect.translate( -markerRect.center() );
-            painter->drawEllipse( markerRect );
-
+                // inner ellipse
+                QRectF markerRect( frameRect.adjusted( 4, 4, -4, -4 ) );
+                markerRect.adjust((markerRect.width()/2)*(1-animation), 
+                                (markerRect.height()/2)*(1-animation), 
+                                -(markerRect.width()/2)*(1-animation), 
+                                -(markerRect.height()/2)*(1-animation));
+                
+                
+                painter->setBrush( color );
+                painter->drawEllipse( markerRect );
+                
+            }
         }
-        
         if ( darkTheme ) topHighlight( painter, frameRect, frameRect.width()/2 );
 
     }
