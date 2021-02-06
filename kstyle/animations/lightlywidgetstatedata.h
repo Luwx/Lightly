@@ -48,7 +48,7 @@ namespace Lightly
         returns true if hover has Changed
         and starts timer accordingly
         */
-        virtual bool updateState( bool value, const bool forwardOnly = false );
+        virtual bool updateState( bool value, AnimationParameters parameters = AnimationDefaut );
 
         private:
 

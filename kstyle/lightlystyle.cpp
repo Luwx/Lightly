@@ -3508,7 +3508,7 @@ namespace Lightly
             const bool hasFocus( enabled && ( state & State_HasFocus ) );
 
             // focus takes precedence over mouse over
-            _animations->inputWidgetEngine().updateState( widget, AnimationFocus, hasFocus );
+            _animations->inputWidgetEngine().updateState( widget, AnimationFocus, hasFocus, AnimationLongDuration );
             //_animations->inputWidgetEngine().updateState( widget, AnimationHover, mouseOver && !hasFocus );
 
             // retrieve animation mode and opacity
@@ -3892,7 +3892,7 @@ namespace Lightly
 
         // update animation state
         // mouse over takes precedence over focus
-        _animations->widgetStateEngine().updateState( widget, AnimationPressed, sunken, true );
+        _animations->widgetStateEngine().updateState( widget, AnimationPressed, sunken, AnimationForwardOnly|AnimationLongDuration );
         //_animations->widgetStateEngine().updateState( widget, AnimationFocus, hasFocus && !mouseOver );
 
         const AnimationMode mode( _animations->widgetStateEngine().buttonAnimationMode( widget ) );
@@ -4244,7 +4244,7 @@ namespace Lightly
 
         // render
         //_helper->renderCheckBoxBackground( painter, rect, background, sunken );   // needed??
-        _helper->renderCheckBox( painter, rect, palette, true, sunken, mouseOver, checkBoxState, false, animation );
+        _helper->renderCheckBox( painter, rect, palette, false, sunken, mouseOver, checkBoxState, false, animation );
         return true;
 
     }
@@ -4269,7 +4269,7 @@ namespace Lightly
 
         // animation state
         _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        _animations->widgetStateEngine().updateState( widget, AnimationPressed, radioButtonState != RadioOff );
+        _animations->widgetStateEngine().updateState( widget, AnimationPressed, radioButtonState != RadioOff, AnimationOutBack );
         if( _animations->widgetStateEngine().isAnimated( widget, AnimationPressed ) ) radioButtonState = RadioAnimated;
         const qreal animation( _animations->widgetStateEngine().opacity( widget, AnimationPressed ) );
 
@@ -5238,7 +5238,7 @@ namespace Lightly
 
         // store window state
         const bool windowActive( widget && widget->isActiveWindow() );
-        
+        if(widget) qDebug() <<  widget;
         // copy rect and palette
         const auto& rect( option->rect );
         const auto& palette( option->palette );
@@ -5277,6 +5277,11 @@ namespace Lightly
         const bool sunken( enabled && (state & (State_On|State_Sunken) ) );
         const bool reverseLayout( option->direction == Qt::RightToLeft );
         const bool useStrongFocus( StyleConfigData::menuItemDrawStrongFocus() );
+        
+        _animations->inputWidgetEngine().updateState( widget, AnimationHover, selected );
+        const AnimationMode mode( _animations->inputWidgetEngine().buttonAnimationMode( widget ) );
+        const qreal opacity( _animations->inputWidgetEngine().buttonOpacity( widget ) );
+        qDebug() << mode << opacity;
 
         // render hover and focus
         if( useStrongFocus && ( selected || sunken ) )

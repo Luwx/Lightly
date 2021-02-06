@@ -191,6 +191,17 @@ namespace Lightly
     };
 
     Q_DECLARE_FLAGS(AnimationModes, AnimationMode)
+    
+    //* extra animation parameters for custom widget animations
+    enum AnimationParameter
+    {
+        AnimationDefaut = 0,
+        AnimationForwardOnly = 0x1,
+        AnimationOutBack = 0x2,
+        AnimationLongDuration = 0x4 
+    };
+    
+    Q_DECLARE_FLAGS(AnimationParameters, AnimationParameter)
 
     //* corners
     enum Corner
@@ -260,6 +271,7 @@ namespace Lightly
 }
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( Lightly::AnimationModes )
+Q_DECLARE_OPERATORS_FOR_FLAGS( Lightly::AnimationParameters )
 Q_DECLARE_OPERATORS_FOR_FLAGS( Lightly::Corners )
 Q_DECLARE_OPERATORS_FOR_FLAGS( Lightly::Sides )
 

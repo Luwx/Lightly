@@ -50,7 +50,7 @@ namespace Lightly
         using BaseEngine::registeredWidgets;
 
         //* true if widget hover state is changed
-        bool updateState(const QObject* object, AnimationMode mode, bool value, const bool forwardOnly = false);
+        bool updateState(const QObject* object, AnimationMode mode, bool value, AnimationParameters parameters = AnimationDefaut );
 
         //* true if widget is animated
         bool isAnimated( const QObject*, AnimationMode );

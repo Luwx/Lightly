@@ -732,15 +732,20 @@ namespace Lightly
         if (mode == AnimationPressed){
             
             QRegion oldRegion( painter->clipRegion() );
+            // constrain ripple effect area
             painter->setClipRect( frameRect, Qt::IntersectClip );
+            
+            // ripple color
             painter->setBrush(alphaColor( color.darker(200), sunken ? 0.5 : 0.5*(1-opacity) ) );
             
             // Pythagorean theorem
             int finalRadius = qCeil( qSqrt( qPow(frameRect.width()/2, 2) + qPow(frameRect.height()/2, 2) ) );
+            
+            // the animaiton looks choppy if the initial radius is 0, we choose something else
             int initRadius = qCeil( frameRect.height()/2 );
             painter->drawEllipse(frameRect.center(), initRadius + (finalRadius-initRadius)*opacity, initRadius + (finalRadius-initRadius)*opacity);
             painter->setClipRegion( oldRegion );
-            //renderBoxShadow( painter, frameRect, 0, 1, 3, QColor( 0, 0, 0, 120*opacity ), radius, windowActive );
+
         }
         
         // pressed button background when animation is done
@@ -1340,7 +1345,10 @@ namespace Lightly
             
         } else if( state == RadioAnimated ) {
             
-            if( animation > 0 && animation < 1 ) {
+            if( animation > 0 /*&& animation < 1*/ ) {
+                
+                // make it more elastic
+                if(animation > 1) animation *= 1.1;
                 
                 frameRect.translate(-1*animation, -1*animation);
 
@@ -1349,14 +1357,14 @@ namespace Lightly
                 else renderEllipseShadow(painter, frameRect.adjusted(1, 1, 1, 1), alphaColor(QColor(0,0,0), 1-animation), 2, 12, 3, 0, 1, true, 15*(1-animation));
                 
                 // strong shadows don't look good with light themes
-                QColor shadowColor( mouseOver ? alphaColor(background.darker(110), animation) : alphaColor(background.darker(200), animation) );
+                QColor shadowColor( mouseOver ? alphaColor(background.darker(110), qMin( animation, 1.0)) : alphaColor(background.darker(200), qMin( animation, 1.0)) );
                 if( darkTheme ) renderEllipseShadow(painter, frameRect, shadowColor, 4, 8, 5, 0, 1, true, 15*animation);
                 else renderEllipseShadow(painter, frameRect, shadowColor, 4, 4, 6, 0, 1, true, 8*animation);
                 
                 painter->setBrush(palette.color( QPalette::Button ));
                 painter->drawEllipse( frameRect );
                 
-                painter->setBrush( alphaColor( (mouseOver ? palette.color( QPalette::Highlight ).lighter(110) : palette.color( QPalette::Highlight )), animation) );
+                painter->setBrush( alphaColor( (mouseOver ? palette.color( QPalette::Highlight ).lighter(110) : palette.color( QPalette::Highlight )), qMin( animation, 1.0)) );
                 painter->drawEllipse( frameRect );
                 
                 painter->setPen(Qt::NoPen);

@@ -28,6 +28,7 @@
 #include <QGroupBox>
 #include <QHeaderView>
 #include <QLineEdit>
+#include <QMenu>
 #include <QProgressBar>
 #include <QRadioButton>
 #include <QScrollBar>
@@ -65,11 +66,11 @@ namespace Lightly
     {
 
         // animation steps
-        AnimationData::setSteps( 1000.0/1000 * 60 );
+        AnimationData::setSteps( StyleConfigData::animationsDuration()/1000.0 * 60 );
 
         const bool animationsEnabled( StyleConfigData::animationsEnabled() );
-        //const int animationsDuration( StyleConfigData::animationsDuration() );
-        const int animationsDuration( 1000 );
+        const int animationsDuration( StyleConfigData::animationsDuration() );
+        //const int animationsDuration( 1000 );
 
         _widgetEnabilityEngine->setEnabled( animationsEnabled );
         _comboBoxEngine->setEnabled( animationsEnabled );
@@ -148,6 +149,8 @@ namespace Lightly
         else if( qobject_cast<QScrollBar*>( widget ) ) { _scrollBarEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
         else if( qobject_cast<QSlider*>( widget ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
         else if( qobject_cast<QDial*>( widget ) ) { _dialEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+        
+        else if( qobject_cast<QMenu*>( widget ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover ); }
 
         // progress bar
         else if( qobject_cast<QProgressBar*>( widget ) ) { _busyIndicatorEngine->registerWidget( widget ); }
@@ -192,7 +195,7 @@ namespace Lightly
         if( QStackedWidget* stack = qobject_cast<QStackedWidget*>( widget ) )
         { _stackedWidgetEngine->registerWidget( stack ); }
 
-        
+        if(  qobject_cast<QMenu*>( widget ) ) qDebug() << "Menu!";
     }
 
     //____________________________________________________________

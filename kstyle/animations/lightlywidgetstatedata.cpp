@@ -23,7 +23,7 @@ namespace Lightly
 {
 
     //______________________________________________
-    bool WidgetStateData::updateState( bool value, const bool forwardOnly )
+    bool WidgetStateData::updateState( bool value, AnimationParameters parameters )
     {
         if( !_initialized )
         {
@@ -38,10 +38,14 @@ namespace Lightly
 
         } else {
             _state = value;
-            animation().data()->setDirection( forwardOnly ? Animation::Forward : _state ? Animation::Forward : Animation::Backward );
-            animation().data()->setEasingCurve( forwardOnly ? QEasingCurve::OutQuint : _state ? QEasingCurve::OutQuint : QEasingCurve::InQuint );
+            animation().data()->setDirection( ( parameters & AnimationForwardOnly ) ? Animation::Forward : _state ? Animation::Forward : Animation::Backward );
+            if ( parameters & AnimationOutBack) animation().data()->setEasingCurve( _state ? QEasingCurve::OutBack : QEasingCurve::InQuint );
+            else animation().data()->setEasingCurve( ( parameters & AnimationForwardOnly ) ? QEasingCurve::OutQuint : _state ? QEasingCurve::OutQuint : QEasingCurve::InQuint );
+            
+            if( ( parameters & AnimationLongDuration ) ) animation().data()->setDuration(800); //FIXME find a better way to set the duration
+            
             if( !animation().data()->isRunning() ) animation().data()->start(); 
-            else if( _state && forwardOnly ) animation().data()->restart();
+            else if( _state && ( parameters & AnimationForwardOnly ) ) animation().data()->restart();
             return true;
 
         }
