@@ -50,7 +50,7 @@ namespace Lightly
         using BaseEngine::registeredWidgets;
 
         //* true if widget hover state is changed
-        bool updateState( const QObject*, AnimationMode, bool );
+        bool updateState(const QObject* object, AnimationMode mode, bool value, const bool forwardOnly = false);
 
         //* true if widget is animated
         bool isAnimated( const QObject*, AnimationMode );
@@ -86,6 +86,7 @@ namespace Lightly
             if( isAnimated( object, AnimationEnable ) ) return AnimationEnable;
             else if( isAnimated( object, AnimationHover ) ) return AnimationHover;
             else if( isAnimated( object, AnimationFocus ) ) return AnimationFocus;
+            else if( isAnimated( object, AnimationPressed ) ) return AnimationPressed;
             else return AnimationNone;
         }
 
@@ -94,6 +95,7 @@ namespace Lightly
         qreal buttonOpacity( const QObject* object )
         {
             if( isAnimated( object, AnimationEnable ) ) return data( object, AnimationEnable ).data()->opacity();
+            else if( isAnimated( object, AnimationPressed ) ) return data( object, AnimationPressed ).data()->opacity();
             else if( isAnimated( object, AnimationHover ) ) return data( object, AnimationHover ).data()->opacity();
             else if( isAnimated( object, AnimationFocus ) ) return data( object, AnimationFocus ).data()->opacity();
             else return AnimationData::OpacityInvalid;

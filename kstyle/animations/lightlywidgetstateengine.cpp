@@ -79,10 +79,10 @@ namespace Lightly
     }
 
     //____________________________________________________________
-    bool WidgetStateEngine::updateState( const QObject* object, AnimationMode mode, bool value )
+    bool WidgetStateEngine::updateState( const QObject* object, AnimationMode mode, bool value, const bool forwardOnly )
     {
         DataMap<WidgetStateData>::Value data( WidgetStateEngine::data( object, mode ) );
-        return ( data && data.data()->updateState( value ) );
+        return ( data && data.data()->updateState( value, forwardOnly ) );
     }
 
     //____________________________________________________________

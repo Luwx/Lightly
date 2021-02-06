@@ -189,7 +189,7 @@ namespace Lightly
         void topHighlight( QPainter*, const QRectF&, const int radius, const QColor& color = QColor(255, 255, 255, 20) ) const;
         
         //* button frame
-        void renderButtonFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const bool focus, const bool sunken, const bool mouseOver, const bool enabled, const bool windowActive ) const;
+        void renderButtonFrame( QPainter*, const QRect&, const QColor& color, const QPalette& palette, const bool focus, const bool sunken, const bool mouseOver, const bool enabled, const bool windowActive, const AnimationMode mode = AnimationNone, const qreal opacity = AnimationData::OpacityInvalid ) const;
 
         //* toolbutton frame
         void renderToolButtonFrame( QPainter*, const QRect&, const QColor& color, bool sunken ) const;

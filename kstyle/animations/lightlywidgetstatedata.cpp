@@ -23,7 +23,7 @@ namespace Lightly
 {
 
     //______________________________________________
-    bool WidgetStateData::updateState( bool value )
+    bool WidgetStateData::updateState( bool value, const bool forwardOnly )
     {
         if( !_initialized )
         {
@@ -37,11 +37,11 @@ namespace Lightly
             return false;
 
         } else {
-
             _state = value;
-            animation().data()->setDirection( _state ? Animation::Forward : Animation::Backward );
-            animation().data()->setEasingCurve( _state ? QEasingCurve::OutQuint : QEasingCurve::InQuint );
-            if( !animation().data()->isRunning() ) animation().data()->start();
+            animation().data()->setDirection( forwardOnly ? Animation::Forward : _state ? Animation::Forward : Animation::Backward );
+            animation().data()->setEasingCurve( forwardOnly ? QEasingCurve::OutQuint : _state ? QEasingCurve::OutQuint : QEasingCurve::InQuint );
+            if( !animation().data()->isRunning() ) animation().data()->start(); 
+            else if( _state && forwardOnly ) animation().data()->restart();
             return true;
 
         }

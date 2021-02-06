@@ -3892,12 +3892,12 @@ namespace Lightly
 
         // update animation state
         // mouse over takes precedence over focus
-        _animations->widgetStateEngine().updateState( widget, AnimationHover, mouseOver );
-        _animations->widgetStateEngine().updateState( widget, AnimationFocus, hasFocus && !mouseOver );
+        _animations->widgetStateEngine().updateState( widget, AnimationPressed, sunken, true );
+        //_animations->widgetStateEngine().updateState( widget, AnimationFocus, hasFocus && !mouseOver );
 
         const AnimationMode mode( _animations->widgetStateEngine().buttonAnimationMode( widget ) );
         const qreal opacity( _animations->widgetStateEngine().buttonOpacity( widget ) );
-        
+
         if( flat )
         {
 
@@ -3922,7 +3922,7 @@ namespace Lightly
             const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, sunken, opacity, mode ) );
 
             // render
-            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive );
+            _helper->renderButtonFrame( painter, rect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive, mode, opacity );
 
         }
 

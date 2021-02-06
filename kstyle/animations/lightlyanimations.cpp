@@ -133,7 +133,7 @@ namespace Lightly
             if( qobject_cast<QToolBox*>( widget->parent() ) )
             { _toolBoxEngine->registerWidget( widget ); }
 
-            _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus );
+            _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus|AnimationPressed );
 
         }
 

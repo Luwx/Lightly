@@ -27,6 +27,7 @@
 
 #include <QApplication>
 #include <QPainter>
+#include <QtMath>
 
 #if LIGHTLY_HAVE_X11
 #include <QX11Info>
@@ -683,7 +684,7 @@ namespace Lightly
     void Helper::renderButtonFrame(
         QPainter* painter, const QRect& rect,
         const QColor& color, const QPalette& palette,
-        const bool hasFocus, const bool sunken, const  bool mouseOver, const bool enabled, const bool windowActive ) const
+        const bool hasFocus, const bool sunken, const  bool mouseOver, const bool enabled, const bool windowActive, const AnimationMode mode, const qreal opacity ) const
      {
 
         // setup painter
@@ -698,10 +699,11 @@ namespace Lightly
         frameRect.adjust( 5, 5, -5, -5 );
         
         qreal radius( frameRadius() - 1 );
-        
+
         if( sunken ) {
 
             frameRect.translate( 0, 1 );
+            renderBoxShadow( painter, frameRect, 0, 1, 2, QColor( 0, 0, 0, 120 ), radius, windowActive );
 
         } else if ( enabled && color.alphaF() == 1 ) { // shadow
             
@@ -723,6 +725,10 @@ namespace Lightly
             gradient.setColorAt( 0, color.lighter( hasFocus ? 105 : mouseOver ? 115 : 100) );
             gradient.setColorAt( 1, color.darker( hasFocus ? 110 : mouseOver ? 85 : 100 ) );
             painter->setBrush( gradient );
+            
+            if(sunken) {painter->setBrush( focusColor(palette).darker(110) );}
+            else if(hasFocus && mouseOver) painter->setBrush( focusColor( palette ).lighter(110) );
+            //if(mouseOver) painter->setBrush(Qt::white);
 
         } else painter->setBrush( Qt::NoBrush ); 
 
@@ -730,6 +736,28 @@ namespace Lightly
         painter->drawRoundedRect( frameRect, radius, radius );
 
         if( isDarkTheme( palette ) && enabled ) topHighlight( painter, frameRect, StyleConfigData::cornerRadius() );
+        
+        // pressed animation
+        if (mode == AnimationPressed){
+            
+            QRegion oldRegion( painter->clipRegion() );
+            painter->setClipRect( frameRect, Qt::IntersectClip );
+            painter->setBrush(alphaColor( focusColor(palette).darker(200), sunken ? 0.5 : 0.5*(1-opacity) ) );
+            
+            // Pythagorean theorem
+            int finalRadius = qCeil( qSqrt( qPow(frameRect.width()/2, 2) + qPow(frameRect.height()/2, 2) ) );
+            int initRadius = qCeil( frameRect.height()/2 );
+            painter->drawEllipse(frameRect.center(), initRadius + (finalRadius-initRadius)*opacity, initRadius + (finalRadius-initRadius)*opacity);
+            painter->setClipRegion( oldRegion );
+            //renderBoxShadow( painter, frameRect, 0, 1, 3, QColor( 0, 0, 0, 120*opacity ), radius, windowActive );
+        }
+        
+        // animation done background
+        else if(sunken && mouseOver) {
+            painter->setBrush(alphaColor( focusColor(palette).darker(200), 0.5 ) );
+             painter->drawRoundedRect( frameRect, radius, radius );
+        }
+        
     }
 
     //______________________________________________________________________________
