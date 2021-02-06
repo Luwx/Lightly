@@ -247,12 +247,12 @@ namespace Lightly
         {
 
             const QColor focus( focusColor( palette ) );
-            const QColor hover( hoverColor( palette ) );
+            const QColor hover( focusColor( palette ).lighter(115) );
             if( hasFocus ) background = KColorUtils::mix( focus, hover, opacity );
 
         } else if( mouseOver && hasFocus ) {
 
-            background = hoverColor( palette );
+            background = focusColor( palette ).lighter(115);
 
         } else if( mode == AnimationFocus ) {
 
@@ -719,18 +719,9 @@ namespace Lightly
 
         // content
         if( color.isValid() )
-        {
-            // mouse over makes button 15% ligher
-            QLinearGradient gradient( frameRect.topLeft(), frameRect.bottomLeft() );
-            gradient.setColorAt( 0, color.lighter( hasFocus ? 105 : mouseOver ? 115 : 100) );
-            gradient.setColorAt( 1, color.darker( hasFocus ? 110 : mouseOver ? 85 : 100 ) );
-            painter->setBrush( gradient );
-            
-            if(sunken) {painter->setBrush( focusColor(palette).darker(110) );}
-            else if(hasFocus && mouseOver) painter->setBrush( focusColor( palette ).lighter(110) );
-            //if(mouseOver) painter->setBrush(Qt::white);
+            painter->setBrush( sunken ? focusColor(palette).darker(110) : mouseOver ? color.lighter( hasFocus ? 102 : 105 ) : color );
 
-        } else painter->setBrush( Qt::NoBrush ); 
+        else painter->setBrush( Qt::NoBrush ); 
 
         // render
         painter->drawRoundedRect( frameRect, radius, radius );
@@ -742,7 +733,7 @@ namespace Lightly
             
             QRegion oldRegion( painter->clipRegion() );
             painter->setClipRect( frameRect, Qt::IntersectClip );
-            painter->setBrush(alphaColor( focusColor(palette).darker(200), sunken ? 0.5 : 0.5*(1-opacity) ) );
+            painter->setBrush(alphaColor( color.darker(200), sunken ? 0.5 : 0.5*(1-opacity) ) );
             
             // Pythagorean theorem
             int finalRadius = qCeil( qSqrt( qPow(frameRect.width()/2, 2) + qPow(frameRect.height()/2, 2) ) );
@@ -752,9 +743,9 @@ namespace Lightly
             //renderBoxShadow( painter, frameRect, 0, 1, 3, QColor( 0, 0, 0, 120*opacity ), radius, windowActive );
         }
         
-        // animation done background
+        // pressed button background when animation is done
         else if(sunken && mouseOver) {
-            painter->setBrush(alphaColor( focusColor(palette).darker(200), 0.5 ) );
+            painter->setBrush(alphaColor( color.darker(200), 0.5 ) );
              painter->drawRoundedRect( frameRect, radius, radius );
         }
         

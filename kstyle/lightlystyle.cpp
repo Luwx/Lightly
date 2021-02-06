@@ -3917,8 +3917,6 @@ namespace Lightly
                 palette.setColor( QPalette::Button, KColorUtils::mix( button, base, 0.7 ) );
             }
 
-            //const auto shadow( _helper->shadowColor( palette ) );
-            //const auto outline( _helper->buttonOutlineColor( palette, mouseOver, hasFocus, opacity, mode ) );
             const auto background( _helper->buttonBackgroundColor( palette, mouseOver, hasFocus, sunken, opacity, mode ) );
 
             // render
@@ -4610,7 +4608,7 @@ namespace Lightly
         const bool enabled( state & State_Enabled );
         const bool sunken( state & (State_On | State_Sunken) );
         const bool mouseOver( enabled && (option->state & State_MouseOver) );
-        const bool hasFocus( enabled && !mouseOver && (option->state & State_HasFocus) );
+        const bool hasFocus( enabled && (option->state & State_HasFocus) );
         const bool flat( buttonOption->features & QStyleOptionButton::Flat );
 
         // content
@@ -4630,7 +4628,7 @@ namespace Lightly
             if( hasFocus && sunken ) textRole = QPalette::HighlightedText;
             else textRole = QPalette::WindowText;
 
-        } else if( hasFocus ) textRole = QPalette::HighlightedText;
+        } else if( hasFocus || (hasFocus && mouseOver) ) textRole = QPalette::HighlightedText;
         else textRole = QPalette::ButtonText;
 
         // menu arrow
