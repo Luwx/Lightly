@@ -36,6 +36,9 @@ Most of these options are inherited from Breeze style, but Lightly has a few exc
 
 The toolbar and menubar will follow the **titlebar** opacity. To configure the titlebar opacity, you will have to change the color scheme file directly in ~/.local/share/color-schemes. Open your desired color scheme and, in the ```[WM]``` section, add a fourth value to ```activeBackground``` and ```inactiveBackground```, like ```activeBackground=0,0,0,127``` where the last value is the alpha, that ranges from 0 (completely transparent) to 255 (totally opaque).
 
+
+For rounded corners and outline around the window, check this kwin effect: https://github.com/Luwx/LightlyShaders
+
 ## Installation
 
 ### Installing Lightly from RPM repository on openSUSE Tumbleweed:
