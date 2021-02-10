@@ -18,6 +18,7 @@
  *************************************************************************/
 
 #include "lightlywidgetstatedata.h"
+#include "lightlystyleconfigdata.h"
 
 namespace Lightly
 {
@@ -42,7 +43,7 @@ namespace Lightly
             if ( parameters & AnimationOutBack) animation().data()->setEasingCurve( _state ? QEasingCurve::OutBack : QEasingCurve::InQuint );
             else animation().data()->setEasingCurve( ( parameters & AnimationForwardOnly ) ? QEasingCurve::OutQuint : _state ? QEasingCurve::OutQuint : QEasingCurve::InQuint );
             
-            if( ( parameters & AnimationLongDuration ) ) animation().data()->setDuration(800); //FIXME find a better way to set the duration
+            if( ( parameters & AnimationLongDuration ) ) animation().data()->setDuration( StyleConfigData::animationsDuration()*3 ); //FIXME find a better way to set the duration
             
             if( !animation().data()->isRunning() ) animation().data()->start(); 
             else if( _state && ( parameters & AnimationForwardOnly ) ) animation().data()->restart();
