@@ -3608,7 +3608,7 @@ namespace Lightly
         //const auto outline( _helper->frameOutlineColor( palette ) );
         
         //const State& state( option->state );
-        const bool mouseOver ( widget->property("HOVER").toBool() );
+        //const bool mouseOver ( widget->property("HOVER").toBool() );  // can cause crashes
         
         //qDebug() << mouseOver;
 
@@ -3618,7 +3618,7 @@ namespace Lightly
          */
 
         painter->setClipRegion( option->rect );
-        _helper->renderGroupBox( painter, option->rect, background, mouseOver );
+        _helper->renderGroupBox( painter, option->rect, background, false );
 
         return true;
 
