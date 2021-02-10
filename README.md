@@ -111,7 +111,7 @@ make
 sudo make install
 ```
 
-### Unistall
+### Uninstall
 
 In the build folder:
 ```
