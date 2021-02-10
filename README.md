@@ -98,7 +98,7 @@ sudo zypper install cmake gcc-c++ extra-cmake-modules libQt5Gui-devel libQt5DBus
 ### Build and install
 
 ```
-git clone https://github.com/Luwx/Lightly.git
+git clone --single-branch --depth=1 https://github.com/Luwx/Lightly.git
 cd Lightly && mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_TESTING=OFF ..
 make
