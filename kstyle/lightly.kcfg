@@ -24,7 +24,7 @@
           <choice name="ShadowLarge"/>
           <choice name="ShadowVeryLarge"/>
       </choices>
-      <default>ShadowMedium</default>
+      <default>ShadowLarge</default>
     </entry>
 
     <entry name="ShadowColor" type = "Color">
