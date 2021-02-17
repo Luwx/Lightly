@@ -2133,7 +2133,7 @@ namespace Lightly
             //tabBarRect.setWidth( qMin( tabBarRect.width(), rect.width() - 2 ) );  // fixed width tabs
             tabBarRect.setWidth(rect.width() - 2*Metrics::Frame_FrameWidth);        // adwaita qt style tab
             if( tabBarAlignment == Qt::AlignCenter ) tabBarRect.moveLeft( rect.left() + (rect.width() - tabBarRect.width())/2 );
-            else tabBarRect.moveLeft( rect.left() + Metrics::Frame_FrameWidth );
+            else tabBarRect.moveLeft( rect.left() + (documentMode ? 0 : Metrics::Frame_FrameWidth) );
 
             tabBarRect = visualRect( option, tabBarRect );
 
@@ -3515,7 +3515,6 @@ namespace Lightly
             const AnimationMode mode( _animations->inputWidgetEngine().frameAnimationMode( widget ) );
             const qreal opacity( _animations->inputWidgetEngine().frameOpacity( widget ) );
 
-            //qDebug() << opacity << mode;
             // render
             const auto &background = palette.color( QPalette::Base );
             const auto outline( palette.color( QPalette::Highlight ) );
