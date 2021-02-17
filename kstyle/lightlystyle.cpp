@@ -2130,8 +2130,8 @@ namespace Lightly
             rect.setLeft( leftButtonRect.width() + ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
             rect.setRight( rightButtonRect.left() - ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
 
-            //tabBarRect.setWidth( qMin( tabBarRect.width(), rect.width() - 2 ) );  // fixed width tabs
-            tabBarRect.setWidth(rect.width() - 2*Metrics::Frame_FrameWidth);        // adwaita qt style tab
+            if( StyleConfigData::tabBarTabExpandFullWidth() ) tabBarRect.setWidth(rect.width() - 2*Metrics::Frame_FrameWidth); // adwaita qt style tab 
+            else tabBarRect.setWidth( qMin( tabBarRect.width(), rect.width() - 2 ) );  // fixed width tabs      
             if( tabBarAlignment == Qt::AlignCenter ) tabBarRect.moveLeft( rect.left() + (rect.width() - tabBarRect.width())/2 );
             else tabBarRect.moveLeft( rect.left() + (documentMode ? 0 : Metrics::Frame_FrameWidth) );
 
