@@ -1206,7 +1206,7 @@ namespace Lightly
                         }
                         
                         // shadow between toolbar and the rest of the window
-                        if( (widget->palette().color( QPalette::Window ).alpha()/255)*100  < _helper->titleBarColor( true ).alphaF()*100.0 )
+                        /*if( (widget->palette().color( QPalette::Window ).alpha()/255)*100  < _helper->titleBarColor( true ).alphaF()*100.0 )
                         {
                             if( LightlyPrivate::possibleTranslucentToolBars.size() == 1 )
                             {
@@ -1220,7 +1220,7 @@ namespace Lightly
                                     }
                                 }
                             }
-                        }
+                        }*/
                         
                     }
                 }
