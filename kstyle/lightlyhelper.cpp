@@ -947,6 +947,7 @@ namespace Lightly
             // draw shadow
             if( hasFocus )
             { 
+                frameRect.adjust(1, 1, -1, -1);
                 // focus in animation 
                 if( mode == 2 && opacity > 0 && opacity < 1) {
                     
@@ -981,9 +982,10 @@ namespace Lightly
                     p.setCompositionMode(QPainter::CompositionMode_SourceOver);
                     p.setPen(Qt::NoPen);
                     renderBoxShadow( &p, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); // comment this out for only the outline animation
-                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive ); // comment this out for only the outline animation
+                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(130) , radius, windowActive ); // comment this out for only the outline animation
+                    renderBoxShadow( &p, frameRect, 0, 1, 4, outline.darker(140) , radius, windowActive ); // comment this out for only the outline animation
                     p.setBrush( alphaColor( outline, 0.6 ) ) ;
-                    QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
+                    QRectF focusFrame = frameRect.adjusted( -2, -2, 2, 2 );
                     p.drawRoundedRect( focusFrame, radius + 1, radius + 1); // outline around lineedit
                     
                     // mask
@@ -997,10 +999,11 @@ namespace Lightly
                 
                 // focus animation done
                 else {
-                    renderBoxShadow( painter, frameRect, 0, 1, 6, outline.darker(120) , radius, windowActive ); 
-                    renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(120) , radius, windowActive );
+                    renderBoxShadow( painter, frameRect, 0, 1, 7, outline.darker(120) , radius, windowActive ); 
+                    renderBoxShadow( painter, frameRect, 0, 1, 5, outline.darker(130) , radius, windowActive );
+                    renderBoxShadow( painter, frameRect, 0, 1, 4, outline.darker(140) , radius, windowActive );
                     painter->setBrush( alphaColor( outline, 0.6 ) ) ;
-                    QRectF focusFrame = frameRect.adjusted( -1, -1, 1, 1 );
+                    QRectF focusFrame = frameRect.adjusted( -2, -2, 2, 2 );
                     painter->drawRoundedRect( focusFrame, radius + 1, radius + 1);
                 }
             }
@@ -1074,7 +1077,7 @@ namespace Lightly
         if( hasFocus ) radius--;
 
         // render
-        painter->drawRoundedRect( hasFocus ? frameRect.adjusted(1, 1, -1, -1) : frameRect, radius, radius );
+        painter->drawRoundedRect( frameRect, radius, radius );
     }
     
     //______________________________________________________________________________

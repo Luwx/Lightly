@@ -324,7 +324,7 @@ namespace Lightly
         boxRect.moveCenter(outerRect.center());
 
         // Mask out inner rect.
-        /*if( qMax(shadow1.radius, shadow2.radius) > 3 && frameRadius > 3) {
+        if( qMax(shadow1.radius, shadow2.radius) > 3 && frameRadius > 3) {
             QPainter painter(&shadowTexture);
             painter.setRenderHint(QPainter::Antialiasing);
 
@@ -343,17 +343,17 @@ namespace Lightly
                 frameRadius);
             
             // Draw outline.
-            painter.setPen(withOpacity(Qt::black, 0.3));
+            /*painter.setPen(withOpacity(Qt::black, 0.3));
             painter.setBrush(Qt::NoBrush);
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.drawRoundedRect(
                 outerRect - margins,
                 frameRadius-1,
-                frameRadius-1);
+                frameRadius-1);*/
 
             // We're done.
             painter.end();
-        }*/
+        }
 
         const QPoint innerRectTopLeft = outerRect.center();
         TileSet shadowTiles = TileSet(
