@@ -6419,6 +6419,8 @@ namespace Lightly
         const bool enabled( state & State_Enabled );
         const bool selected( state & State_Selected );
         const bool mouseOver( enabled && !selected && ( state & State_MouseOver ) );
+        
+        const bool windowActive( widget && widget->isActiveWindow() );
 
         // check if tab is being dragged
         const bool isDragged( widget && selected && painter->device() != widget );
@@ -6587,15 +6589,15 @@ namespace Lightly
 
             default: break;
         }
-        
+
         const bool unifiedTabAndHeader = _isKonsole && StyleConfigData::unifiedTabBarKonsole();
         if( documentMode && unifiedTabAndHeader && _helper->titleBarColor( true ).alphaF() < 1.0) {
             
              _helper->renderTransparentArea(painter, backgroundRect);
-             painter->fillRect( backgroundRect, QBrush( _helper->titleBarColor( true ) ) );
+             painter->fillRect( backgroundRect, QBrush( _helper->titleBarColor( windowActive ) ) );
 
         }
-        bool changethis = true;
+
         // render
         if( selected )
         {
@@ -6606,13 +6608,33 @@ namespace Lightly
             //_helper->renderTabBarTab( painter, rect, color, outline, corners );
             
             if( documentMode ) {
-                // render dark background and shadow
-                if( !unifiedTabAndHeader ) _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
-                _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), changethis);
 
-                // render actual tab
-                _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/,0, 1, 4, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), changethis);
-                _helper->renderTabBarTab(painter, rect, color, corners);
+                // konsole's tab
+                if( unifiedTabAndHeader ) {
+                    
+                    // reajust rect
+                    if( isFirst ) rect.adjust(-3, 0, 0, 0);
+                    else if ( isLast ) rect.adjust(0, 0, 3, 0);
+                    if( color.alphaF() < 1 ) rect.adjust(0, side == SideTop ? -3 : 0, 0, side == SideBottom ? 3 : 0);
+                    
+                    //erase alpha
+                    painter->setCompositionMode( QPainter::CompositionMode_DestinationOut );
+                     _helper->renderTabBarTab(painter, rect, Qt::black, corners);
+                    painter->setCompositionMode( QPainter::CompositionMode_SourceOver );
+                    
+                    // no shadow for translucent tab
+                    if( !(color.alphaF() < 1) ) _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/,0, 1, 4, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), true);
+                    _helper->renderTabBarTab(painter, rect, color, corners);
+                }
+                else {
+                    
+                    // render dark background and shadow
+                    _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
+                    _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), true);
+                    
+                    _helper->renderBoxShadow(painter, rect/*.adjusted(0,0,0,4)*/,0, 1, 4, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), true);
+                    _helper->renderTabBarTab(painter, rect, color, corners);
+                }
                 
                 // highlight
                 if( StyleConfigData::tabDrawHighlight() ) {
@@ -6637,11 +6659,12 @@ namespace Lightly
             
             }
             
+            // non movable tabs
             else  {
                 painter->setRenderHint( QPainter::Antialiasing, true );
                 painter->setPen(Qt::NoPen);
                 backgroundRect.adjust(5, 6, -5, -6);
-                _helper->renderBoxShadow(painter, backgroundRect, 0, 1, 6, QColor(0,0,0,100), StyleConfigData::cornerRadius(), changethis);
+                _helper->renderBoxShadow(painter, backgroundRect, 0, 1, 6, QColor(0,0,0,100), StyleConfigData::cornerRadius(), true);
                 painter->setBrush(color);
                 painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
                 painter->setBrush( QColor(255, 255, 255, 20) );
@@ -6654,9 +6677,11 @@ namespace Lightly
             
             if(documentMode)
             {
-            // render dark background and shadow
-            if( !unifiedTabAndHeader ) _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
-            _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), changethis);
+                // render dark background and shadow
+                if( !unifiedTabAndHeader ) {
+                    _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
+                }
+                _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), true);
             }
             else {
                 if(!mouseOver) return true;

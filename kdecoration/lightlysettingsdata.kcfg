@@ -107,6 +107,11 @@
     <entry name="DrawSizeGrip" type = "Bool">
       <default>false</default>
     </entry>
+    
+    <!-- highlight -->
+    <entry name="DrawHighlight" type = "Bool">
+      <default>true</default>
+    </entry>
 
     <!-- animations -->
     <entry name="AnimationsEnabled" type = "Bool">

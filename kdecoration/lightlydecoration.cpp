@@ -611,7 +611,7 @@ namespace Lightly
             painter->drawRoundedRect(copy, m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
             
             // top highlight
-            if( qGray(this->titleBarColor().rgb()) < 130 ) {
+            if( qGray(this->titleBarColor().rgb()) < 130 && m_internalSettings->drawHighlight() ) {
                 QPixmap pix = QPixmap( copy.width(), copy.height() );
                 pix.fill( Qt::transparent );
         
