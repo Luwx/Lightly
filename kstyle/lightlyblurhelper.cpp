@@ -211,7 +211,7 @@ namespace Lightly
                             orientation = tb->orientation();
                         }
                         
-                        else 
+                        else if ( tb && tb->isVisible() )
                         {
                             if( mainToolbar.isNull() ) {
                                 mainToolbar = QRect( tb->pos(), tb->rect().size() );
