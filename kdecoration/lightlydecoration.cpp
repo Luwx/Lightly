@@ -590,6 +590,12 @@ namespace Lightly
         {
 
             painter->drawRect(titleRect);
+            
+            // top highlight
+            if( qGray(this->titleBarColor().rgb()) < 130 && m_internalSettings->drawHighlight() ) {
+                painter->setPen(QColor(255, 255, 255, 30));
+                painter->drawLine(titleRect.topLeft(), titleRect.topRight());
+            }
 
         } else if( c->isShaded() ) {
 
