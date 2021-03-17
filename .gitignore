@@ -1,0 +1,5 @@
+.clang-format
+.vscode
+.kdev4
+build/**/*
+CMakeLists.txt.user

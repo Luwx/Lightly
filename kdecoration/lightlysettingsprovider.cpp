@@ -75,7 +75,11 @@ namespace Lightly
         QString className;
 
         // get the client
-        auto client = decoration->client().data();
+
+        // Disabled to to deprecation warning:
+        // auto client = decoration->client().data();
+        // using this instead:
+        auto client = decoration->client().toStrongRef().data();
 
         foreach( auto internalSettings, m_exceptions )
         {
