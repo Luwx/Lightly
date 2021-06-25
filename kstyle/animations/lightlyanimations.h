@@ -30,8 +30,6 @@
 #include "lightlytoolboxengine.h"
 #include "lightlywidgetstateengine.h"
 
-#include "lightlymenuengine.h"
-
 #include <QObject>
 #include <QList>
 
@@ -82,10 +80,6 @@ namespace Lightly
         //* header view engine
         HeaderViewEngine& headerViewEngine() const
         { return *_headerViewEngine; }
-        
-        //* menu engine
-        MenuBaseEngine& menuEngine( void ) const
-        { return *_menuEngine; }
 
         //* scrollbar engine
         ScrollBarEngine& scrollBarEngine() const
@@ -134,7 +128,7 @@ namespace Lightly
         //* editable combobox arrow hover effect
         WidgetStateEngine* _comboBoxEngine = nullptr;
 
-        //* menu toolbutton arrow hover effect
+        //* mennu toolbutton arrow hover effect
         WidgetStateEngine* _toolButtonEngine = nullptr;
 
         //* item view engine
@@ -142,9 +136,6 @@ namespace Lightly
 
         //* scrollbar engine
         ScrollBarEngine* _scrollBarEngine = nullptr;
-        
-        //* menu engine
-        MenuBaseEngine* _menuEngine = nullptr;
 
         //* dial engine
         DialEngine* _dialEngine = nullptr;

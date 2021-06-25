@@ -67,10 +67,6 @@ set(lightly_PART_SRCS
     animations/lightlygenericdata.cpp
     animations/lightlyheaderviewdata.cpp
     animations/lightlyheaderviewengine.cpp
-    animations/lightlymenubardata.cpp
-    animations/lightlymenubarengine.cpp
-    animations/lightlymenudata.cpp
-    animations/lightlymenuengine.cpp
     animations/lightlyscrollbardata.cpp
     animations/lightlyscrollbarengine.cpp
     animations/lightlyspinboxengine.cpp

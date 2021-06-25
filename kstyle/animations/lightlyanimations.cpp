@@ -54,7 +54,6 @@ namespace Lightly
         registerEngine( _headerViewEngine = new HeaderViewEngine( this ) );
         registerEngine( _widgetStateEngine = new WidgetStateEngine( this ) );
         registerEngine( _inputWidgetEngine = new WidgetStateEngine( this ) );
-        registerEngine( _menuEngine = new MenuEngineV1( this ) );
         registerEngine( _scrollBarEngine = new ScrollBarEngine( this ) );
         registerEngine( _stackedWidgetEngine = new StackedWidgetEngine( this ) );
         registerEngine( _tabBarEngine = new TabBarEngine( this ) );
@@ -99,25 +98,6 @@ namespace Lightly
         // busy indicator
         _busyIndicatorEngine->setEnabled( StyleConfigData::progressBarAnimated() );
         _busyIndicatorEngine->setDuration( StyleConfigData::progressBarBusyStepDuration() );
-        
-        // menu engine
-        if( /*menuAnimationType == StyleConfigData::ME_FADE &&*/ !qobject_cast<MenuEngineV1*>( _menuEngine ) )
-        {
-
-            if( _menuEngine )
-            {
-
-                MenuEngineV1* newEngine = new MenuEngineV1( this, _menuEngine );
-                registerEngine( newEngine );
-                _menuEngine->deleteLater();
-                _menuEngine = newEngine;
-
-            } else registerEngine( _menuEngine = new MenuEngineV1( this ) );
-
-        }
-        _menuEngine->setEnabled( animationsEnabled );
-        _menuEngine->setDuration( animationsDuration*2 );
-        _menuEngine->setFollowMouseDuration( animationsDuration );
 
     }
 
@@ -169,6 +149,8 @@ namespace Lightly
         else if( qobject_cast<QScrollBar*>( widget ) ) { _scrollBarEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
         else if( qobject_cast<QSlider*>( widget ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
         else if( qobject_cast<QDial*>( widget ) ) { _dialEngine->registerWidget( widget, AnimationHover|AnimationFocus ); }
+        
+        else if( qobject_cast<QMenu*>( widget ) ) { _widgetStateEngine->registerWidget( widget, AnimationHover ); }
 
         // progress bar
         else if( qobject_cast<QProgressBar*>( widget ) ) { _busyIndicatorEngine->registerWidget( widget ); }
@@ -178,9 +160,6 @@ namespace Lightly
             _comboBoxEngine->registerWidget( widget, AnimationHover );
             _inputWidgetEngine->registerWidget( widget, AnimationHover|AnimationFocus );
         }
-        
-        // menu
-        else if( qobject_cast<QMenu*>( widget ) ) { _menuEngine->registerWidget( widget ); }
 
         // spinbox
         else if( qobject_cast<QSpinBox*>( widget ) ) {
@@ -216,6 +195,7 @@ namespace Lightly
         if( QStackedWidget* stack = qobject_cast<QStackedWidget*>( widget ) )
         { _stackedWidgetEngine->registerWidget( stack ); }
 
+        if(  qobject_cast<QMenu*>( widget ) ) qDebug() << "Menu!";
     }
 
     //____________________________________________________________

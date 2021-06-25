@@ -5237,12 +5237,10 @@ namespace Lightly
 
         // store window state
         const bool windowActive( widget && widget->isActiveWindow() );
+        if(widget) qDebug() <<  widget;
         // copy rect and palette
         const auto& rect( option->rect );
         const auto& palette( option->palette );
-        
-        // render background
-        //renderMenuItemBackground( option, painter, widget );
 
         // deal with separators
         if( menuItemOption->menuItemType == QStyleOptionMenuItem::Separator )
@@ -5278,48 +5276,24 @@ namespace Lightly
         const bool sunken( enabled && (state & (State_On|State_Sunken) ) );
         const bool reverseLayout( option->direction == Qt::RightToLeft );
         const bool useStrongFocus( StyleConfigData::menuItemDrawStrongFocus() );
+        
+        _animations->inputWidgetEngine().updateState( widget, AnimationHover, selected );
+        const AnimationMode mode( _animations->inputWidgetEngine().buttonAnimationMode( widget ) );
+        const qreal opacity( _animations->inputWidgetEngine().buttonOpacity( widget ) );
+        qDebug() << mode << opacity;
 
         // render hover and focus
         if( useStrongFocus && ( selected || sunken ) )
         {
 
-            /*const auto color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
+            const auto color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
             if( StyleConfigData::cornerRadius() > 1 )
                 painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
             else
-                painter->drawRoundedRect( sunken ? rect.adjusted(1, 1, -1, -1) : rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );*/
-            
-            // check if there is a 'sliding' animation in progress, in which case, do nothing
-            const QRect animatedRect( _animations->menuEngine().animatedRect( widget ) );
-            if( animatedRect.isNull() )
-            {
-                painter->setRenderHints( QPainter::Antialiasing );
-                const bool animated( _animations->menuEngine().isAnimated( widget, Current ) );
-                const QRect currentRect( _animations->menuEngine().currentRect( widget, Current ) );
-                const bool intersected( currentRect.contains( rect.topLeft() ) );
-
-                QColor color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
-                //QColor color = QColor(0,255 ,255);
-                const qreal opacity = _animations->menuEngine().opacity( widget, Current );
-                color.setAlphaF(opacity > 0 && opacity < 1 ? opacity : 1);
-                painter->setBrush( color );
-                painter->setPen( Qt::NoPen );
-                QRect copy ( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1) );
-                
-                if( animated && intersected ) painter->drawRoundedRect( copy.adjusted(3*(1-opacity), 3*(1-opacity), -3*(1-opacity), -3*(1-opacity)), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
-                else painter->drawRoundedRect( copy, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
-
-            }
-            else {
-                const auto color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
-                painter->setRenderHints( QPainter::Antialiasing );
-                painter->setBrush( color );
-                painter->setPen( Qt::NoPen );
-                painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
-            }
+                painter->drawRoundedRect( sunken ? rect.adjusted(1, 1, -1, -1) : rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
 
         }
 
@@ -5351,7 +5325,7 @@ namespace Lightly
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, palette, selected, sunken, true, state, windowActive );
+            _helper->renderCheckBox( painter, checkBoxRect, palette, true, sunken, true, state, windowActive );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -5361,7 +5335,7 @@ namespace Lightly
             //const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, palette, selected, sunken, active ? RadioOn:RadioOff, true );
+            _helper->renderRadioButton( painter, checkBoxRect, palette, true, sunken, active ? RadioOn:RadioOff, true );
 
         }
 
@@ -8439,5 +8413,4 @@ namespace Lightly
             w = w->parentWidget();
         return w;
     }
-    
 }
