@@ -41,6 +41,10 @@ For rounded corners and outline around the window, check this kwin effect: https
 
 ## Installation
 
+### Installing Lightly from [chaotic-aur](https://aur.chaotic.cx/) on ArchLinux and its [derivatives](https://wiki.archlinux.org/title/Arch-based_distributions)
+  1. Follow the instructions [here](https://aur.chaotic.cx/) on how to setup chaotic-aur 
+  2. run: ```sudo pacman -Syyu lightly-qt```
+
 ### Installing Lightly from RPM repository on openSUSE Tumbleweed:
 
 1. Add "sputnik-look-and-feel" repository:
