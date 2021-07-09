@@ -424,6 +424,13 @@
          </property>
         </spacer>
        </item>
+        <item row="2" column="0">
+        <widget class="QCheckBox" name="_renderThinSeperatorBetweenTheScrollBar">
+         <property name="text">
+          <string>Render a thin separator between the scrollbar</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_5">

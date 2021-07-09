@@ -144,6 +144,10 @@
       <default>false</default>
     </entry>
 
+    <entry name="renderThinSeperatorBetweenTheScrollBar" type="Bool">
+      <default>true</default>
+    </entry>
+
     <!-- frames -->
     <entry name="TitleWidgetDrawFrame" type="Bool">
       <default>false</default>
