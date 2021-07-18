@@ -5765,7 +5765,7 @@ namespace Lightly
     {
         const auto& palette( option->palette );
         const auto color( _helper->alphaColor( palette.color( QPalette::WindowText ), 0.3 ) );
-        _helper->renderProgressBarGroove( painter, option->rect, color );
+        _helper->renderProgressBarGroove( painter, option->rect.adjusted(1, 1, -1, -1), color );
         return true;
     }
 
@@ -7315,21 +7315,21 @@ namespace Lightly
 
                     auto leftRect( grooveRect );
                     leftRect.setRight( handleRect.right() - Metrics::Slider_ControlThickness/2 );
-                    _helper->renderSliderGroove( painter, leftRect, upsideDown ? grooveColor:highlight );
+                    _helper->renderSliderGroove( painter, upsideDown ? leftRect.adjusted(0,1,0,-1):leftRect, upsideDown ? grooveColor:highlight );
 
                     auto rightRect( grooveRect );
                     rightRect.setLeft( handleRect.left() + Metrics::Slider_ControlThickness/2 );
-                    _helper->renderSliderGroove( painter, rightRect, upsideDown ? highlight:grooveColor );
+                    _helper->renderSliderGroove( painter, upsideDown ? rightRect:rightRect.adjusted(0,1,0,-1), upsideDown ? highlight:grooveColor );
 
                 } else {
 
                     auto topRect( grooveRect );
                     topRect.setBottom( handleRect.bottom() - Metrics::Slider_ControlThickness/2 );
-                    _helper->renderSliderGroove( painter, topRect, upsideDown ? grooveColor:highlight );
+                    _helper->renderSliderGroove( painter, upsideDown ? topRect.adjusted(1,0,-1,0):topRect, upsideDown ? grooveColor:highlight );
 
                     auto bottomRect( grooveRect );
                     bottomRect.setTop( handleRect.top() + Metrics::Slider_ControlThickness/2 );
-                    _helper->renderSliderGroove( painter, bottomRect, upsideDown ? highlight:grooveColor );
+                    _helper->renderSliderGroove( painter, upsideDown ? bottomRect:bottomRect.adjusted(1,0,-1,0), upsideDown ? highlight:grooveColor );
 
                 }
 

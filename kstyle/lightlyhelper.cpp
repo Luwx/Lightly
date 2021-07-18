@@ -1434,7 +1434,7 @@ namespace Lightly
         // content
         if( color.isValid() )
         {
-            const qreal penWidth( Metrics::Slider_GrooveThickness );
+            const qreal penWidth( Metrics::Slider_GrooveThickness - 2);
             const QRectF grooveRect( rect.adjusted( penWidth/2, penWidth/2, -penWidth/2, -penWidth/2 ) );
 
             // setup angles
@@ -1534,14 +1534,17 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderProgressBarGroove(
         QPainter* painter, const QRect& rect,
-        const QColor& color ) const
+        const QColor& color, const bool isContent ) const
     {
 
         // setup painter
         painter->setRenderHint( QPainter::Antialiasing, true );
 
         const QRectF baseRect( rect );
-        const qreal radius( 0.5*Metrics::ProgressBar_Thickness );
+        
+        int thickness = Metrics::ProgressBar_Thickness;
+        if( !isContent ) thickness = qMax(Metrics::ProgressBar_Thickness-2, 0);
+        const qreal radius( 0.5*Metrics::ProgressBar_Thickness);
 
         // content
         if( color.isValid() )

@@ -231,11 +231,11 @@ namespace Lightly
         void renderDialContents( QPainter*, const QRect&, const QColor&, qreal first, qreal second ) const;
 
         //* progress bar groove
-        void renderProgressBarGroove( QPainter*, const QRect&, const QColor& ) const;
+        void renderProgressBarGroove( QPainter*, const QRect&, const QColor&, const bool isContent = false ) const;
 
         //* progress bar contents
         void renderProgressBarContents( QPainter* painter, const QRect& rect, const QColor& color ) const
-        { return renderProgressBarGroove( painter, rect, color ); }
+        { return renderProgressBarGroove( painter, rect, color, true ); }
 
         //* progress bar contents (animated)
         void renderProgressBarBusyContents( QPainter* painter, const QRect& rect, const QColor& first, const QColor& second, bool horizontal, bool reverse, int progress  ) const;
