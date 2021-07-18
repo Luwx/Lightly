@@ -84,7 +84,7 @@ namespace Lightly
         ToolButton_InlineIndicatorWidth = 12,
 
         // checkboxes and radio buttons
-        CheckBox_Size = 18 + ( Frame_FrameWidth - 1 )*2,
+        CheckBox_Size = 16 + ( Frame_FrameWidth - 1 )*2,
         CheckBox_FocusMarginWidth = 2,
         CheckBox_ItemSpacing = 4,
 
