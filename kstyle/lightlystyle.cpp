@@ -5252,10 +5252,11 @@ namespace Lightly
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
+            const int radius = _helper->frameRadius(0, -1);
             if( StyleConfigData::cornerRadius() > 1 )
-                painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
+                painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), radius, radius );
             else
-                painter->drawRoundedRect( sunken ? rect.adjusted(1, 1, -1, -1) : rect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius() );
+                painter->drawRoundedRect( sunken ? rect.adjusted(1, 1, -1, -1) : rect, radius, radius );
 
         }
 
