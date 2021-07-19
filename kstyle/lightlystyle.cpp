@@ -2128,12 +2128,12 @@ namespace Lightly
             const auto rightButtonRect( visualRect( option, subElementRect( SE_TabWidgetRightCorner, option, widget ) ) );
             
             rect.setLeft( leftButtonRect.width() + ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
-            rect.setRight( rightButtonRect.left() - ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
+            rect.setRight( rightButtonRect.left() + ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
 
             if( StyleConfigData::tabBarTabExpandFullWidth() ) tabBarRect.setWidth(rect.width() - 2*Metrics::Frame_FrameWidth); // adwaita qt style tab 
             else tabBarRect.setWidth( qMin( tabBarRect.width(), rect.width() - 2 ) );  // fixed width tabs      
             if( tabBarAlignment == Qt::AlignCenter ) tabBarRect.moveLeft( rect.left() + (rect.width() - tabBarRect.width())/2 );
-            else tabBarRect.moveLeft( rect.left() + (documentMode ? 0 : Metrics::Frame_FrameWidth) );
+            else tabBarRect.moveLeft( rect.left() + (documentMode ? 0 : /*Metrics::Frame_FrameWidth*/ 0) );
 
             tabBarRect = visualRect( option, tabBarRect );
 
@@ -3638,47 +3638,10 @@ namespace Lightly
         const bool isQtQuickControl( this->isQtQuickControl( option, widget ) );
         if( tabOption->tabBarSize.isEmpty() && !isQtQuickControl ) return true;
 
-        // adjust rect to handle overlaps
-        auto rect( option->rect );
-
-        int tabBarSize = 0;
-        Corners tabBarCorners;
-        
-
-        // adjust 'tabbar' corners
-        switch( tabOption->shape )
-        {
-            case QTabBar::RoundedNorth:
-            case QTabBar::TriangularNorth:
-            tabBarCorners = CornerTopLeft|CornerTopRight;
-            tabBarSize = tabOption->tabBarSize.height();
-            break;
-
-            case QTabBar::RoundedSouth:
-            case QTabBar::TriangularSouth:
-            tabBarCorners = CornerBottomLeft|CornerBottomRight;
-            tabBarSize = tabOption->tabBarSize.height();
-            break;
-
-            case QTabBar::RoundedWest:
-            case QTabBar::TriangularWest:
-            tabBarCorners = CornerTopLeft|CornerBottomLeft;
-            tabBarSize = tabOption->tabBarSize.width();
-            break;
-
-            case QTabBar::RoundedEast:
-            case QTabBar::TriangularEast:
-            tabBarCorners = CornerTopRight|CornerBottomRight;
-            tabBarSize = tabOption->tabBarSize.width();
-            break;
-
-            default: break;
-        }
-
         // define colors
         const auto& palette( option->palette );
         const auto background( _helper->frameBackgroundColor( palette ) );
-        _helper->renderTabWidgetFrame( painter, rect, background, AllCorners, windowActive, tabBarCorners, tabBarSize );
+        _helper->renderTabWidgetFrame( painter, option->rect, background, AllCorners, windowActive );
 
         return true;
     }
@@ -5237,7 +5200,7 @@ namespace Lightly
 
         // store window state
         const bool windowActive( widget && widget->isActiveWindow() );
-        if(widget) qDebug() <<  widget;
+        
         // copy rect and palette
         const auto& rect( option->rect );
         const auto& palette( option->palette );
@@ -5280,7 +5243,6 @@ namespace Lightly
         _animations->inputWidgetEngine().updateState( widget, AnimationHover, selected );
         const AnimationMode mode( _animations->inputWidgetEngine().buttonAnimationMode( widget ) );
         const qreal opacity( _animations->inputWidgetEngine().buttonOpacity( widget ) );
-        qDebug() << mode << opacity;
 
         // render hover and focus
         if( useStrongFocus && ( selected || sunken ) )
@@ -6586,7 +6548,7 @@ namespace Lightly
                 // konsole's tab
                 if( unifiedTabAndHeader ) {
                     
-                    // reajust rect
+                    // reajust rect to flush tab with window border
                     if( isFirst ) rect.adjust(-3, 0, 0, 0);
                     else if ( isLast ) rect.adjust(0, 0, 3, 0);
                     if( color.alphaF() < 1 ) rect.adjust(0, side == SideTop ? -3 : 0, 0, side == SideBottom ? 3 : 0);
@@ -6635,6 +6597,7 @@ namespace Lightly
             
             // non movable tabs
             else  {
+                 _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
                 painter->setRenderHint( QPainter::Antialiasing, true );
                 painter->setPen(Qt::NoPen);
                 backgroundRect.adjust(5, 6, -5, -6);
@@ -6658,12 +6621,18 @@ namespace Lightly
                 _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), true);
             }
             else {
-                if(!mouseOver) return true;
-                painter->setRenderHint( QPainter::Antialiasing, true );
-                painter->setPen(Qt::NoPen);
-                painter->setBrush( _helper->alphaColor(_helper->focusColor(palette), 0.2) );
-                backgroundRect.adjust(5, 6, -5, -6);
-                painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+                //if(!mouseOver) return true;
+                //painter->setRenderHint( QPainter::Antialiasing, true );
+                //painter->setPen(Qt::NoPen);
+                //painter->setBrush( _helper->alphaColor(_helper->focusColor(palette), 0.2) );
+                //backgroundRect.adjust(5, 6, -5, -6);
+                //painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+                _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
+                if( mouseOver ) {
+                    backgroundRect.adjust(5, 6, -5, -6);
+                    painter->setBrush( _helper->alphaColor(_helper->focusColor(palette), 0.2) );
+                    painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
+                }
                 
             }
         }

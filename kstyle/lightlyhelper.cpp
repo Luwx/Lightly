@@ -837,7 +837,7 @@ namespace Lightly
     //______________________________________________________________________________
     void Helper::renderTabWidgetFrame(
         QPainter* painter, const QRect& rect,
-        const QColor& color, Corners corners, const bool windowActive, Corners tabBarCorners, const int tabBarSize ) const
+        const QColor& color, Corners corners, const bool windowActive ) const
     {
 
         painter->setRenderHint( QPainter::Antialiasing );
@@ -858,33 +858,6 @@ namespace Lightly
         // render
         QPainterPath path( roundedPath( frameRect, corners, radius ) );
         painter->drawPath( path );
-        
-        if( tabBarSize > 0 ) {
-            
-            // tabbar background overlap with the shadow, produces a little outline effect
-            constexpr int shadowOverlap = 1;
-            
-            if( (tabBarCorners & CornerTopLeft) && (tabBarCorners & CornerTopRight) ) {
-                
-                QRect tabBarRect = QRect( QPoint(frameRect.x() - shadowOverlap, frameRect.y() - shadowOverlap), QSize(frameRect.width()+shadowOverlap*2, tabBarSize+1) );
-                painter->setBrush(QColor(0,0,0,20));
-                QPainterPath path( roundedPath( tabBarRect, tabBarCorners, radius ) );
-                painter->drawPath( path );
-                
-            }
-            else if( (tabBarCorners & CornerBottomLeft) && (tabBarCorners & CornerBottomRight) ) {
-                
-                QRect tabBarRect = QRect( QPoint(frameRect.x() - shadowOverlap, frameRect.y() - shadowOverlap), QSize(frameRect.width()+shadowOverlap*2, tabBarSize+1) );
-                painter->setBrush(QColor(0,0,0,20));
-                QPainterPath path( roundedPath( tabBarRect, tabBarCorners, radius ) );
-                painter->drawPath( path );
-                
-            }
-            else if( (tabBarCorners & CornerTopLeft) && (tabBarCorners & CornerBottomLeft) ) {}
-            else if( (tabBarCorners & CornerTopRight) && (tabBarCorners & CornerBottomRight) ) {}
-            
-        }
-
     }
 
 

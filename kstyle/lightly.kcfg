@@ -128,6 +128,10 @@
     </entry>
 
     <!-- tab bars -->
+    <entry name="TabBarAltStyle" type="Bool">
+      <default>false</default>
+    </entry>
+    
     <entry name="TabBarDrawCenteredTabs" type="Bool">
       <default>false</default>
     </entry>
