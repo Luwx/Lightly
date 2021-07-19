@@ -408,7 +408,7 @@ namespace Lightly
 
     //______________________________________________________________________________
     QColor Helper::separatorColor( const QPalette& palette ) const
-    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 30) : QColor(0, 0, 0, 30); }
+    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 16) : QColor(0, 0, 0, 16); }
 
     //______________________________________________________________________________
     QPalette Helper::disabledPalette( const QPalette& source, qreal ratio ) const
