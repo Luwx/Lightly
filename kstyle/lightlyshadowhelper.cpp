@@ -56,12 +56,12 @@ namespace
             ShadowParams(QPoint(0, -2), 8, 0.18)),
         // Large
         CompositeShadowParams(
-            QPoint(0, 5),
-            ShadowParams(QPoint(0, 0), 20, 0.6),
-            ShadowParams(QPoint(0, -3), 10, 0.16)),
+            QPoint(0, 8),
+            ShadowParams(QPoint(0, 0), 20, 0.24),
+            ShadowParams(QPoint(0, -4), 8, 0.32)),
         // Very Large
         CompositeShadowParams(
-            QPoint(0, 6),
+            QPoint(0, 8),
             ShadowParams(QPoint(0, 0), 24, 0.4),
             ShadowParams(QPoint(0, -3), 12, 0.14))
     };
@@ -264,7 +264,7 @@ namespace Lightly
             frameRadius);
         
         // Draw outline.
-        painter.setPen(withOpacity(Qt::black, 0.3 * strength));
+        painter.setPen(withOpacity(Qt::black, 0.1 * strength));
         painter.setBrush(Qt::NoBrush);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.drawRoundedRect(
