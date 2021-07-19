@@ -599,7 +599,7 @@ namespace Lightly
         
             painter->setPen( QColor( 0, 0, 0, outlineStrength ) );
             painter->setBrush( Qt::NoBrush );
-            QRectF frameRect (QRect( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ));
+            QRectF frameRect (QRectF( rect.left() - 1, rect.top() - 1, rect.width() + 2, rect.height() + 2 ));
             frameRect.adjust( 0.5, 0.5, -0.5, -0.5 );
             painter -> drawRoundedRect( frameRect, radius, radius );
             painter->setPen(Qt::NoPen);
@@ -1114,13 +1114,16 @@ namespace Lightly
         if( isInMenu ) background = background.lighter(115);
 
         // float and sunken effect
-        if( sunken ) frameRect.translate(1, 1);
+        if( sunken ) {
+            frameRect.translate(1, 1);
+            background = background.darker(115);
+        }
         else if( state == CheckOn || (state == CheckOff && mouseOver) ) frameRect.translate(-1, -1);
         
         if( state == CheckOff)
         {
-            // small shadow
-            if( mouseOver ){ 
+            // shadow
+            if( mouseOver && !sunken){ 
                 renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,120), 1, windowActive );
                 renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,90), radius, windowActive );
             }
@@ -1128,7 +1131,7 @@ namespace Lightly
                 renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,160), radius, windowActive );
                 renderOutline( painter, frameRect, radius, 4 );
             }
-            painter->setBrush( mouseOver ? background.lighter(115) : background );
+            painter->setBrush( mouseOver ? background.lighter(110) : background );
             painter->drawRoundedRect( frameRect, radius, radius );
             
         } else if( state == CheckOn ) { //mark
@@ -1191,14 +1194,11 @@ namespace Lightly
             
 
         } else if( state == CheckAnimated ) {
-
-            if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
-            else renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
             
             if( animation == 0 ) {
 
                     // small shadow
-                    if( mouseOver ){ 
+                    if( mouseOver && !sunken){ 
                         renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,120), 1, windowActive );
                         renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,90), radius, windowActive );
                     }
@@ -1213,14 +1213,14 @@ namespace Lightly
             else if( (animation > 0 && animation < 1) || animation == -1) {
                     
                     if( animation == -1 ) animation = 1.0;
-                    frameRect.translate(-1*animation, -1*animation);
+                    frameRect.translate(-1, -1);
                     if ( darkTheme ) renderBoxShadow( painter, frameRect, 0, 1, 4, mouseOver ? background.darker(140):background.darker(200), radius, windowActive );
                     else {
-                        renderBoxShadow( painter, frameRect, 0, 1, 4, background.darker(220), radius, windowActive );
-                        renderOutline( painter, frameRect, radius, 4 );
+                        renderBoxShadow( painter, frameRect, 0, 1, 5, QColor(0,0,0,120), 1, windowActive );
+                        renderBoxShadow( painter, frameRect, 0, 1, 2, QColor(0,0,0,90), radius, windowActive );
                     }
-                    //painter->setBrush( mouseOver ? background.lighter(110) : background );
-                    painter->setBrush(background);
+                    painter->setBrush( mouseOver ? background.lighter(110) : background );
+                    //painter->setBrush(background);
                     painter->drawRoundedRect( frameRect, radius, radius );
                     
                     background = mouseOver ? palette.color( QPalette::Highlight ).lighter(110) : palette.color( QPalette::Highlight ); 

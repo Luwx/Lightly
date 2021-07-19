@@ -2129,11 +2129,11 @@ namespace Lightly
             
             rect.setLeft( leftButtonRect.width() + ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
             rect.setRight( rightButtonRect.left() + ( documentMode ? 0 : Metrics::Frame_FrameWidth ) );
-
-            if( StyleConfigData::tabBarTabExpandFullWidth() ) tabBarRect.setWidth(rect.width() - 2*Metrics::Frame_FrameWidth); // adwaita qt style tab 
+            const int sizeCorrection = 1; // HACK: for some reason, the rect size is 1px larger than expected, so it needs to be reduced
+            if( StyleConfigData::tabBarTabExpandFullWidth() ) tabBarRect.setWidth(rect.width() - 2*Metrics::Frame_FrameWidth - sizeCorrection); // adwaita qt style tab 
             else tabBarRect.setWidth( qMin( tabBarRect.width(), rect.width() - 2 ) );  // fixed width tabs      
             if( tabBarAlignment == Qt::AlignCenter ) tabBarRect.moveLeft( rect.left() + (rect.width() - tabBarRect.width())/2 );
-            else tabBarRect.moveLeft( rect.left() + (documentMode ? 0 : /*Metrics::Frame_FrameWidth*/ 0) );
+            else tabBarRect.moveLeft( rect.left() );
 
             tabBarRect = visualRect( option, tabBarRect );
 
@@ -3641,7 +3641,7 @@ namespace Lightly
         // define colors
         const auto& palette( option->palette );
         const auto background( _helper->frameBackgroundColor( palette ) );
-        _helper->renderTabWidgetFrame( painter, option->rect, background, AllCorners, windowActive );
+        //_helper->renderTabWidgetFrame( painter, option->rect, background, AllCorners, windowActive );
 
         return true;
     }
@@ -5252,7 +5252,7 @@ namespace Lightly
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
-            const int radius = _helper->frameRadius(0, -1);
+            const qreal radius = _helper->frameRadius(0, -1);
             if( StyleConfigData::cornerRadius() > 1 )
                 painter->drawRoundedRect( sunken ? rect.adjusted(2, 2, -2, -2) : rect.adjusted(1, 1, -1, -1), radius, radius );
             else
@@ -5288,7 +5288,7 @@ namespace Lightly
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             const auto background( state == CheckOn ? palette.color( QPalette::Highlight ) : palette.color( QPalette::Button ) );
             //_helper->renderCheckBoxBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken );    //not needed
-            _helper->renderCheckBox( painter, checkBoxRect, palette, true, sunken, true, state, windowActive );
+            _helper->renderCheckBox( painter, checkBoxRect, palette, true, sunken, ( selected || sunken ), state, windowActive );
 
         } else if( menuItemOption->checkType == QStyleOptionMenuItem::Exclusive ) {
 
@@ -5298,7 +5298,7 @@ namespace Lightly
             //const auto shadow( _helper->shadowColor( palette ) );
             //const auto color( _helper->checkBoxIndicatorColor( palette, false, enabled && active ) );
             //_helper->renderRadioButtonBackground( painter, checkBoxRect, palette.color( QPalette::Window ), sunken ); //not needed
-            _helper->renderRadioButton( painter, checkBoxRect, palette, true, sunken, active ? RadioOn:RadioOff, true );
+            _helper->renderRadioButton( painter, checkBoxRect, palette, ( selected || sunken ), sunken, active ? RadioOn:RadioOff, true );
 
         }
 
@@ -6449,7 +6449,6 @@ namespace Lightly
             if ( selected ) {
                 
                 corners = CornerTopLeft|CornerTopRight;
-                rect.adjust(0, 0, 0, 1);
                 
             } 
             
@@ -6534,9 +6533,28 @@ namespace Lightly
              painter->fillRect( backgroundRect, QBrush( _helper->titleBarColor( windowActive ) ) );
 
         }
+        
+        if(true) {
+                
+            const int hightlightHeight = selected ? 4 : 2;
+            const QColor hightlightColor( selected ?  _helper->focusColor(palette) : _helper->isDarkTheme(palette) ? QColor(255,255,255,30) : QColor(0,0,0,30) );
+            
+            const int offset = selected ? 0 : 1;
+            const int radius = isFirst || isLast || selected ? hightlightHeight/2 : 0;
+            
+            painter->setPen(Qt::NoPen);
+            painter->setBrush( hightlightColor );
+            painter->setRenderHint( QPainter::Antialiasing, true );
+            painter->drawRoundedRect(backgroundRect.adjusted(
+                    side == SideLeft ? backgroundRect.width() - (hightlightHeight+offset) : (side == SideRight && !selected) ? 1 : 0, 
+                    side == SideTop ? backgroundRect.height() - (hightlightHeight+offset) : (side == SideBottom && !selected) ? 1 : 0, 
+                    side == SideRight ? - backgroundRect.width() + (hightlightHeight+offset) : (side == SideLeft && !selected) ? -1 : 0, 
+                    side == SideBottom ? -backgroundRect.height() + (hightlightHeight+offset) : (side == SideTop && !selected) ? -1 : 0 ), radius, radius);
+            
+        }
 
         // render
-        if( selected )
+        else if( selected )
         {
             QRegion oldRegion( painter->clipRegion() );
             
