@@ -6621,12 +6621,6 @@ namespace Lightly
                 _helper->renderBoxShadow(painter, shadowRect, 0, 1, shadowSize, QColor(0,0,0, 220), StyleConfigData::cornerRadius(), true);
             }
             else {
-                //if(!mouseOver) return true;
-                //painter->setRenderHint( QPainter::Antialiasing, true );
-                //painter->setPen(Qt::NoPen);
-                //painter->setBrush( _helper->alphaColor(_helper->focusColor(palette), 0.2) );
-                //backgroundRect.adjust(5, 6, -5, -6);
-                //painter->drawRoundedRect(backgroundRect, StyleConfigData::cornerRadius(), StyleConfigData::cornerRadius());
                 _helper->renderTabBarTab(painter, backgroundRect, backgroundColor, backgroundCorners);
                 if( mouseOver ) {
                     backgroundRect.adjust(5, 6, -5, -6);
