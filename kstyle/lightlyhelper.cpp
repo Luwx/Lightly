@@ -556,7 +556,7 @@ namespace Lightly
 
             painter->setRenderHint( QPainter::Antialiasing );
             QRectF frameRect( rect );
-            qreal radius( frameRadius( PenWidth::NoPen, -1 ) );
+            qreal radius( frameRadius( PenWidth::NoPen ) );
 
            painter->setPen( Qt::NoPen );
 

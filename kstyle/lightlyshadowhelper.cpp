@@ -226,7 +226,7 @@ namespace Lightly
             .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow2.radius));
 
         const qreal dpr = qApp->devicePixelRatio();
-        const qreal frameRadius = _helper.frameRadius();
+        const qreal frameRadius = _helper.frameRadius(1);
 
         BoxShadowRenderer shadowRenderer;
         shadowRenderer.setBorderRadius(frameRadius);
