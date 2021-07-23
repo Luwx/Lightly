@@ -6534,7 +6534,8 @@ namespace Lightly
 
         }
         
-        if(true) {
+        // render
+        if( StyleConfigData::tabBarAltStyle() ) {
                 
             const int hightlightHeight = selected ? 4 : 2;
             const QColor hightlightColor( selected ?  _helper->focusColor(palette) : _helper->isDarkTheme(palette) ? QColor(255,255,255,30) : QColor(0,0,0,30) );
@@ -6552,8 +6553,6 @@ namespace Lightly
                     side == SideBottom ? -backgroundRect.height() + (hightlightHeight+offset) : (side == SideTop && !selected) ? -1 : 0 ), radius, radius);
             
         }
-
-        // render
         else if( selected )
         {
             QRegion oldRegion( painter->clipRegion() );
