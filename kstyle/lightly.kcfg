@@ -234,7 +234,7 @@
 
     <!-- transparency -->
     <entry name="MenuOpacity" type="Int">
-        <default>100</default>
+        <default>80</default>
     </entry>
     
     <entry name="DolphinSidebarOpacity" type="Int">
