@@ -9,7 +9,7 @@
   <group name="Common">
 
     <entry name="ShadowStrength" type = "Int">
-       <default>255</default>
+       <default>102</default>
        <min>25</min>
        <max>255</max>
     </entry>
