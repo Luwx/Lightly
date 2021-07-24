@@ -74,17 +74,20 @@ namespace Lightly
         CompositeShadowParams(
                 const QPoint &offset,
                 const ShadowParams &shadow1,
-                const ShadowParams &shadow2)
+                const ShadowParams &shadow2,
+                const ShadowParams &shadow3)
             : offset(offset)
             , shadow1(shadow1)
-            , shadow2(shadow2) {}
+            , shadow2(shadow2)
+            , shadow3(shadow3){}
 
         bool isNone() const
-        { return qMax(shadow1.radius, shadow2.radius) == 0; }
+        { return qMax(shadow1.radius, qMax(shadow2.radius, shadow3.radius)) == 0; }
 
         QPoint offset;
         ShadowParams shadow1;
         ShadowParams shadow2;
+        ShadowParams shadow3;
     };
 
     //* handle shadow pixmaps passed to window manager via X property

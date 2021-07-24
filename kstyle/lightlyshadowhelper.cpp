@@ -46,24 +46,28 @@ namespace
         CompositeShadowParams(),
         // Small
         CompositeShadowParams(
-            QPoint(0, 2),
-            ShadowParams(QPoint(0, 0), 12, 0.8),
-            ShadowParams(QPoint(0, -2), 6, 0.18)),
+            QPoint(0, 8),
+            ShadowParams(QPoint(0, 0), 8, 0.8),
+            ShadowParams(QPoint(0, -4), 4, 0.16),
+            ShadowParams(QPoint(0, -6), 2, 0.12)),
         // Medium
-        CompositeShadowParams(
-            QPoint(0, 4),
-            ShadowParams(QPoint(0, 0), 16, 0.8),
-            ShadowParams(QPoint(0, -2), 8, 0.18)),
-        // Large
         CompositeShadowParams(
             QPoint(0, 8),
             ShadowParams(QPoint(0, 0), 20, 0.24),
-            ShadowParams(QPoint(0, -4), 8, 0.32)),
+            ShadowParams(QPoint(0, -4), 8, 0.32),
+            ShadowParams(QPoint(0, -6), 4, 0.01)),
+        // Large
+        CompositeShadowParams(
+            QPoint(0, 16),
+            ShadowParams(QPoint(0, 0), 28, 0.20),
+            ShadowParams(QPoint(0, -8), 16, 0.24),
+            ShadowParams(QPoint(0, -13), 6, 0.16)),
         // Very Large
         CompositeShadowParams(
-            QPoint(0, 8),
-            ShadowParams(QPoint(0, 0), 24, 0.4),
-            ShadowParams(QPoint(0, -3), 12, 0.14))
+            QPoint(0, 32),
+            ShadowParams(QPoint(0, 0), 40, 0.12),
+            ShadowParams(QPoint(0, -16), 20, 0.20),
+            ShadowParams(QPoint(0, -27), 5, 0.24))
     };
 }
 
@@ -223,7 +227,8 @@ namespace Lightly
         const qreal strength = static_cast<qreal>(StyleConfigData::shadowStrength()) / 255.0;
 
         const QSize boxSize = BoxShadowRenderer::calculateMinimumBoxSize(params.shadow1.radius)
-            .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow2.radius));
+            .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow2.radius))
+            .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow3.radius));
 
         const qreal dpr = qApp->devicePixelRatio();
         const qreal frameRadius = _helper.frameRadius(1);
@@ -237,6 +242,8 @@ namespace Lightly
             withOpacity(color, params.shadow1.opacity * strength));
         shadowRenderer.addShadow(params.shadow2.offset, params.shadow2.radius,
             withOpacity(color, params.shadow2.opacity * strength));
+        shadowRenderer.addShadow(params.shadow3.offset, params.shadow3.radius,
+            withOpacity(color, params.shadow3.opacity * strength));
 
         QImage shadowTexture = shadowRenderer.render();
 
