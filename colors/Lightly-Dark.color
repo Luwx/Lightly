@@ -32,6 +32,13 @@ ForegroundNormal=255,255,255
 ForegroundPositive=34,161,87
 ForegroundVisited=139,74,176
 
+[Colors:Complementary]
+BackgroundNormal=33,37,40
+
+[Colors:Header]
+BackgroundAlternate=23,23,23
+BackgroundNormal=22,22,22
+
 [Colors:Selection]
 BackgroundAlternate=171,188,248
 BackgroundNormal=65,98,148
@@ -62,7 +69,7 @@ ForegroundVisited=139,74,176
 
 [Colors:View]
 BackgroundAlternate=82,82,82
-BackgroundNormal=12,12,12
+BackgroundNormal=23,23,23
 DecorationFocus=71,90,121
 DecorationHover=201,226,255
 ForegroundActive=10,157,255
@@ -76,7 +83,7 @@ ForegroundVisited=139,74,176
 
 [Colors:Window]
 BackgroundAlternate=65,65,65
-BackgroundNormal=18,18,18
+BackgroundNormal=27,27,27
 DecorationFocus=71,90,121
 DecorationHover=201,226,255
 ForegroundActive=0,102,255
@@ -89,7 +96,7 @@ ForegroundPositive=34,161,87
 ForegroundVisited=139,74,176
 
 [General]
-Name=lightly dark
+Name=Lightly Dark
 shadeSortColumn=true
 
 [KDE]
