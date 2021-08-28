@@ -4989,12 +4989,14 @@ namespace Lightly
         
         if ( _helper->titleBarColor( true ).alphaF() == 1 || !_translucentWidgets.contains( widget->window() ) ) return true;
         
+        const bool windowActive( widget && widget->isActiveWindow() );
+
         const auto& rect( option->rect );
         
         _helper->renderTransparentArea( painter, rect );
         
         // draw background
-        int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
+        int opacity = _helper->titleBarColor( windowActive ).alphaF()*100.0;
         painter->fillRect(rect, _helper->alphaColor(option->palette.color( QPalette::Window ), opacity/100.0) );
         
         bool shouldDrawShadow = false;
@@ -5047,17 +5049,19 @@ namespace Lightly
         const auto menuItemOption = qstyleoption_cast<const QStyleOptionMenuItem*>( option );
         if( !menuItemOption ) return true;
 
+        const bool windowActive( widget && widget->isActiveWindow() );
+
         // copy rect and palette
         const auto& rect( option->rect );
         const auto& palette( option->palette );
         
-        if ( widget && _helper->titleBarColor( true ).alphaF()*100.0 < 100 && _translucentWidgets.contains( widget->window() ) && StyleConfigData::widgetDrawShadow() )
+        if ( widget && _helper->titleBarColor( windowActive ).alphaF()*100.0 < 100 && _translucentWidgets.contains( widget->window() ) && StyleConfigData::widgetDrawShadow() )
         {
             
             _helper->renderTransparentArea( painter, rect );
 
             // draw background
-            int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
+            int opacity = _helper->titleBarColor( windowActive ).alphaF()*100.0;
             painter->fillRect(rect, _helper->alphaColor(option->palette.color( QPalette::Window ), opacity/100.0) );
             
             bool shouldDrawShadow = false;
@@ -5457,6 +5461,8 @@ namespace Lightly
     bool Style::drawToolBarBackgroundControl( const QStyleOption* option, QPainter* painter, const QWidget* widget ) const
     {
         if( !widget ) return true;
+
+        const bool windowActive( widget && widget->isActiveWindow() );
         
         const auto& rect( option->rect );
         const auto& palette( option->palette );
@@ -5471,7 +5477,7 @@ namespace Lightly
         }
         
         // do nothing more if widget is opaque or should not be transparent
-        else if( ( _helper->titleBarColor( true ).alphaF()*100.0 == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
+        else if( ( _helper->titleBarColor( windowActive ).alphaF()*100.0 == 100 && widget->window()->palette().color( QPalette::Window ).alpha() == 255)
             || !_translucentWidgets.contains( widget->window() ) )
         {
             return true;
@@ -5483,7 +5489,7 @@ namespace Lightly
         }
         
         //qDebug() << _blurHelper->_sregisteredWidgets;
-        const int opacity = _helper->titleBarColor( true ).alphaF()*100.0;
+        const int opacity = _helper->titleBarColor( windowActive ).alphaF()*100.0;
         
         painter->setPen( Qt::NoPen );
 
