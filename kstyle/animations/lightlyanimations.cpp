@@ -195,7 +195,6 @@ namespace Lightly
         if( QStackedWidget* stack = qobject_cast<QStackedWidget*>( widget ) )
         { _stackedWidgetEngine->registerWidget( stack ); }
 
-        if(  qobject_cast<QMenu*>( widget ) ) qDebug() << "Menu!";
     }
 
     //____________________________________________________________
