@@ -3287,7 +3287,7 @@ namespace Lightly
         const bool hasRightButton( tabOption && !tabOption->leftButtonSize.isEmpty() );
 
         // calculate width increment for horizontal tabs
-        int widthIncrement = 0;
+        int widthIncrement = 8;
         if( hasIcon && !( hasText || hasLeftButton || hasRightButton ) ) widthIncrement -= 4;
         if( hasText && hasIcon ) widthIncrement += Metrics::TabBar_TabItemSpacing;
         if( hasLeftButton && ( hasText || hasIcon ) )  widthIncrement += Metrics::TabBar_TabItemSpacing;
@@ -5248,6 +5248,7 @@ namespace Lightly
         if( useStrongFocus && ( selected || sunken ) )
         {
 
+            //const auto color = useStrongFocus ? _helper->focusColor( palette ).darker( sunken ? 120 : 0 ) : _helper->separatorColor(palette);
             const auto color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
