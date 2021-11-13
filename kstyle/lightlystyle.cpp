@@ -1931,7 +1931,7 @@ namespace Lightly
         {
 
             // adjust margins for sidepanel widgets
-            return option->rect.adjusted( 0, 0, -1, 0 );
+            return option->rect.adjusted( 4, 4, -4, 4 );
 
         } else {
 
