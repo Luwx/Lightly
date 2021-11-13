@@ -5243,11 +5243,10 @@ namespace Lightly
         const qreal opacity( _animations->inputWidgetEngine().buttonOpacity( widget ) );
 
         // render hover and focus
-        if( useStrongFocus && ( selected || sunken ) )
+        if( selected || sunken )
         {
 
-            //const auto color = useStrongFocus ? _helper->focusColor( palette ).darker( sunken ? 120 : 0 ) : _helper->separatorColor(palette);
-            const auto color = _helper->focusColor( palette ).darker( sunken ? 120 : 0 );
+            const auto color = useStrongFocus ? _helper->focusColor( palette ).darker( sunken ? 120 : 0 ) : _helper->separatorColor(palette);
             painter->setRenderHints( QPainter::Antialiasing );
             painter->setBrush( color );
             painter->setPen( Qt::NoPen );
