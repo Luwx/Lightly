@@ -4167,9 +4167,7 @@ namespace Lightly
             } 
         }
 
-        // render
-        Corners noCorner;
-        _helper->renderSelection( painter, rect, color, noCorner );
+        _helper->renderSelection( painter, rect, color, AllCorners );
 
         return true;
     }
