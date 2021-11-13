@@ -1588,7 +1588,7 @@ namespace Lightly
 
     //______________________________________________________________________________
     void Helper::renderScrollBarHandle(
-        QPainter* painter, const QRect& rect,
+        QPainter* painter, const QRectF& rect,
         const QColor& color ) const
     {
 
@@ -1596,7 +1596,7 @@ namespace Lightly
         painter->setRenderHint( QPainter::Antialiasing, true );
 
         const QRectF baseRect( rect );
-        const qreal radius( 0.5 * std::min({baseRect.width(), baseRect.height(), (qreal)Metrics::ScrollBar_SliderWidth}) );
+        const qreal radius( 0.5 * std::min( {baseRect.width(), baseRect.height()}) );
 
         // content
         if( color.isValid() )

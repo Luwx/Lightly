@@ -440,6 +440,9 @@ namespace Lightly
 
         QRect centerRect(const QRect &rect, int width, int height) const
         { return QRect(rect.left() + (rect.width() - width)/2, rect.top() + (rect.height() - height)/2, width, height); }
+        
+        QRectF centerRectF(const QRectF &rect, double width, double height) const
+        { return QRectF(rect.left() + (rect.width() - width)/2, rect.top() + (rect.height() - height)/2, width, height); }
 
         /*
         Checks whether the point is before the bound rect for bound of given orientation.

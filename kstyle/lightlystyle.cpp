@@ -5788,14 +5788,10 @@ namespace Lightly
 
         qreal grooveAnimationOpacity( _animations->scrollBarEngine().opacity( widget, QStyle::SC_ScrollBarGroove ) );
         if( grooveAnimationOpacity == AnimationData::OpacityInvalid ) grooveAnimationOpacity = (widgetMouseOver ? 1 : 0);
-
-        // define handle rect
-        QRect handleRect;
+        
+        // define state
         const State& state( option->state );
         const bool horizontal( state & State_Horizontal );
-        if( horizontal ) handleRect = centerRect( rect, rect.width(), Metrics::ScrollBar_SliderWidth );
-        else handleRect = centerRect( rect, Metrics::ScrollBar_SliderWidth, rect.height() );
-
         const bool enabled( state & State_Enabled );
         const bool mouseOver( enabled && ( state & State_MouseOver ) );
 
@@ -5815,6 +5811,12 @@ namespace Lightly
         if (StyleConfigData::animationsEnabled()) {
             color.setAlphaF(color.alphaF() * (0.7 + 0.3 * grooveAnimationOpacity));
         }
+        
+        // define handle rect
+        QRectF handleRect;
+        const qreal sliderWidth = Metrics::ScrollBar_SliderWidth / ( 2 - grooveAnimationOpacity ) ;
+        if( horizontal ) handleRect = centerRectF( rect, rect.width(), sliderWidth );
+        else handleRect = centerRectF( rect, sliderWidth, rect.height() );
 
         _helper->renderScrollBarHandle( painter, handleRect, color );
         return true;
@@ -7445,7 +7447,7 @@ namespace Lightly
                                         QSize(PenWidth::Frame, option->rect.height()), option->rect);
         }
 
-        _helper->renderScrollBarBorder( painter, separatorRect, _helper->alphaColor( option->palette.color( QPalette::Text ), 0.1 ));
+        //_helper->renderScrollBarBorder( painter, separatorRect, _helper->alphaColor( option->palette.color( QPalette::Text ), 0.1 )); // xx
 
         // render full groove directly, rather than using the addPage and subPage control element methods
         if( (!StyleConfigData::animationsEnabled() || mouseOver || animated) && option->subControls & SC_ScrollBarGroove )

@@ -245,7 +245,7 @@ namespace Lightly
         { return renderScrollBarHandle( painter, rect, color ); }
 
         //* scrollbar handle
-        void renderScrollBarHandle( QPainter*, const QRect&, const QColor& ) const;
+        void renderScrollBarHandle( QPainter*, const QRectF&, const QColor& ) const;
 
         //* toolbar handle
         void renderToolBarHandle( QPainter* painter, const QRect& rect, const QColor& color ) const

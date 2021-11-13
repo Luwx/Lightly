@@ -94,7 +94,7 @@ namespace Lightly
 
         // scrollbars
         ScrollBar_Extend = 21,
-        ScrollBar_SliderWidth = 6,
+        ScrollBar_SliderWidth = 8,
         ScrollBar_MinSliderHeight = 20,
         ScrollBar_NoButtonHeight = (ScrollBar_Extend-ScrollBar_SliderWidth)/2,
         ScrollBar_SingleButtonHeight = ScrollBar_Extend,
