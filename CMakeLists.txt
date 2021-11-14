@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
 project(lightly)
-set(PROJECT_VERSION "5.19.4")
+set(PROJECT_VERSION "0.43")
 set(PROJECT_VERSION_MAJOR 5)
 
-set(KF5_MIN_VERSION "5.66.0")
+set(KF5_MIN_VERSION "5.78.0")
 
 include(GenerateExportHeader)
 include(WriteBasicConfigVersionFile)
