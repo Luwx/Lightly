@@ -7447,7 +7447,7 @@ namespace Lightly
                                         QSize(PenWidth::Frame, option->rect.height()), option->rect);
         }
 
-        //_helper->renderScrollBarBorder( painter, separatorRect, _helper->alphaColor( option->palette.color( QPalette::Text ), 0.1 )); // xx
+        _helper->renderScrollBarBorder( painter, separatorRect, _helper->alphaColor( option->palette.color( QPalette::Text ), 0.1 ));
 
         // render full groove directly, rather than using the addPage and subPage control element methods
         if( (!StyleConfigData::animationsEnabled() || mouseOver || animated) && option->subControls & SC_ScrollBarGroove )
