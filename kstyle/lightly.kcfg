@@ -149,7 +149,7 @@
     </entry>
 
     <entry name="renderThinSeperatorBetweenTheScrollBar" type="Bool">
-      <default>true</default>
+      <default>false</default>
     </entry>
 
     <!-- frames -->
