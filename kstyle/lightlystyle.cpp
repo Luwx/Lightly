@@ -4781,10 +4781,9 @@ namespace Lightly
             const QIcon::State iconState( sunken ? QIcon::On : QIcon::Off );
             QIcon::Mode iconMode;
             if( !enabled ) iconMode = QIcon::Disabled;
-            else if( (!flat && hasFocus) || (flat && (state & State_Sunken) && !mouseOver) ) iconMode = QIcon::Selected;
+            else if( (!flat && (hasFocus || sunken)) || (flat && (state & State_Sunken) && !mouseOver) ) iconMode = QIcon::Selected;
             else if( mouseOver && flat ) iconMode = QIcon::Active;
             else iconMode = QIcon::Normal;
-
             const QPixmap pixmap = _helper->coloredIcon(toolButtonOption->icon, toolButtonOption->palette, iconSize, iconMode, iconState);
             drawItemPixmap( painter, iconRect, Qt::AlignCenter, pixmap );
 
@@ -4796,7 +4795,7 @@ namespace Lightly
 
             QPalette::ColorRole textRole( QPalette::ButtonText );
             if( flat ) textRole = ( ((hasFocus&&sunken) || (state & State_Sunken))&&!mouseOver) ? QPalette::HighlightedText: QPalette::WindowText;
-            else if( hasFocus&&!mouseOver ) textRole = QPalette::HighlightedText;
+            else if( hasFocus||sunken ) textRole = QPalette::HighlightedText;
 
             painter->setFont(toolButtonOption->font);
             drawItemText( painter, textRect, textFlags, palette, enabled, toolButtonOption->text, textRole );
@@ -4893,7 +4892,7 @@ namespace Lightly
             if( hasFocus && sunken ) textRole = QPalette::HighlightedText;
             else textRole = QPalette::WindowText;
 
-        } else if( hasFocus ) textRole = QPalette::HighlightedText;
+        } else if( option->state & State_HasFocus || sunken) textRole = QPalette::HighlightedText;
         else textRole = QPalette::ButtonText;
 
         // change pen color directly
