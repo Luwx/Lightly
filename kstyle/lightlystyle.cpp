@@ -3747,8 +3747,8 @@ namespace Lightly
             color = _helper->arrowColor( palette, mouseOver, hasFocus, opacity, mode );
 
         } else if( mouseOver && !inToolButton ) {
-
-            color = _helper->hoverColor( palette );
+            // fixes dolphin arrow bug, use focusColor(dark color) instead of hoverColor(light color)
+            color = _helper->focusColor( palette );
 
         } else if( inToolButton ) {
 
@@ -7140,7 +7140,8 @@ namespace Lightly
                 else arrowColor = _helper->arrowColor( palette, QPalette::WindowText );
 
             } else if( empty || !enabled ) arrowColor = _helper->arrowColor( palette, QPalette::Disabled, QPalette::ButtonText );
-            else if( hasFocus && !mouseOver ) arrowColor = palette.color( QPalette::HighlightedText );
+            // fixes kinfocenter dropdown menu mouseover bug: arrow shoud show light color (highlightedtext) upon mouseover
+            else if( hasFocus ) arrowColor = palette.color( QPalette::HighlightedText );
             else arrowColor = _helper->arrowColor( palette, QPalette::ButtonText );
 
             // arrow rect

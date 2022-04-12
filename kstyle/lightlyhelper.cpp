@@ -176,8 +176,8 @@ namespace Lightly
             else outline = KColorUtils::mix( outline, hover, opacity );
 
         } else if( mouseOver ) {
-
-            outline = hoverColor( palette );
+            // fix skanlite arrow color bug (mouseOver shows dark color (focusColor), not light color (hoverColor))
+            outline = focusColor( palette );
 
         } else if( mode == AnimationFocus ) {
 
