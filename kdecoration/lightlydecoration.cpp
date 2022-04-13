@@ -250,7 +250,6 @@ namespace Lightly
 
         reconfigure();
         updateTitleBar();
-        updateBlur();
         auto s = settings();
         connect(s.data(), &KDecoration2::DecorationSettings::borderSizeChanged, this, &Decoration::recalculateBorders);
 
@@ -281,7 +280,6 @@ namespace Lightly
         );
 
         connect(c, &KDecoration2::DecoratedClient::activeChanged, this, &Decoration::updateAnimationState);
-        connect(c, &KDecoration2::DecoratedClient::activeChanged, this, &Decoration::updateBlur);
         connect(c, &KDecoration2::DecoratedClient::widthChanged, this, &Decoration::updateTitleBar);
         connect(c, &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::updateTitleBar);
 
@@ -292,15 +290,6 @@ namespace Lightly
 
         createButtons();
         createShadow();
-    }
-    
-    
-    //________________________________________________________________
-    void Decoration::updateBlur()
-    {
-        auto c = client().data();
-        const QColor titleBarColor = c->color( c->isActive() ? ColorGroup::Active : ColorGroup::Inactive, ColorRole::TitleBar );
-        this->setOpaque(titleBarColor.alpha() == 255 ? true : false);
     }
 
     //________________________________________________________________
@@ -397,8 +386,7 @@ namespace Lightly
         // size grip
         if( hasNoBorders() && m_internalSettings->drawSizeGrip() ) createSizeGrip();
         else deleteSizeGrip();
-        
-        updateBlur();
+
     }
 
     //________________________________________________________________
