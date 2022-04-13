@@ -4589,6 +4589,9 @@ namespace Lightly
             else textRole = QPalette::WindowText;
 
         } else if( hasFocus || (hasFocus && mouseOver) ) textRole = QPalette::HighlightedText;
+        // Fixes kinfocentor energy tab "Charge Percentage" button color error
+        // when the button is checked, the text label should be a light color (HighlightedText)
+        else if (state & State_On) textRole = QPalette::HighlightedText;
         else textRole = QPalette::ButtonText;
 
         // menu arrow
@@ -4784,6 +4787,7 @@ namespace Lightly
             else if( (!flat && (hasFocus || sunken)) || (flat && (state & State_Sunken) && !mouseOver) ) iconMode = QIcon::Selected;
             else if( mouseOver && flat ) iconMode = QIcon::Active;
             else iconMode = QIcon::Normal;
+
             const QPixmap pixmap = _helper->coloredIcon(toolButtonOption->icon, toolButtonOption->palette, iconSize, iconMode, iconState);
             drawItemPixmap( painter, iconRect, Qt::AlignCenter, pixmap );
 
