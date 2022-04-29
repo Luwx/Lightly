@@ -53,6 +53,11 @@ Type "```a```" and press enter.
 4. Install Lightly:
 ```sudo zypper in Lightly```
 
+### Fedora
+```
+sudo dnf install Lightly
+```
+
 ### Fedora 32 RPM repository
 
 1. Create repo file:
