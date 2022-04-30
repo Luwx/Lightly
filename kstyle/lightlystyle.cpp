@@ -7123,7 +7123,7 @@ namespace Lightly
 
                     // color
                     const auto normal( _helper->arrowColor( palette, QPalette::WindowText ) );
-                    // fix kcharselect font name combo box: should use a dark color (focusColor)
+                    // combo box arrow should use focusColor (dark) when hovered
                     const auto hover( _helper->focusColor( palette ) );
 
                     if( animated )
@@ -7145,9 +7145,9 @@ namespace Lightly
                 else arrowColor = _helper->arrowColor( palette, QPalette::WindowText );
 
             } else if( empty || !enabled ) arrowColor = _helper->arrowColor( palette, QPalette::Disabled, QPalette::ButtonText );
-            // fixes kinfocenter dropdown menu mouseover bug: arrow shoud show light color (highlightedtext) upon mouseover
+            // arrow in dropdown menu shoud use light color (highlightedtext) upon mouseover
             else if( hasFocus ) arrowColor = palette.color( QPalette::HighlightedText );
-            // fixes kcharselect combo menu click bug: arrow should show light color upon On state (checked)
+            // arrow in combo menu click should use light color in the On state (checked)
             else if ( state & State_On ) arrowColor = palette.color( QPalette::HighlightedText );
             else arrowColor = _helper->arrowColor( palette, QPalette::ButtonText );
 
@@ -7659,7 +7659,7 @@ namespace Lightly
             color = KColorUtils::mix( color, highlight, opacity );
 
         } else if( subControlHover ) {
-            // fixes kcharselect font size spinbox mouseover color (should use a dark color)
+            // use focusColor (dark) as qspinbox mouseover color
             color = _helper->focusColor( palette );
 
         } else if( atLimit ) {
