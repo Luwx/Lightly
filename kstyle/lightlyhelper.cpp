@@ -176,8 +176,8 @@ namespace Lightly
             else outline = KColorUtils::mix( outline, hover, opacity );
 
         } else if( mouseOver ) {
-
-            outline = hoverColor( palette );
+            // fix skanlite arrow color bug (mouseOver shows dark color (focusColor), not light color (hoverColor))
+            outline = focusColor( palette );
 
         } else if( mode == AnimationFocus ) {
 
@@ -750,7 +750,9 @@ namespace Lightly
         
         // pressed button background when animation is done
         else if(sunken && mouseOver) {
-            painter->setBrush(alphaColor( color.darker(200), 0.5 ) );
+            // fix kcharselect combobox sunken: use the same background color when combobox is sunken
+            const auto fc = focusColor(palette);
+            painter->setBrush(alphaColor( fc.darker(200), 0.5 ) );
              painter->drawRoundedRect( frameRect, radius, radius );
         }
         

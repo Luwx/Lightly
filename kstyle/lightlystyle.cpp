@@ -3747,8 +3747,8 @@ namespace Lightly
             color = _helper->arrowColor( palette, mouseOver, hasFocus, opacity, mode );
 
         } else if( mouseOver && !inToolButton ) {
-
-            color = _helper->hoverColor( palette );
+            // fixes dolphin arrow bug, use focusColor(dark color) instead of hoverColor(light color)
+            color = _helper->focusColor( palette );
 
         } else if( inToolButton ) {
 
@@ -4589,6 +4589,9 @@ namespace Lightly
             else textRole = QPalette::WindowText;
 
         } else if( hasFocus || (hasFocus && mouseOver) ) textRole = QPalette::HighlightedText;
+        // Fixes kinfocentor energy tab "Charge Percentage" button color error
+        // when the button is checked, the text label should be a light color (HighlightedText)
+        else if (state & State_On) textRole = QPalette::HighlightedText;
         else textRole = QPalette::ButtonText;
 
         // menu arrow
@@ -4781,7 +4784,7 @@ namespace Lightly
             const QIcon::State iconState( sunken ? QIcon::On : QIcon::Off );
             QIcon::Mode iconMode;
             if( !enabled ) iconMode = QIcon::Disabled;
-            else if( (!flat && hasFocus) || (flat && (state & State_Sunken) && !mouseOver) ) iconMode = QIcon::Selected;
+            else if( (!flat && (hasFocus || sunken)) || (flat && (state & State_Sunken) && !mouseOver) ) iconMode = QIcon::Selected;
             else if( mouseOver && flat ) iconMode = QIcon::Active;
             else iconMode = QIcon::Normal;
 
@@ -4796,7 +4799,7 @@ namespace Lightly
 
             QPalette::ColorRole textRole( QPalette::ButtonText );
             if( flat ) textRole = ( ((hasFocus&&sunken) || (state & State_Sunken))&&!mouseOver) ? QPalette::HighlightedText: QPalette::WindowText;
-            else if( hasFocus&&!mouseOver ) textRole = QPalette::HighlightedText;
+            else if( hasFocus||sunken ) textRole = QPalette::HighlightedText;
 
             painter->setFont(toolButtonOption->font);
             drawItemText( painter, textRect, textFlags, palette, enabled, toolButtonOption->text, textRole );
@@ -4893,7 +4896,7 @@ namespace Lightly
             if( hasFocus && sunken ) textRole = QPalette::HighlightedText;
             else textRole = QPalette::WindowText;
 
-        } else if( hasFocus ) textRole = QPalette::HighlightedText;
+        } else if( option->state & State_HasFocus || sunken) textRole = QPalette::HighlightedText;
         else textRole = QPalette::ButtonText;
 
         // change pen color directly
@@ -7120,7 +7123,8 @@ namespace Lightly
 
                     // color
                     const auto normal( _helper->arrowColor( palette, QPalette::WindowText ) );
-                    const auto hover( _helper->hoverColor( palette ) );
+                    // combo box arrow should use focusColor (dark) when hovered
+                    const auto hover( _helper->focusColor( palette ) );
 
                     if( animated )
                     {
@@ -7141,7 +7145,10 @@ namespace Lightly
                 else arrowColor = _helper->arrowColor( palette, QPalette::WindowText );
 
             } else if( empty || !enabled ) arrowColor = _helper->arrowColor( palette, QPalette::Disabled, QPalette::ButtonText );
-            else if( hasFocus && !mouseOver ) arrowColor = palette.color( QPalette::HighlightedText );
+            // arrow in dropdown menu shoud use light color (highlightedtext) upon mouseover
+            else if( hasFocus ) arrowColor = palette.color( QPalette::HighlightedText );
+            // arrow in combo menu click should use light color in the On state (checked)
+            else if ( state & State_On ) arrowColor = palette.color( QPalette::HighlightedText );
             else arrowColor = _helper->arrowColor( palette, QPalette::ButtonText );
 
             // arrow rect
@@ -7652,8 +7659,8 @@ namespace Lightly
             color = KColorUtils::mix( color, highlight, opacity );
 
         } else if( subControlHover ) {
-
-            color = _helper->hoverColor( palette );
+            // use focusColor (dark) as qspinbox mouseover color
+            color = _helper->focusColor( palette );
 
         } else if( atLimit ) {
 
