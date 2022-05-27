@@ -58,7 +58,7 @@ K_PLUGIN_FACTORY_WITH_JSON(
     "lightly.json",
     registerPlugin<Lightly::Decoration>();
     registerPlugin<Lightly::Button>();
-    registerPlugin<Lightly::ConfigWidget>(QStringLiteral("kcmodule"));
+    registerPlugin<Lightly::ConfigWidget>();
 )
 
 namespace
