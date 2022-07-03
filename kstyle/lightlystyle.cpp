@@ -3788,6 +3788,10 @@ namespace Lightly
 
                 color = palette.color( QPalette::HighlightedText );
 
+            } else if (sunken) {
+
+                color = palette.color( QPalette::HighlightedText );
+
             } else {
 
                 color = _helper->arrowColor( palette, QPalette::ButtonText );
@@ -3797,7 +3801,8 @@ namespace Lightly
         } else color = _helper->arrowColor( palette, QPalette::WindowText );
 
         // render
-        _helper->renderArrow( painter, rect, color, orientation );
+        auto arrowRect(rect.adjusted(-3, 0, -3, 0));
+        _helper->renderArrow( painter, arrowRect, color, orientation );
 
         return true;
     }
@@ -4298,7 +4303,7 @@ namespace Lightly
         _helper->renderButtonFrame( painter, frameRect, background, palette, hasFocus, sunken, mouseOver, enabled, windowActive ); //TODO: use sides?
 
         // also render separator
-        auto separatorRect( rect.adjusted( 0, 2, -2, -2 ) );
+        auto separatorRect( rect.adjusted( 0, 9, -2, -9 ) );
         separatorRect.setWidth( 1 );
         separatorRect = visualRect( option, separatorRect );
         if( sunken ) separatorRect.translate( 1, 1 );
