@@ -29,6 +29,7 @@
 #include <KDecoration2/DecoratedClient>
 #include <KDecoration2/DecorationSettings>
 
+#include <QPainterPath>
 #include <QPalette>
 #include <QVariant>
 
@@ -98,12 +99,22 @@ namespace Lightly
         inline bool hideTitleBar() const;
         //@}
 
+        std::shared_ptr<QPainterPath> titleBarPath()
+        {
+            return m_titleBarPath;
+        }
+        std::shared_ptr<QPainterPath> windowPath()
+        {
+            return m_windowPath;
+        }
+
         public Q_SLOTS:
         void init() override;
 
         private Q_SLOTS:
         void reconfigure();
         void recalculateBorders();
+        void updateBlur();
         void updateButtonsGeometry();
         void updateButtonsGeometryDelayed();
         void updateTitleBar();
@@ -116,6 +127,7 @@ namespace Lightly
         QPair<QRect,Qt::Alignment> captionRect() const;
 
         void createButtons();
+        void calculateWindowAndTitleBarShapes(const bool windowShapeOnly = false);
         void paintTitleBar(QPainter *painter, const QRect &repaintRegion);
         void createShadow();
 
@@ -147,6 +159,14 @@ namespace Lightly
 
         //* active state change opacity
         qreal m_opacity = 0;
+
+        //* Rectangular area of titlebar without clipped corners
+        QRect m_titleRect;
+
+        //* Exact titlebar path, with clipped rounded corners
+        std::shared_ptr<QPainterPath> m_titleBarPath = std::make_shared<QPainterPath>();
+        //* Exact window path, with clipped rounded corners
+        std::shared_ptr<QPainterPath> m_windowPath = std::make_shared<QPainterPath>();
 
     };
 
