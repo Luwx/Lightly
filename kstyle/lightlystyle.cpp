@@ -343,8 +343,8 @@ namespace Lightly
                     if( !_helper->compositingActive() ) break; //TODO: remove alpha
                     if( widget->windowFlags().testFlag( Qt::FramelessWindowHint ) ) break;
                     
-                    // temporarily removed since konsole's blur currently causes kornerbug
-                    //if( _isKonsole ) {_translucentWidgets.insert( widget ); break;}
+                    // konsole handle blur and translucency itself
+                    if( _isKonsole ) {_translucentWidgets.insert( widget ); break;}
 
                     // make window translucent
                     widget->setAttribute( Qt::WA_TranslucentBackground );
