@@ -250,6 +250,7 @@ namespace Lightly
 
         reconfigure();
         updateTitleBar();
+        updateBlur();
         auto s = settings();
         connect(s.data(), &KDecoration2::DecorationSettings::borderSizeChanged, this, &Decoration::recalculateBorders);
 
@@ -280,8 +281,11 @@ namespace Lightly
         );
 
         connect(c, &KDecoration2::DecoratedClient::activeChanged, this, &Decoration::updateAnimationState);
+        connect(c, &KDecoration2::DecoratedClient::activeChanged, this, &Decoration::updateBlur);
         connect(c, &KDecoration2::DecoratedClient::widthChanged, this, &Decoration::updateTitleBar);
         connect(c, &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::updateTitleBar);
+
+        connect(c, &KDecoration2::DecoratedClient::sizeChanged, this, &Decoration::updateBlur); //recalculate blur region on resize
 
         connect(c, &KDecoration2::DecoratedClient::widthChanged, this, &Decoration::updateButtonsGeometry);
         connect(c, &KDecoration2::DecoratedClient::maximizedChanged, this, &Decoration::updateButtonsGeometry);
@@ -290,6 +294,69 @@ namespace Lightly
 
         createButtons();
         createShadow();
+    }
+
+    //________________________________________________________________
+    void Decoration::updateBlur()
+    {
+        auto c = client().data();
+        const QColor titleBarColor = c->color( c->isActive() ? ColorGroup::Active : ColorGroup::Inactive, ColorRole::TitleBar );
+
+        // set opaque to false when non-maximized, regardless of color (prevents kornerbug)
+        if ( titleBarColor.alpha() == 255 ) {
+            this->setOpaque( c->isMaximized() );
+        } else {
+            this->setOpaque(false);
+        }
+
+        calculateWindowAndTitleBarShapes(true);
+        this->setBlurRegion(QRegion(m_windowPath->toFillPolygon().toPolygon()));
+    }
+
+    //________________________________________________________________
+    void Decoration::calculateWindowAndTitleBarShapes(const bool windowShapeOnly)
+    {
+        auto c = client().data();
+        auto s = settings();
+
+        if (!windowShapeOnly || c->isShaded()) {
+            // set titleBar geometry and path
+            m_titleRect = QRect(QPoint(0, 0), QSize(size().width(), borderTop()));
+            m_titleBarPath->clear(); // clear the path for subsequent calls to this function
+            if (isMaximized() || !s->isAlphaChannelSupported()) {
+                m_titleBarPath->addRect(m_titleRect);
+
+            } else if (c->isShaded()) {
+                m_titleBarPath->addRoundedRect(m_titleRect, m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
+
+            } else {
+                QPainterPath clipRect;
+                clipRect.addRect(m_titleRect);
+
+                // the rect is made a little bit larger to be able to clip away the rounded corners at the bottom and sides
+                m_titleBarPath->addRoundedRect(m_titleRect.adjusted(
+                        isLeftEdge() ? -m_internalSettings->cornerRadius():0,
+                        isTopEdge() ? -m_internalSettings->cornerRadius():0,
+                        isRightEdge() ? m_internalSettings->cornerRadius():0,
+                        m_internalSettings->cornerRadius()),
+                    m_internalSettings->cornerRadius(),
+                    m_internalSettings->cornerRadius());
+
+                *m_titleBarPath = m_titleBarPath->intersected(clipRect);
+            }
+        }
+
+        // set windowPath
+        m_windowPath->clear(); // clear the path for subsequent calls to this function
+        if (!c->isShaded()) {
+            if (s->isAlphaChannelSupported() && !isMaximized())
+                m_windowPath->addRoundedRect(rect(), m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
+            else
+                m_windowPath->addRect(rect());
+
+        } else {
+            *m_windowPath = *m_titleBarPath;
+        }
     }
 
     //________________________________________________________________
@@ -386,6 +453,8 @@ namespace Lightly
         // size grip
         if( hasNoBorders() && m_internalSettings->drawSizeGrip() ) createSizeGrip();
         else deleteSizeGrip();
+
+        updateBlur();
 
     }
 
@@ -523,6 +592,8 @@ namespace Lightly
         auto c = client().data();
         auto s = settings();
 
+        calculateWindowAndTitleBarShapes();
+
         // paint background
         if( !c->isShaded() )
         {
@@ -562,9 +633,8 @@ namespace Lightly
     void Decoration::paintTitleBar(QPainter *painter, const QRect &repaintRegion)
     {
         const auto c = client().data();
-        const QRect titleRect(QPoint(0, 0), QSize(size().width(), borderTop()));
 
-        if ( !titleRect.intersects(repaintRegion) ) return;
+        if ( !m_titleRect.intersects(repaintRegion) ) return;
 
         painter->save();
         painter->setPen(Qt::NoPen);
@@ -574,7 +644,7 @@ namespace Lightly
         {
 
             const QColor titleBarColor( this->titleBarColor() );
-            QLinearGradient gradient( 0, 0, 0, titleRect.height() );
+            QLinearGradient gradient( 0, 0, 0, m_titleRect.height() );
             gradient.setColorAt(0.0, titleBarColor.lighter( 120 ) );
             gradient.setColorAt(0.8, titleBarColor);
             painter->setBrush(gradient);
@@ -586,37 +656,24 @@ namespace Lightly
         }
 
         auto s = settings();
-        if( isMaximized() || !s->isAlphaChannelSupported() )
-        {
 
-            painter->drawRect(titleRect);
-            
-            // top highlight
-            if( qGray(this->titleBarColor().rgb()) < 130 && m_internalSettings->drawHighlight() ) {
+        painter->drawPath(*m_titleBarPath);
+
+        // top highlight
+        if( qGray(this->titleBarColor().rgb()) < 130 && m_internalSettings->drawHighlight() ) {
+            if( isMaximized() || !s->isAlphaChannelSupported() ) {
+
                 painter->setPen(QColor(255, 255, 255, 30));
-                painter->drawLine(titleRect.topLeft(), titleRect.topRight());
-            }
+                painter->drawLine(m_titleRect.topLeft(), m_titleRect.topRight());
 
-        } else if( c->isShaded() ) {
+            } else if (!c->isShaded()) {
 
-            painter->drawRoundedRect(titleRect, m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
+                QRect copy ( m_titleRect.adjusted(
+                    isLeftEdge() ? -m_internalSettings->cornerRadius():0,
+                    isTopEdge() ? -m_internalSettings->cornerRadius():0,
+                    isRightEdge() ? m_internalSettings->cornerRadius():0,
+                    m_internalSettings->cornerRadius()) );
 
-        } else {
-
-            painter->setClipRect(titleRect, Qt::IntersectClip);
-            
-            // the rect is made a little bit larger to be able to clip away the rounded corners at the bottom and sides
-            QRect copy ( titleRect.adjusted(
-                isLeftEdge() ? -m_internalSettings->cornerRadius():0,
-                isTopEdge() ? -m_internalSettings->cornerRadius():0,
-                isRightEdge() ? m_internalSettings->cornerRadius():0,
-                m_internalSettings->cornerRadius()) );
-            
-            
-            painter->drawRoundedRect(copy, m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
-            
-            // top highlight
-            if( qGray(this->titleBarColor().rgb()) < 130 && m_internalSettings->drawHighlight() ) {
                 QPixmap pix = QPixmap( copy.width(), copy.height() );
                 pix.fill( Qt::transparent );
         
@@ -631,8 +688,8 @@ namespace Lightly
                 p.drawRoundedRect(copy.adjusted(0, 1, 0, 0), m_internalSettings->cornerRadius(), m_internalSettings->cornerRadius());
                 
                 painter->drawPixmap(copy, pix);
-            }
 
+            }
         }
 
         const QColor outlineColor( this->outlineColor() );
@@ -642,7 +699,7 @@ namespace Lightly
             painter->setRenderHint( QPainter::Antialiasing, false );
             painter->setBrush( Qt::NoBrush );
             painter->setPen( outlineColor );
-            painter->drawLine( titleRect.bottomLeft(), titleRect.bottomRight() );
+            painter->drawLine( m_titleRect.bottomLeft(), m_titleRect.bottomRight() );
         }
 
         painter->restore();
