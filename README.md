@@ -91,6 +91,11 @@ sudo apt install cmake build-essential libkf5config-dev libkdecorations2-dev lib
 sudo pacman -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras
 ```
 
+#### Void Linux
+```
+sudo xbps-install -S cmake extra-cmake-modules kiconthemes-devel kdecoration-devel kconfigwidgets-devel
+```
+
 #### Fedora
 ```
 sudo dnf install cmake extra-cmake-modules "cmake(Qt5Core)" "cmake(Qt5Gui)" "cmake(Qt5DBus)" "cmake(Qt5X11Extras)" "cmake(KF5GuiAddons)" "cmake(KF5WindowSystem)" "cmake(KF5I18n)" "cmake(KDecoration2)" "cmake(KF5CoreAddons)" "cmake(KF5ConfigWidgets)" "cmake(Qt5UiTools)" "cmake(KF5GlobalAccel)" "cmake(KF5IconThemes)" kwin-devel libepoxy-devel "cmake(KF5Init)" "cmake(KF5Crash)" "cmake(KF5KIO)" "cmake(KF5Notifications)" kf5-kpackage-devel
