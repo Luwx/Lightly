@@ -55,7 +55,7 @@ Type "```a```" and press enter.
 
 ### Fedora
 ```
-sudo dnf install Lightly
+sudo dnf install lightly
 ```
 
 ### Fedora 32 RPM repository
