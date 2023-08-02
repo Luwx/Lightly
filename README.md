@@ -88,7 +88,7 @@ sudo apt install cmake build-essential libkf5config-dev libkdecorations2-dev lib
 
 #### Arch Linux
 ```
-sudo pacman -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras
+sudo pacman -S cmake extra-cmake-modules kdecoration qt5-declarative qt5-x11extras libtool gcc gcc-libs
 ```
 
 #### Fedora
