@@ -106,6 +106,10 @@ sudo zypper install cmake gcc-c++ extra-cmake-modules libQt5Gui-devel libQt5DBus
 sudo eopkg install extra-cmake-modules kdecoration-devel qt5-declarative-devel qt5-x11extras-devel qt5-base-devel kcoreaddons-devel kguiaddons-devel kconfigwidgets-devel kwindowsystem-devel ki18n-devel kiconthemes-devel kcmutils-devel libxcb-devel xcb-util-devel qt5-wayland-devel kwayland-devel wayland-devel frameworkintegration-devel
 ```
 
+#### Void
+```
+sudo xbps-install extra-cmake-modules base-devel kdecoration-devel kguiaddons-devel kconfigwidgets-devel kwindowsystem-devel kiconthemes-devel
+```
 
 ### Build and install
 
