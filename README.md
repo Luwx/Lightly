@@ -73,6 +73,14 @@ enabled=1" | sudo tee -a /etc/yum.repos.d/sputnik-look-and-feel.repo
 2. Install Lightly:
 ```sudo dnf install Lightly```
 
+### Fedora Silverblue / Kinoite / other `rpm-ostree` distros
+
+```bash
+sudo rpm-ostree install lightly
+
+systemctl reboot
+```
+
 
 
 ## Manual installation
