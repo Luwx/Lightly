@@ -55,7 +55,7 @@ Type "```a```" and press enter.
 
 ### Fedora
 ```
-sudo dnf install Lightly
+sudo dnf install lightly
 ```
 
 ### Fedora 32 RPM repository
@@ -71,7 +71,7 @@ gpgkey=https://download.opensuse.org/repositories/home:/sputnik:/look-and-feel/F
 enabled=1" | sudo tee -a /etc/yum.repos.d/sputnik-look-and-feel.repo
 ```
 2. Install Lightly:
-```sudo dnf install Lightly```
+```sudo dnf install lightly```
 
 
 
