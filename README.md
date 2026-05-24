@@ -6,9 +6,13 @@
 
 ## Development ⚠️
 
-Lightly is a work in progress theme, there is still a lot to change, so expect bugs! Some applications may suddenly crash or flicker.
+This repository is archived and no longer maintained.
 
-If you have any feedback or encounter some bugs, feel free to open an issue or a pr.
+Lightly has not received updates since 2021. If you are looking for an actively maintained alternative, consider:
+
+- **Darkly** (https://github.com/Bali10050/Darkly), a fork of Lightly that has continued development with bug fixes, new features, and KDE Plasma 6 support.
+
+Thank you to everyone who used and contributed to Lightly, it was a fun project and I'm glad it inspired further awesome work.
 
 
 ## Screenshots
